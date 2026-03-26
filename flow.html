@@ -15,6 +15,16 @@
     overflow-y: auto;
   }
 
+  /* Page wrapper to sync header + canvas width */
+  .page-wrap {
+    display: inline-block;
+    min-width: 100%;
+  }
+
+  /* Drag-to-pan cursor */
+  body.drag-panning { cursor: grabbing !important; }
+  body.drag-panning * { cursor: grabbing !important; user-select: none !important; }
+
   /* ── Header ── */
   .header {
     position: sticky;
@@ -517,6 +527,9 @@
 </style>
 </head>
 <body>
+
+<!-- Page wrapper for full-width sync -->
+<div class="page-wrap">
 
 <!-- ── Header ── -->
 <div class="header">
@@ -1105,6 +1118,7 @@
   </div><!-- /branches-wrapper -->
 
 </div><!-- /canvas -->
+</div><!-- /page-wrap -->
 
 <script>
 // ── All navigable cards with images ──
@@ -1414,6 +1428,39 @@ document.addEventListener('keydown', (e) => {
   if (e.key === '-')           zoomTo(Math.max(scale / 1.2, 0.1));
   if (e.key === '0')           zoomFit();
 });
+
+// ── Drag-to-pan on page (scroll by dragging background) ──
+(function() {
+  let dragging = false, startX, startY, scrollL, scrollT;
+
+  document.addEventListener('mousedown', (e) => {
+    // Don't drag on interactive elements
+    if (e.target.closest('.tree-card, .flow-action, .lb-viewport, .lb-btn, .lb-close, .lb-nav-arrows, a, button')) return;
+    // Don't drag if lightbox is open
+    if (document.getElementById('lightbox').classList.contains('active')) return;
+
+    dragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    scrollL = window.scrollX;
+    scrollT = window.scrollY;
+    document.body.classList.add('drag-panning');
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    window.scrollTo(
+      scrollL - (e.clientX - startX),
+      scrollT - (e.clientY - startY)
+    );
+  });
+
+  document.addEventListener('mouseup', () => {
+    dragging = false;
+    document.body.classList.remove('drag-panning');
+  });
+})();
 </script>
 
 </body>
