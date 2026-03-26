@@ -65,6 +65,32 @@
   .canvas {
     padding: 28px 32px 80px;
     min-width: max-content;
+    position: relative;
+  }
+
+  /* SVG cross-branch arrows */
+  #cross-arrows {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 3;
+  }
+
+  /* Clickable flow action */
+  .flow-action.clickable { cursor: pointer; transition: all 0.2s; }
+  .flow-action.clickable:hover { border-color: #d4a853; background: rgba(212,168,83,0.08); }
+
+  /* Highlight animation on target */
+  @keyframes highlightPulse {
+    0% { box-shadow: 0 0 0 0 rgba(212,168,83,0.6); }
+    70% { box-shadow: 0 0 0 12px rgba(212,168,83,0); }
+    100% { box-shadow: 0 0 0 0 rgba(212,168,83,0); }
+  }
+  .highlight-target {
+    animation: highlightPulse 1s ease-out 2;
+    border-color: #d4a853 !important;
   }
 
   /* ── Root node ── */
@@ -427,6 +453,9 @@
 ════════════════════════════════════════════ -->
 <div class="canvas">
 
+  <!-- SVG overlay for cross-branch arrows -->
+  <svg id="cross-arrows" aria-hidden="true"></svg>
+
   <!-- Root node -->
   <div class="root-node">
     <div class="root-box">
@@ -469,7 +498,7 @@
         </div>
         <div class="tree-line blue"></div>
 
-        <div class="tree-card tc-p2"
+        <div class="tree-card tc-p2" id="card-commerce-detail"
              onclick="openLightbox('images/phase2/日日欣_全館商城_詳情.jpg','全館商城 — 詳情','commerce-detail')">
           <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_全館商城_詳情.jpg" alt="全館商城 詳情" loading="lazy">
@@ -477,7 +506,7 @@
         </div>
         <div class="tree-line blue"></div>
 
-        <div class="flow-action">
+        <div class="flow-action clickable" onclick="scrollHighlight('card-lottery-01')">
           <span class="action-label">點擊「抽取」</span>
           <span class="action-target at-red">→ 一番賞</span>
         </div>
@@ -499,7 +528,7 @@
         </div>
         <div class="tree-line green"></div>
 
-        <div class="tree-card tc-p3"
+        <div class="tree-card tc-p3" id="card-recommend-detail"
              onclick="openLightbox('images/商城推薦_詳情.jpg','商城推薦 — 詳情','recommend-detail')">
           <span class="card-phase-badge">P3</span>
           <img src="images/商城推薦_詳情.jpg" alt="商城推薦 詳情" loading="lazy">
@@ -507,7 +536,7 @@
         </div>
         <div class="tree-line green"></div>
 
-        <div class="flow-action">
+        <div class="flow-action clickable" onclick="scrollHighlight('card-lottery-01')">
           <span class="action-label">點擊「抽取」</span>
           <span class="action-target at-red">→ 一番賞</span>
         </div>
@@ -529,7 +558,7 @@
         </div>
         <div class="tree-line green"></div>
 
-        <div class="tree-card tc-p3"
+        <div class="tree-card tc-p3" id="card-clearance-detail"
              onclick="openLightbox('images/低價出清_詳情.jpg','低價出清 — 詳情','clearance-detail')">
           <span class="card-phase-badge">P3</span>
           <img src="images/低價出清_詳情.jpg" alt="低價出清 詳情" loading="lazy">
@@ -537,7 +566,7 @@
         </div>
         <div class="tree-line green"></div>
 
-        <div class="flow-action">
+        <div class="flow-action clickable" onclick="scrollHighlight('card-lottery-01')">
           <span class="action-label">點擊「抽取」</span>
           <span class="action-target at-red">→ 一番賞</span>
         </div>
@@ -551,7 +580,7 @@
         <div class="branch-header bh-red">一番賞</div>
         <div class="tree-line red"></div>
 
-        <div class="tree-card tc-red"
+        <div class="tree-card tc-red" id="card-lottery-01"
              onclick="openLightbox('images/一番賞_抽獎頁面_01.jpg','一番賞 — 選號碼','lottery-01')">
           <span class="card-phase-badge">P3</span>
           <img src="images/一番賞_抽獎頁面_01.jpg" alt="一番賞 01" loading="lazy">
@@ -567,7 +596,7 @@
         </div>
         <div class="tree-line red"></div>
 
-        <div class="tree-card tc-red"
+        <div class="tree-card tc-red" id="card-lottery-03"
              onclick="openLightbox('images/一番賞_抽獎頁面_03.jpg','一番賞 — 抽獎結果','lottery-03')">
           <span class="card-phase-badge">P3</span>
           <img src="images/一番賞_抽獎頁面_03.jpg" alt="一番賞 03" loading="lazy">
@@ -576,12 +605,12 @@
         <div class="tree-line red"></div>
 
         <!-- Fork: two outcomes from result page -->
-        <div class="flow-action" style="margin-bottom:5px;">
+        <div class="flow-action clickable" style="margin-bottom:5px;" onclick="scrollHighlight('card-lottery-01')">
           <span class="action-label">「繼續購買」</span>
           <span class="action-target at-red">↺ 回到選號碼</span>
         </div>
         <div class="tree-line red" style="height:8px;"></div>
-        <div class="flow-action">
+        <div class="flow-action clickable" onclick="scrollHighlight('card-cart-confirm')">
           <span class="action-label">「前往收貨」</span>
           <span class="action-target at-orange">→ 購物車</span>
         </div>
@@ -596,7 +625,7 @@
         <div class="tree-line orange"></div>
 
         <!-- 獎品確認 -->
-        <div class="tree-card tc-orange"
+        <div class="tree-card tc-orange" id="card-cart-confirm"
              onclick="openLightbox('images/購物車_獎品確認.jpg','購物車 — 獎品確認','cart-confirm')">
           <span class="card-phase-badge">P3</span>
           <img src="images/購物車_獎品確認.jpg" alt="購物車 獎品確認" loading="lazy">
@@ -674,9 +703,9 @@
         <div class="tree-line orange" style="height:10px;"></div>
 
         <!-- Action: 放棄獎品 -->
-        <div class="flow-action" style="margin-bottom:5px;">
+        <div class="flow-action clickable" style="margin-bottom:5px;" onclick="scrollHighlight('card-member-abandon')">
           <span class="action-label">「放棄獎品」</span>
-          <span class="action-target at-purple">→ 放棄獎品紀錄</span>
+          <span class="action-target at-purple">→ 會員/放棄獎品紀錄</span>
         </div>
         <div class="tree-line orange" style="height:10px;"></div>
 
@@ -910,7 +939,7 @@
         <div class="tree-line purple"></div>
 
         <!-- 放棄獎品紀錄 (P3 with purple styling) -->
-        <div class="tree-card tc-purple"
+        <div class="tree-card tc-purple" id="card-member-abandon"
              onclick="openLightbox('images/會員系統_放棄獎品紀錄.jpg','會員系統 — 放棄獎品紀錄','member-abandon')">
           <span class="card-phase-badge">P3</span>
           <img src="images/會員系統_放棄獎品紀錄.jpg" alt="會員系統 放棄獎品紀錄" loading="lazy">
@@ -1116,6 +1145,125 @@ viewport.addEventListener('dblclick', (e) => {
     scale = ns; updateTransform();
   } else { zoomFit(); }
 });
+
+// ── Scroll + Highlight target card ──
+function scrollHighlight(targetId) {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+  el.classList.add('highlight-target');
+  setTimeout(() => el.classList.remove('highlight-target'), 2200);
+}
+
+// ── Cross-branch SVG arrows ──
+function relRect(el) {
+  const canvas = document.querySelector('.canvas');
+  const cr = canvas.getBoundingClientRect();
+  const r = el.getBoundingClientRect();
+  return {
+    top: r.top - cr.top, left: r.left - cr.left,
+    bottom: r.bottom - cr.top, right: r.right - cr.left,
+    cx: r.left - cr.left + r.width / 2,
+    cy: r.top - cr.top + r.height / 2,
+    w: r.width, h: r.height
+  };
+}
+
+function drawCrossArrows() {
+  const svg = document.getElementById('cross-arrows');
+  const canvas = document.querySelector('.canvas');
+  svg.setAttribute('width', canvas.scrollWidth);
+  svg.setAttribute('height', canvas.scrollHeight);
+  svg.innerHTML = '';
+
+  // Arrowhead markers
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  [['ah-red','#e74c3c'],['ah-orange','#e67e22'],['ah-purple','#9b59b6']].forEach(([id, color]) => {
+    const m = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+    m.setAttribute('id', id);
+    m.setAttribute('markerWidth', '8'); m.setAttribute('markerHeight', '8');
+    m.setAttribute('refX', '6'); m.setAttribute('refY', '3');
+    m.setAttribute('orient', 'auto');
+    const p = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    p.setAttribute('points', '0 0, 6 3, 0 6');
+    p.setAttribute('fill', color); p.setAttribute('opacity', '0.8');
+    m.appendChild(p); defs.appendChild(m);
+  });
+  svg.appendChild(defs);
+
+  function drawArrow(fromId, toId, color, markerId, label, fromSide, toSide) {
+    const f = document.getElementById(fromId);
+    const t = document.getElementById(toId);
+    if (!f || !t) return;
+    const from = relRect(f), to = relRect(t);
+
+    let x1, y1, x2, y2;
+    if (fromSide === 'bottom')     { x1 = from.cx; y1 = from.bottom; }
+    else if (fromSide === 'right') { x1 = from.right; y1 = from.cy; }
+    else                           { x1 = from.cx; y1 = from.bottom; }
+
+    if (toSide === 'top')          { x2 = to.cx; y2 = to.top; }
+    else if (toSide === 'left')    { x2 = to.left; y2 = to.cy; }
+    else                           { x2 = to.cx; y2 = to.top; }
+
+    // Curved path
+    let d;
+    const dx = Math.abs(x2 - x1), dy = Math.abs(y2 - y1);
+    if (fromSide === 'bottom' && toSide === 'top') {
+      const midY = y1 + Math.max(dy * 0.4, 30);
+      d = `M${x1},${y1} C${x1},${midY} ${x2},${midY} ${x2},${y2}`;
+    } else if (fromSide === 'right' && toSide === 'left') {
+      const midX = (x1 + x2) / 2;
+      d = `M${x1},${y1} C${midX},${y1} ${midX},${y2} ${x2},${y2}`;
+    } else {
+      d = `M${x1},${y1} C${x1},${y1 + 40} ${x2},${y2 - 40} ${x2},${y2}`;
+    }
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', color);
+    path.setAttribute('stroke-width', '2');
+    path.setAttribute('stroke-opacity', '0.5');
+    path.setAttribute('stroke-dasharray', '6,4');
+    path.setAttribute('marker-end', `url(#${markerId})`);
+    svg.appendChild(path);
+
+    // Label
+    if (label) {
+      const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+      const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      const textLen = label.length * 7 + 10;
+      bg.setAttribute('x', mx - textLen / 2); bg.setAttribute('y', my - 8);
+      bg.setAttribute('width', textLen); bg.setAttribute('height', 16);
+      bg.setAttribute('fill', '#0a0a0a'); bg.setAttribute('rx', '4');
+      bg.setAttribute('opacity', '0.9');
+      svg.appendChild(bg);
+      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      txt.setAttribute('x', mx); txt.setAttribute('y', my + 4);
+      txt.setAttribute('text-anchor', 'middle');
+      txt.setAttribute('fill', color); txt.setAttribute('font-size', '10');
+      txt.setAttribute('font-weight', '600');
+      txt.setAttribute('font-family', '-apple-system, sans-serif');
+      txt.textContent = label;
+      svg.appendChild(txt);
+    }
+  }
+
+  // 全館商城 詳情 → 一番賞 選號碼
+  drawArrow('card-commerce-detail', 'card-lottery-01', '#e74c3c', 'ah-red', '抽取', 'bottom', 'top');
+  // 商城推薦 詳情 → 一番賞 選號碼
+  drawArrow('card-recommend-detail', 'card-lottery-01', '#e74c3c', 'ah-red', '抽取', 'bottom', 'top');
+  // 低價出清 詳情 → 一番賞 選號碼
+  drawArrow('card-clearance-detail', 'card-lottery-01', '#e74c3c', 'ah-red', '抽取', 'bottom', 'top');
+  // 一番賞 抽獎結果 → 購物車 獎品確認
+  drawArrow('card-lottery-03', 'card-cart-confirm', '#e67e22', 'ah-orange', '前往收貨', 'right', 'top');
+  // 購物車 → 會員/放棄獎品紀錄
+  drawArrow('card-cart-confirm', 'card-member-abandon', '#9b59b6', 'ah-purple', '放棄獎品', 'right', 'left');
+}
+
+window.addEventListener('load', () => setTimeout(drawCrossArrows, 300));
+window.addEventListener('resize', () => setTimeout(drawCrossArrows, 150));
 
 // Keyboard: ESC, arrows, +/-, 0
 document.addEventListener('keydown', (e) => {
