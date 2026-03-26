@@ -94,6 +94,57 @@
     border-color: #b8860b !important;
   }
 
+  /* ── Page budget summary ── */
+  .budget-bar {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 16px auto 8px;
+    padding: 12px 20px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    max-width: 900px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .budget-item {
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+    padding: 4px 12px;
+    border-radius: 6px;
+  }
+  .budget-item .label { color: #888; }
+  .budget-item .val { font-weight: 700; font-size: 14px; }
+  .budget-save { background: #edf7ed; color: #1a9e4e; }
+  .budget-need { background: #fff5f5; color: #c0392b; }
+  .budget-net  { background: #f0f4ff; color: #2176ad; }
+
+  /* ── Saved tag on cards ── */
+  .saved-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    color: #1a9e4e;
+    background: #edf7ed;
+    border: 1px solid #c3e6c3;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-top: 3px;
+  }
+  .use-saved-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    color: #2176ad;
+    background: #edf5ff;
+    border: 1px solid #b3d4f7;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-top: 3px;
+  }
+
   /* ── Root node ── */
   .root-node {
     display: flex;
@@ -470,6 +521,25 @@
     </div>
   </div>
 
+  <!-- Page budget summary -->
+  <div class="budget-bar">
+    <div class="budget-item budget-save">
+      <div class="label">省下頁面</div>
+      <div class="val">+6 頁</div>
+      <div class="label">客服-1 · 購物車-4 · 獎品紀錄合併-1</div>
+    </div>
+    <div class="budget-item budget-need">
+      <div class="label">需補頁面</div>
+      <div class="val">-6 頁</div>
+      <div class="label">確認頁 · 成功頁 · 折扣碼等</div>
+    </div>
+    <div class="budget-item budget-net">
+      <div class="label">頁數差額</div>
+      <div class="val">± 0</div>
+      <div class="label">省下的剛好補齊</div>
+    </div>
+  </div>
+
   <!-- Stub from root down to horizontal connector -->
   <div class="root-stub"></div>
 
@@ -634,7 +704,7 @@
       ══════════════════════════════════════ -->
       <div class="branch-col">
         <div class="branch-stub orange"></div>
-        <div class="branch-header bh-orange">購物車</div>
+        <div class="branch-header bh-orange">購物車<br><span style="font-size:10px;font-weight:400;">報 8 頁 → 用 4 頁</span></div>
         <div class="tree-line orange"></div>
 
         <!-- 獎品確認 -->
@@ -679,7 +749,7 @@
             <div class="missing-title">購物明細</div>
             <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">獎品清單、運費<br>折扣碼套用、金額小計</div>
           </div>
-          <div class="missing-label">缺 · 待設計</div>
+          <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
         </div>
         <div class="tree-line" style="height:10px;"></div>
 
@@ -690,7 +760,7 @@
             <div class="missing-title">購物確認</div>
             <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">收貨資訊確認<br>付款方式選擇<br>點「確認送出」</div>
           </div>
-          <div class="missing-label">缺 · 待設計</div>
+          <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
         </div>
         <div class="tree-line" style="height:10px;"></div>
 
@@ -701,7 +771,7 @@
             <div class="missing-title">出貨成功頁</div>
             <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">訂單編號、預計出貨<br>可返回「獎品紀錄」查看</div>
           </div>
-          <div class="missing-label">缺 · 待設計</div>
+          <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
         </div>
         <div class="tree-line orange" style="height:10px;"></div>
 
@@ -752,7 +822,7 @@
             <div class="missing-title">付款成功 / 失敗</div>
             <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">第三方金流回傳結果<br>成功：代幣入帳通知<br>失敗：重試或返回</div>
           </div>
-          <div class="missing-label">缺 · 待設計</div>
+          <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
         </div>
       </div>
 
@@ -785,19 +855,14 @@
       ══════════════════════════════════════ -->
       <div class="branch-col">
         <div class="branch-stub green"></div>
-        <div class="branch-header bh-green">客服中心</div>
+        <div class="branch-header bh-green">客服中心<br><span style="font-size:10px;font-weight:400;">報 2 頁 → 用 1 頁</span></div>
         <div class="tree-line green"></div>
 
         <div class="tree-card tc-p3"
              onclick="openLightbox('images/客服中心.jpg','客服中心','faq')">
           <span class="card-phase-badge">P3</span>
           <img src="images/客服中心.jpg" alt="客服中心" loading="lazy">
-          <div class="card-label">客服中心</div>
-        </div>
-        <div class="tree-line green"></div>
-
-        <div class="flow-action">
-          <span class="action-label">FAQ 常見問題</span>
+          <div class="card-label">客服中心<br><span class="saved-tag">省 1 頁（詳情頁不需要）</span></div>
         </div>
       </div>
 
@@ -829,7 +894,7 @@
             <div class="missing-title">聯絡送出成功</div>
             <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">感謝訊息<br>預計回覆時間說明</div>
           </div>
-          <div class="missing-label">缺 · 待設計</div>
+          <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
         </div>
       </div>
 
@@ -948,7 +1013,7 @@
              onclick="openLightbox('images/會員系統_獎品紀錄.jpg','會員系統 — 獎品紀錄','member-prizes')">
           <span class="card-phase-badge">P3</span>
           <img src="images/會員系統_獎品紀錄.jpg" alt="會員系統 獎品紀錄" loading="lazy">
-          <div class="card-label">獎品紀錄<br><span style="font-size:8px;font-weight:400;color:#7a4fa0;">待出貨+已出貨 合併</span></div>
+          <div class="card-label">獎品紀錄<br><span class="saved-tag">2頁合併1頁 · 省1頁</span></div>
         </div>
         <div class="tree-line purple"></div>
 
@@ -974,7 +1039,7 @@
             <div class="missing-title">放棄獎品確認</div>
             <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">二次確認防誤觸<br>代幣返還規則說明</div>
           </div>
-          <div class="missing-label">缺 · 待設計</div>
+          <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
         </div>
       </div>
 
