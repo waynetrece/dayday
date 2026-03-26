@@ -581,13 +581,13 @@
     </div>
     <div class="budget-item budget-need">
       <div class="label">已確認需補</div>
-      <div class="val">-6 頁</div>
-      <div class="label">出貨明細 · 出貨確認 · 成功頁等</div>
+      <div class="val">-5 頁</div>
+      <div class="label">出貨明細 · 出貨確認 · 出貨成功 · 付款結果 · 放棄確認</div>
     </div>
     <div class="budget-item budget-net">
       <div class="label">確認部分差額</div>
-      <div class="val">± 0</div>
-      <div class="label">省下的剛好補齊</div>
+      <div class="val">+1</div>
+      <div class="label">還多 1 頁可用</div>
     </div>
     <div class="budget-item" style="background:#faf5ff;color:#7b2d8e;">
       <div class="label">設計師提問</div>
@@ -727,10 +727,14 @@
           <div class="card-label">確認抽取</div>
         </div>
 
-        <!-- 建議：此頁面需補上折扣碼輸入 -->
-        <div style="width:174px;padding:6px 10px;border:2px solid #e67e22;border-radius:6px;background:#fff8ef;text-align:center;margin:6px 0;font-size:11px;line-height:1.5;">
-          <div style="font-weight:700;color:#c56b15;">💡 建議補上：折扣碼輸入</div>
-          <div style="color:#888;font-size:10px;margin-top:3px;">抽取前選擇折扣碼<br>顯示折扣後實付代幣</div>
+        <div class="tree-line red"></div>
+
+        <!-- 優惠券（從會員系統搬來，抽取前選折扣碼） -->
+        <div class="tree-card tc-p1" id="card-coupon"
+             onclick="openLightbox('images/phase1/日日欣_會員系統_優惠券.jpg','優惠券 — 折扣碼選擇','member-coupon')">
+          <span class="card-phase-badge">P1</span>
+          <img src="images/phase1/日日欣_會員系統_優惠券.jpg" alt="優惠券" loading="lazy">
+          <div class="card-label">優惠券 / 折扣碼</div>
         </div>
 
         <div class="tree-line red"></div>
@@ -926,20 +930,6 @@
         </div>
         <div class="tree-line green"></div>
 
-        <div class="flow-action" style="margin-bottom:5px;">
-          <span class="action-label">送出表單</span>
-        </div>
-        <div class="tree-line" style="height:10px;"></div>
-
-        <!-- Missing: 聯絡送出成功 -->
-        <div class="tree-card missing">
-          <div class="missing-body">
-            <div class="missing-icon">❌</div>
-            <div class="missing-title">聯絡送出成功</div>
-            <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">感謝訊息<br>預計回覆時間說明</div>
-          </div>
-          <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
-        </div>
       </div>
 
       <!-- ══════════════════════════════════════
@@ -1073,15 +1063,6 @@
           <span class="card-phase-badge">P1</span>
           <img src="images/phase1/20251114-日日欣_會員系統_代幣紀錄.jpg" alt="會員系統 代幣" loading="lazy">
           <div class="card-label">代幣紀錄</div>
-        </div>
-        <div class="tree-line purple"></div>
-
-        <!-- 優惠券 -->
-        <div class="tree-card tc-p1"
-             onclick="openLightbox('images/phase1/日日欣_會員系統_優惠券.jpg','會員系統 — 優惠券','member-coupon')">
-          <span class="card-phase-badge">P1</span>
-          <img src="images/phase1/日日欣_會員系統_優惠券.jpg" alt="會員系統 優惠券" loading="lazy">
-          <div class="card-label">優惠券</div>
         </div>
         <div class="tree-line purple"></div>
 
