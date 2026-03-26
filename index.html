@@ -3,113 +3,358 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>日日欣 — 第三階段 頁面流程圖</title>
+<title>日日欣 — 全站頁面流程圖</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     background: #0a0a0a;
     color: #e0e0e0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
     overflow-x: auto;
     overflow-y: auto;
   }
 
-  /* Header */
+  /* ── Header ── */
   .header {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 200;
     background: linear-gradient(135deg, #1a1a1a, #111);
-    border-bottom: 1px solid #333;
-    padding: 16px 32px;
+    border-bottom: 1px solid #2a2a2a;
+    padding: 14px 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
   }
-  .header h1 { font-size: 20px; color: #d4a853; font-weight: 600; }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header h1 { font-size: 19px; color: #d4a853; font-weight: 700; letter-spacing: 0.5px; }
+  .header .subtitle { font-size: 12px; color: #666; }
   .header .badge {
     background: #d4a853; color: #000;
-    padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
   }
-  .header .subtitle { font-size: 13px; color: #888; margin-left: 16px; }
 
-  /* Legend — clickable */
+  /* ── Legend / Nav bar ── */
   .legend {
-    position: sticky; top: 57px; z-index: 99;
-    background: #111; border-bottom: 1px solid #222;
-    padding: 10px 32px; display: flex; gap: 20px; font-size: 13px; flex-wrap: wrap;
+    position: sticky; top: 53px; z-index: 199;
+    background: #111; border-bottom: 1px solid #1e1e1e;
+    padding: 8px 28px;
+    display: flex; gap: 6px; font-size: 12px; flex-wrap: wrap;
+    align-items: center;
   }
   .legend-item {
     display: flex; align-items: center; gap: 6px;
     cursor: pointer; padding: 4px 10px; border-radius: 6px;
-    transition: background 0.2s;
+    transition: background 0.2s; white-space: nowrap;
   }
   .legend-item:hover { background: rgba(255,255,255,0.08); }
-  .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
-  .legend-hint { margin-left: auto; color: #555; font-size: 12px; cursor: default; }
-  .legend-hint:hover { background: transparent; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .legend-sep { width: 1px; height: 18px; background: #2a2a2a; margin: 0 4px; }
+  .legend-hint { margin-left: auto; color: #444; font-size: 11px; cursor: default; }
 
-  /* Canvas — fits ~1440px viewport */
+  /* ── Phase key ── */
+  .phase-key {
+    display: flex; gap: 8px; font-size: 11px; margin-left: 8px; flex-wrap: wrap;
+  }
+  .phase-tag {
+    padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600;
+    border: 1px solid; opacity: 0.85;
+  }
+  .p1 { border-color: #9b59b6; color: #9b59b6; background: rgba(155,89,182,0.08); }
+  .p2 { border-color: #3498db; color: #3498db; background: rgba(52,152,219,0.08); }
+  .p3 { border-color: #2ecc71; color: #2ecc71; background: rgba(46,204,113,0.08); }
+  .pmiss { border-color: #e74c3c; color: #e74c3c; background: rgba(231,76,60,0.08); }
+
+  /* ── Main canvas ── */
   .canvas {
-    position: relative;
     width: 1500px;
-    min-height: 2400px;
     margin: 0 auto;
-    padding: 40px 0;
+    padding: 28px 0 60px;
   }
 
-  /* SVG Arrows */
-  .arrows-svg {
-    position: absolute; top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none; z-index: 1;
+  /* ── Module section ── */
+  .module-section {
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .module-title-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 16px;
+    border-left: 4px solid;
+  }
+  .module-title-bar .mod-icon { font-size: 16px; }
+  .module-title-bar .mod-name { font-size: 14px; font-weight: 700; }
+  .module-title-bar .mod-count { font-size: 11px; opacity: 0.7; margin-left: auto; }
+
+  /* Module color themes */
+  .mt-commerce { background: rgba(52,152,219,0.08); border-color: #3498db; color: #3498db; }
+  .mt-news     { background: rgba(52,152,219,0.08); border-color: #3498db; color: #3498db; }
+  .mt-recommend{ background: rgba(46,204,113,0.08); border-color: #2ecc71; color: #2ecc71; }
+  .mt-clearance{ background: rgba(46,204,113,0.08); border-color: #2ecc71; color: #2ecc71; }
+  .mt-lottery  { background: rgba(231,76,60,0.1);  border-color: #e74c3c; color: #e74c3c; }
+  .mt-cart     { background: rgba(230,126,34,0.08); border-color: #e67e22; color: #e67e22; }
+  .mt-member   { background: rgba(155,89,182,0.08); border-color: #9b59b6; color: #9b59b6; }
+  .mt-misc     { background: rgba(212,168,83,0.08); border-color: #d4a853; color: #d4a853; }
+  .mt-confirm  { background: rgba(231,76,60,0.05);  border-color: #e74c3c; color: #e74c3c; }
+
+  /* Module row container */
+  .module-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    padding: 0 4px;
+    align-items: flex-start;
+  }
+  .module-row.wrap { flex-wrap: wrap; }
+
+  /* Sub-row label */
+  .sub-row-label {
+    font-size: 10px; color: #555; width: 100%;
+    padding-left: 4px; margin-bottom: 6px; margin-top: 8px;
   }
 
-  /* Page Card */
+  /* Arrow connector group (used between modules in same row) */
+  .row-with-arrow {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    flex-wrap: nowrap;
+  }
+  .module-block {
+    flex-shrink: 0;
+  }
+  .inter-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    margin-top: 140px; /* approx card mid-height */
+    color: #555;
+    font-size: 20px;
+  }
+
+  /* Two-module row (side by side with divider) */
+  .dual-module-row {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+  }
+  .dual-module-row .module-section {
+    flex: 1;
+    margin-bottom: 0;
+  }
+  .dual-divider {
+    width: 1px;
+    background: #1e1e1e;
+    align-self: stretch;
+    flex-shrink: 0;
+    margin-top: 52px;
+  }
+
+  /* ── Page card ── */
   .page-card {
-    position: absolute;
-    background: #1a1a1a;
+    background: #141414;
     border: 2px solid #333;
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.25s ease;
-    z-index: 2;
-    width: 230px;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 200px;
+    flex-shrink: 0;
+    position: relative;
   }
   .page-card:hover {
     border-color: #d4a853;
-    transform: scale(1.03);
-    box-shadow: 0 8px 32px rgba(212, 168, 83, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(212,168,83,0.18);
     z-index: 10;
   }
-  .page-card img { width: 100%; display: block; border-bottom: 1px solid #333; }
-  .page-card .card-label { padding: 8px 10px; font-size: 12px; font-weight: 600; text-align: center; }
-  .page-card .card-tag { display: block; font-size: 10px; font-weight: 400; color: #888; margin-top: 2px; }
+  .page-card img {
+    width: 100%; display: block;
+    border-bottom: 1px solid #1e1e1e;
+    background: #111;
+  }
+  .card-label {
+    padding: 7px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .card-tag {
+    display: block;
+    font-size: 9px;
+    font-weight: 400;
+    color: #666;
+    margin-top: 2px;
+  }
+  .card-phase {
+    position: absolute; top: 5px; left: 5px;
+    font-size: 9px; font-weight: 700;
+    padding: 1px 5px; border-radius: 3px;
+    border: 1px solid; opacity: 0.9;
+  }
 
-  /* Module colors */
-  .mod-lottery { border-color: #e74c3c; }
-  .mod-lottery .card-label { color: #e74c3c; }
-  .mod-clearance { border-color: #3498db; }
-  .mod-clearance .card-label { color: #3498db; }
-  .mod-recommend { border-color: #2ecc71; }
-  .mod-recommend .card-label { color: #2ecc71; }
-  .mod-cart { border-color: #e67e22; }
-  .mod-cart .card-label { color: #e67e22; }
-  .mod-member { border-color: #9b59b6; }
-  .mod-member .card-label { color: #9b59b6; }
-  .mod-other { border-color: #d4a853; }
-  .mod-other .card-label { color: #d4a853; }
+  /* Phase border colors */
+  .phase-1 { border-color: #9b59b6; }
+  .phase-1 .card-label { color: #9b59b6; }
+  .phase-1 .card-phase { border-color: #9b59b6; color: #9b59b6; background: rgba(155,89,182,0.15); }
 
-  /* Lightbox */
+  .phase-2 { border-color: #3498db; }
+  .phase-2 .card-label { color: #3498db; }
+  .phase-2 .card-phase { border-color: #3498db; color: #3498db; background: rgba(52,152,219,0.15); }
+
+  .phase-3 { border-color: #2ecc71; }
+  .phase-3 .card-label { color: #2ecc71; }
+  .phase-3 .card-phase { border-color: #2ecc71; color: #2ecc71; background: rgba(46,204,113,0.15); }
+
+  /* Missing card */
+  .page-card.missing {
+    border: 2px dashed #e74c3c;
+    cursor: default;
+    background: repeating-linear-gradient(
+      -45deg,
+      #111,
+      #111 6px,
+      #161616 6px,
+      #161616 12px
+    );
+  }
+  .page-card.missing:hover {
+    border-color: #e74c3c;
+    transform: none;
+    box-shadow: 0 4px 14px rgba(231,76,60,0.15);
+  }
+  .missing-body {
+    padding: 20px 10px 14px;
+    text-align: center;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .missing-icon { font-size: 28px; opacity: 0.7; }
+  .missing-title { font-size: 11px; font-weight: 700; color: #e74c3c; line-height: 1.4; }
+  .missing-desc { font-size: 9px; color: #666; line-height: 1.5; }
+  .missing-q { font-size: 9px; color: #a03030; margin-top: 4px; }
+  .missing-label {
+    padding: 6px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    color: #e74c3c;
+    border-top: 1px dashed #2a2a2a;
+  }
+
+  /* Paused card */
+  .page-card.paused {
+    border: 2px dashed #555;
+    cursor: default;
+    opacity: 0.55;
+  }
+  .page-card.paused:hover {
+    border-color: #555;
+    transform: none;
+    box-shadow: none;
+  }
+  .paused-body {
+    padding: 20px 10px 14px;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .paused-icon { font-size: 24px; opacity: 0.5; }
+  .paused-title { font-size: 10px; font-weight: 600; color: #888; }
+  .paused-label {
+    padding: 6px; font-size: 9px; color: #555;
+    border-top: 1px dashed #222; text-align: center;
+  }
+
+  /* Flow arrow connector between cards */
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    padding: 0 2px;
+    color: #333;
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: -30px;
+  }
+  .flow-arrow.colored-green { color: #2ecc71; opacity: 0.6; }
+  .flow-arrow.colored-blue  { color: #3498db; opacity: 0.6; }
+  .flow-arrow.colored-red   { color: #e74c3c; opacity: 0.6; }
+  .flow-arrow.colored-orange{ color: #e67e22; opacity: 0.6; }
+  .flow-arrow.colored-purple{ color: #9b59b6; opacity: 0.6; }
+  .flow-arrow.colored-gold  { color: #d4a853; opacity: 0.6; }
+
+  /* ── Nav bar card ── */
+  .navbar-card {
+    background: linear-gradient(135deg, #151515, #1a1a1a);
+    border: 2px solid #d4a853;
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin-bottom: 36px;
+  }
+  .navbar-card-title {
+    font-size: 13px; font-weight: 700; color: #d4a853;
+    text-align: center; margin-bottom: 14px; letter-spacing: 0.5px;
+  }
+  .navbar-items {
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  }
+  .nav-item {
+    font-size: 11px; color: #d4a853;
+    padding: 5px 12px; border: 1px solid rgba(212,168,83,0.4);
+    border-radius: 6px; cursor: pointer; transition: all 0.2s;
+  }
+  .nav-item:hover { background: #d4a853; color: #000; }
+  .nav-item.secondary { color: #888; border-color: rgba(136,136,136,0.3); }
+  .nav-item.secondary:hover { background: #333; color: #ccc; }
+
+  /* ── Section separator ── */
+  .section-sep {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #1e1e1e 20%, #1e1e1e 80%, transparent);
+    margin: 4px 0 36px;
+  }
+
+  /* ── Flow annotation ── */
+  .flow-note {
+    font-size: 10px; color: #444; padding: 2px 8px;
+    display: inline-block; margin-left: 4px;
+    vertical-align: middle; align-self: center;
+    margin-top: -30px;
+  }
+
+  /* ── Back-loop annotation ── */
+  .loop-annotation {
+    font-size: 10px; color: #e74c3c; opacity: 0.6;
+    text-align: center; padding: 4px 0 0;
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+  }
+
+  /* ── Lightbox ── */
   .lightbox {
     display: none; position: fixed; inset: 0;
     background: rgba(0,0,0,0.95); z-index: 1000;
     flex-direction: column; overflow: hidden;
   }
   .lightbox.active { display: flex; }
-  .lb-viewport { flex: 1; overflow: hidden; cursor: grab; position: relative; }
+  .lb-viewport {
+    flex: 1; overflow: hidden; cursor: grab; position: relative;
+  }
   .lb-viewport.dragging { cursor: grabbing; }
   .lb-viewport img {
     position: absolute; top: 0; left: 0;
@@ -119,89 +364,108 @@
     position: absolute; bottom: 0; left: 0; right: 0;
     background: linear-gradient(transparent, rgba(0,0,0,0.9));
     padding: 16px 24px 20px;
-    display: flex; align-items: center; justify-content: center; gap: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
     z-index: 1002;
   }
-  .lb-title { color: #d4a853; font-size: 16px; font-weight: 600; }
-  .lb-zoom-info { color: #888; font-size: 12px; margin-left: 12px; }
+  .lb-title { color: #d4a853; font-size: 15px; font-weight: 600; }
+  .lb-zoom-info { color: #888; font-size: 12px; margin-left: 8px; }
   .lb-btn {
     background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-    color: #fff; padding: 6px 14px; border-radius: 6px;
-    cursor: pointer; font-size: 13px; transition: all 0.2s;
+    color: #fff; padding: 5px 12px; border-radius: 6px;
+    cursor: pointer; font-size: 12px; transition: all 0.2s;
   }
-  .lb-btn:hover { background: rgba(255,255,255,0.2); }
+  .lb-btn:hover { background: rgba(255,255,255,0.22); }
   .lightbox .lb-close {
-    position: absolute; top: 16px; right: 20px;
-    font-size: 28px; color: #fff; cursor: pointer;
-    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+    position: absolute; top: 14px; right: 18px;
+    font-size: 26px; color: #fff; cursor: pointer;
+    width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
     border-radius: 50%; background: rgba(255,255,255,0.1); z-index: 1003;
   }
   .lightbox .lb-close:hover { background: rgba(255,255,255,0.25); }
   .lb-nav-arrows {
     position: absolute; top: 50%; transform: translateY(-50%);
-    font-size: 36px; color: rgba(255,255,255,0.5); cursor: pointer;
-    z-index: 1003; width: 48px; height: 80px;
+    font-size: 34px; color: rgba(255,255,255,0.45); cursor: pointer;
+    z-index: 1003; width: 46px; height: 80px;
     display: flex; align-items: center; justify-content: center; border-radius: 8px;
   }
   .lb-nav-arrows:hover { color: #fff; background: rgba(255,255,255,0.1); }
-  .lb-nav-prev { left: 12px; }
-  .lb-nav-next { right: 12px; }
+  .lb-nav-prev { left: 10px; }
+  .lb-nav-next { right: 10px; }
   .lb-hint {
-    position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
-    color: #666; font-size: 12px; z-index: 1003; pointer-events: none;
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    color: #555; font-size: 11px; z-index: 1003; pointer-events: none;
+    white-space: nowrap;
   }
-
-  /* Nav bar on canvas */
-  .nav-bar-indicator {
-    position: absolute; z-index: 3;
-    background: linear-gradient(135deg, #1a1a1a, #222);
-    border: 2px solid #d4a853; border-radius: 12px;
-    padding: 14px 20px;
-    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+  .lb-counter {
+    position: absolute; top: 14px; right: 74px;
+    color: #555; font-size: 11px; z-index: 1003;
   }
-  .nav-item {
-    font-size: 12px; color: #d4a853;
-    padding: 5px 10px; border: 1px solid #d4a853; border-radius: 6px;
-    cursor: pointer; transition: all 0.2s;
-  }
-  .nav-item:hover { background: #d4a853; color: #000; }
-
-  /* Arrow label */
-  .arrow-label {
-    position: absolute; z-index: 5;
-    font-size: 11px; color: #aaa; background: #0a0a0a;
-    padding: 2px 8px; border-radius: 4px;
-    white-space: nowrap; pointer-events: none;
-  }
-
-  /* Section anchors (invisible) */
-  .section-anchor { position: absolute; }
 </style>
 </head>
 <body>
 
+<!-- ── Header ── -->
 <div class="header">
-  <div style="display:flex; align-items:center;">
-    <h1>日日欣 オンラインくじ</h1>
-    <span class="subtitle">第三階段 — 內頁流程圖</span>
+  <div class="header-left">
+    <h1>日日欣 オンラインくじ — 全站頁面流程圖</h1>
+    <span class="subtitle">All Pages Flowchart</span>
   </div>
-  <div class="badge">15 頁面 · 6 模組</div>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <div class="phase-key">
+      <span class="phase-tag p1">P1 會員系統</span>
+      <span class="phase-tag p2">P2 商城/內容</span>
+      <span class="phase-tag p3">P3 功能頁</span>
+      <span class="phase-tag pmiss">缺 待設計</span>
+    </div>
+    <div class="badge">33 頁面 · 12 模組</div>
+  </div>
 </div>
 
+<!-- ── Legend ── -->
 <div class="legend">
-  <div class="legend-item" onclick="scrollToCard('recommend-list')"><div class="legend-dot" style="background:#2ecc71"></div>商城推薦</div>
-  <div class="legend-item" onclick="scrollToCard('clearance-list')"><div class="legend-dot" style="background:#3498db"></div>低價出清</div>
-  <div class="legend-item" onclick="scrollToCard('lottery-01')"><div class="legend-dot" style="background:#e74c3c"></div>一番賞抽獎</div>
-  <div class="legend-item" onclick="scrollToCard('cart-confirm')"><div class="legend-dot" style="background:#e67e22"></div>購物車</div>
-  <div class="legend-item" onclick="scrollToCard('member-prizes')"><div class="legend-dot" style="background:#9b59b6"></div>會員系統</div>
-  <div class="legend-item" onclick="scrollToCard('buy-token')"><div class="legend-dot" style="background:#d4a853"></div>獨立頁面</div>
-  <div class="legend-item legend-hint">點色塊跳區塊 · 點卡片放大</div>
+  <div class="legend-item" onclick="scrollTo('sec-navbar')">
+    <div class="legend-dot" style="background:#d4a853"></div>導覽列
+  </div>
+  <div class="legend-sep"></div>
+  <div class="legend-item" onclick="scrollTo('sec-commerce')">
+    <div class="legend-dot" style="background:#3498db"></div>全館商城
+  </div>
+  <div class="legend-item" onclick="scrollTo('sec-news')">
+    <div class="legend-dot" style="background:#3498db"></div>最新消息
+  </div>
+  <div class="legend-sep"></div>
+  <div class="legend-item" onclick="scrollTo('sec-recommend')">
+    <div class="legend-dot" style="background:#2ecc71"></div>商城推薦
+  </div>
+  <div class="legend-item" onclick="scrollTo('sec-clearance')">
+    <div class="legend-dot" style="background:#2ecc71"></div>低價出清
+  </div>
+  <div class="legend-sep"></div>
+  <div class="legend-item" onclick="scrollTo('sec-lottery')">
+    <div class="legend-dot" style="background:#e74c3c"></div>一番賞
+  </div>
+  <div class="legend-item" onclick="scrollTo('sec-cart')">
+    <div class="legend-dot" style="background:#e67e22"></div>購物車
+  </div>
+  <div class="legend-sep"></div>
+  <div class="legend-item" onclick="scrollTo('sec-member')">
+    <div class="legend-dot" style="background:#9b59b6"></div>會員系統
+  </div>
+  <div class="legend-sep"></div>
+  <div class="legend-item" onclick="scrollTo('sec-misc')">
+    <div class="legend-dot" style="background:#d4a853"></div>獨立頁面
+  </div>
+  <div class="legend-item" onclick="scrollTo('sec-confirm')">
+    <div class="legend-dot" style="background:#e74c3c; opacity:0.5"></div>確認成功頁
+  </div>
+  <div class="legend-hint">點色塊跳區塊 · 點卡片放大</div>
 </div>
 
-<!-- Lightbox -->
+<!-- ── Lightbox ── -->
 <div class="lightbox" id="lightbox">
   <div class="lb-close" onclick="closeLightbox()">&times;</div>
   <div class="lb-hint">滾輪縮放 · 拖曳平移 · ← → 切換 · ESC 關閉</div>
+  <div class="lb-counter" id="lb-counter"></div>
   <div class="lb-nav-arrows lb-nav-prev" onclick="navigateLB(-1)">&#8249;</div>
   <div class="lb-nav-arrows lb-nav-next" onclick="navigateLB(1)">&#8250;</div>
   <div class="lb-viewport" id="lb-viewport">
@@ -218,155 +482,490 @@
   </div>
 </div>
 
-<div class="canvas" id="canvas">
+<!-- ══════════════════════════════════════════
+     MAIN CANVAS
+════════════════════════════════════════════ -->
+<div class="canvas">
 
-  <!-- SVG Arrows Layer -->
-  <svg class="arrows-svg" id="arrowsSvg">
-    <defs>
-      <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#e74c3c" /></marker>
-      <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#3498db" /></marker>
-      <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#2ecc71" /></marker>
-      <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#e67e22" /></marker>
-      <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#9b59b6" /></marker>
-      <marker id="arrowGold" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#d4a853" /></marker>
-    </defs>
-  </svg>
-
-  <!-- NAV BAR -->
-  <div class="nav-bar-indicator" style="top: 20px; left: 150px; width: 1200px;" id="navbar">
-    <div style="font-size: 14px; font-weight: 700; color: #d4a853; width: 100%; text-align: center; margin-bottom: 2px;">
-      頂部導覽列 Navigation Bar
+  <!-- ── ROW 0: Navigation Bar ── -->
+  <div id="sec-navbar" class="navbar-card">
+    <div class="navbar-card-title">頂部導覽列 Navigation Bar</div>
+    <div class="navbar-items">
+      <div class="nav-item" onclick="scrollTo('sec-commerce')">全館商城</div>
+      <div class="nav-item" onclick="scrollTo('sec-recommend')">商城推薦</div>
+      <div class="nav-item" onclick="scrollTo('sec-clearance')">低價出清</div>
+      <div class="nav-item" onclick="scrollTo('sec-lottery')">一番賞</div>
+      <div class="nav-item" onclick="scrollTo('sec-misc-token')">購買代幣</div>
+      <div class="nav-item" onclick="scrollTo('sec-news')">最新消息</div>
+      <div class="nav-item" onclick="scrollTo('sec-misc-faq')">客服中心</div>
+      <div class="nav-item" onclick="scrollTo('sec-misc-contact')">聯絡我們</div>
+      <div class="nav-item secondary" onclick="scrollTo('sec-member')">會員 ▾</div>
+      <div class="nav-item secondary" onclick="scrollTo('sec-cart')">購物車</div>
     </div>
-    <div class="nav-item" onclick="scrollToCard('recommend-list')">商城推薦</div>
-    <div class="nav-item" onclick="scrollToCard('clearance-list')">低價出清</div>
-    <div class="nav-item" onclick="scrollToCard('buy-token')">購買代幣</div>
-    <div class="nav-item" onclick="scrollToCard('lottery-01')">一番賞</div>
-    <div class="nav-item" onclick="scrollToCard('faq')">客服中心</div>
-    <div class="nav-item" onclick="scrollToCard('contact')">聯絡我們</div>
-    <div class="nav-item" onclick="scrollToCard('member-prizes')">會員</div>
-    <div class="nav-item" onclick="scrollToCard('cart-confirm')">購物車</div>
   </div>
 
-  <!-- ROW 1: 商城推薦 + 低價出清 (top: 160) -->
-  <div class="page-card mod-recommend" id="recommend-list" style="top: 160px; left: 40px;"
-       onclick="openLightbox('images/商城推薦_列表.jpg', '商城推薦 — 列表頁')">
-    <img src="images/商城推薦_列表.jpg" alt="商城推薦 列表">
-    <div class="card-label">商城推薦 — 列表<span class="card-tag">商品瀏覽 · 分類篩選</span></div>
+  <!-- ── ROW 1: 全館商城 + 最新消息 ── -->
+  <div class="dual-module-row">
+
+    <!-- 全館商城 -->
+    <div class="module-section" id="sec-commerce">
+      <div class="module-title-bar mt-commerce">
+        <span class="mod-icon">🏪</span>
+        <span class="mod-name">全館商城</span>
+        <span class="mod-count">3 頁 · Phase 2</span>
+      </div>
+      <div class="module-row">
+        <div class="page-card phase-2" id="commerce-all"
+             onclick="openLightbox('images/phase2/日日欣_全館商城_總列表.jpg', '全館商城 — 總列表', 'commerce-all')">
+          <span class="card-phase">P2</span>
+          <img src="images/phase2/日日欣_全館商城_總列表.jpg" alt="全館商城 總列表">
+          <div class="card-label">全館商城 — 總列表<span class="card-tag">分類入口 · 所有商品</span></div>
+        </div>
+        <div class="flow-arrow colored-blue">›</div>
+        <div class="page-card phase-2" id="commerce-list"
+             onclick="openLightbox('images/phase2/日日欣_全館商城_列表.jpg', '全館商城 — 列表', 'commerce-list')">
+          <span class="card-phase">P2</span>
+          <img src="images/phase2/日日欣_全館商城_列表.jpg" alt="全館商城 列表">
+          <div class="card-label">全館商城 — 列表<span class="card-tag">篩選 · 排序 · 分頁</span></div>
+        </div>
+        <div class="flow-arrow colored-blue">›</div>
+        <div class="page-card phase-2" id="commerce-detail"
+             onclick="openLightbox('images/phase2/日日欣_全館商城_詳情.jpg', '全館商城 — 詳情', 'commerce-detail')">
+          <span class="card-phase">P2</span>
+          <img src="images/phase2/日日欣_全館商城_詳情.jpg" alt="全館商城 詳情">
+          <div class="card-label">全館商城 — 詳情<span class="card-tag">商品資訊 · 抽獎入口</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dual-divider"></div>
+
+    <!-- 最新消息 -->
+    <div class="module-section" id="sec-news">
+      <div class="module-title-bar mt-news">
+        <span class="mod-icon">📢</span>
+        <span class="mod-name">最新消息</span>
+        <span class="mod-count">2 頁 · Phase 2</span>
+      </div>
+      <div class="module-row">
+        <div class="page-card phase-2" id="news-list"
+             onclick="openLightbox('images/phase2/日日欣_最新消息_列表.jpg', '最新消息 — 列表', 'news-list')">
+          <span class="card-phase">P2</span>
+          <img src="images/phase2/日日欣_最新消息_列表.jpg" alt="最新消息 列表">
+          <div class="card-label">最新消息 — 列表<span class="card-tag">公告 · 活動 · 日期</span></div>
+        </div>
+        <div class="flow-arrow colored-blue">›</div>
+        <div class="page-card phase-2" id="news-detail"
+             onclick="openLightbox('images/phase2/日日欣_最新消息_詳情.jpg', '最新消息 — 詳情', 'news-detail')">
+          <span class="card-phase">P2</span>
+          <img src="images/phase2/日日欣_最新消息_詳情.jpg" alt="最新消息 詳情">
+          <div class="card-label">最新消息 — 詳情<span class="card-tag">內文 · 圖片 · 分享</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /dual-module-row -->
+
+  <div class="section-sep"></div>
+
+  <!-- ── ROW 2: 商城推薦 + 低價出清 ── -->
+  <div class="dual-module-row">
+
+    <!-- 商城推薦 -->
+    <div class="module-section" id="sec-recommend">
+      <div class="module-title-bar mt-recommend">
+        <span class="mod-icon">⭐</span>
+        <span class="mod-name">商城推薦</span>
+        <span class="mod-count">2 頁 · Phase 3</span>
+      </div>
+      <div class="module-row">
+        <div class="page-card phase-3" id="recommend-list"
+             onclick="openLightbox('images/商城推薦_列表.jpg', '商城推薦 — 列表', 'recommend-list')">
+          <span class="card-phase">P3</span>
+          <img src="images/商城推薦_列表.jpg" alt="商城推薦 列表">
+          <div class="card-label">商城推薦 — 列表<span class="card-tag">精選商品 · 篩選</span></div>
+        </div>
+        <div class="flow-arrow colored-green">›</div>
+        <div class="page-card phase-3" id="recommend-detail"
+             onclick="openLightbox('images/商城推薦_詳情.jpg', '商城推薦 — 詳情', 'recommend-detail')">
+          <span class="card-phase">P3</span>
+          <img src="images/商城推薦_詳情.jpg" alt="商城推薦 詳情">
+          <div class="card-label">商城推薦 — 詳情<span class="card-tag">抽取 · 剩餘全包</span></div>
+        </div>
+        <div class="flow-arrow colored-green">↓</div>
+        <div style="align-self:center; margin-top:-30px; font-size:10px; color:#2ecc71; opacity:0.6; white-space:nowrap;">→ 一番賞</div>
+      </div>
+    </div>
+
+    <div class="dual-divider"></div>
+
+    <!-- 低價出清 -->
+    <div class="module-section" id="sec-clearance">
+      <div class="module-title-bar mt-clearance">
+        <span class="mod-icon">🏷️</span>
+        <span class="mod-name">低價出清</span>
+        <span class="mod-count">2 頁 · Phase 3</span>
+      </div>
+      <div class="module-row">
+        <div class="page-card phase-3" id="clearance-list"
+             onclick="openLightbox('images/低價出清_列表.jpg', '低價出清 — 列表', 'clearance-list')">
+          <span class="card-phase">P3</span>
+          <img src="images/低價出清_列表.jpg" alt="低價出清 列表">
+          <div class="card-label">低價出清 — 列表<span class="card-tag">特價商品 · 分類</span></div>
+        </div>
+        <div class="flow-arrow colored-green">›</div>
+        <div class="page-card phase-3" id="clearance-detail"
+             onclick="openLightbox('images/低價出清_詳情.jpg', '低價出清 — 詳情', 'clearance-detail')">
+          <span class="card-phase">P3</span>
+          <img src="images/低價出清_詳情.jpg" alt="低價出清 詳情">
+          <div class="card-label">低價出清 — 詳情<span class="card-tag">抽取 · 剩餘全包</span></div>
+        </div>
+        <div class="flow-arrow colored-green">↓</div>
+        <div style="align-self:center; margin-top:-30px; font-size:10px; color:#2ecc71; opacity:0.6; white-space:nowrap;">→ 一番賞</div>
+      </div>
+    </div>
+
+  </div><!-- /dual-module-row -->
+
+  <div class="section-sep"></div>
+
+  <!-- ── ROW 3: 一番賞 → 購物車 ── -->
+  <div class="dual-module-row" style="gap:0;">
+
+    <!-- 一番賞 -->
+    <div class="module-section" id="sec-lottery" style="flex:0 0 auto;">
+      <div class="module-title-bar mt-lottery">
+        <span class="mod-icon">🎰</span>
+        <span class="mod-name">一番賞抽獎</span>
+        <span class="mod-count">3 頁 · Phase 3</span>
+      </div>
+      <div class="module-row">
+        <div class="page-card phase-3" id="lottery-01"
+             onclick="openLightbox('images/一番賞_抽獎頁面_01.jpg', '一番賞 — 選號碼', 'lottery-01')">
+          <span class="card-phase">P3</span>
+          <img src="images/一番賞_抽獎頁面_01.jpg" alt="一番賞 01">
+          <div class="card-label">一番賞 — 選號碼<span class="card-tag">獎項列表 · 號碼盤</span></div>
+        </div>
+        <div class="flow-arrow colored-red">›</div>
+        <div class="page-card phase-3" id="lottery-02"
+             onclick="openLightbox('images/一番賞_抽獎頁面_02.jpg', '一番賞 — 確認抽取', 'lottery-02')">
+          <span class="card-phase">P3</span>
+          <img src="images/一番賞_抽獎頁面_02.jpg" alt="一番賞 02">
+          <div class="card-label">一番賞 — 確認抽取<span class="card-tag">彈窗 · 代幣確認</span></div>
+        </div>
+        <div class="flow-arrow colored-red">›</div>
+        <div class="page-card phase-3" id="lottery-03"
+             onclick="openLightbox('images/一番賞_抽獎頁面_03.jpg', '一番賞 — 抽獎結果', 'lottery-03')">
+          <span class="card-phase">P3</span>
+          <img src="images/一番賞_抽獎頁面_03.jpg" alt="一番賞 03">
+          <div class="card-label">一番賞 — 抽獎結果<span class="card-tag">彈窗 · 前往收貨 / 繼續購買</span></div>
+        </div>
+      </div>
+      <div class="loop-annotation" style="width: 660px; margin-top: 6px;">
+        <span style="font-size:14px;">↺</span> 「繼續購買」回到選號碼
+      </div>
+    </div>
+
+    <!-- Arrow between lottery and cart -->
+    <div style="display:flex; align-items:center; padding: 0 16px; margin-top: 70px; flex-shrink:0;">
+      <div style="color:#e67e22; opacity:0.6; font-size:22px;">›</div>
+    </div>
+
+    <!-- 購物車 -->
+    <div class="module-section" id="sec-cart" style="flex: 1;">
+      <div class="module-title-bar mt-cart">
+        <span class="mod-icon">🛒</span>
+        <span class="mod-name">購物車</span>
+        <span class="mod-count">2 完成 + 3 缺 + 2 暫停 · Phase 3/待定</span>
+      </div>
+      <div class="module-row" style="flex-wrap: wrap; gap:14px;">
+
+        <div class="page-card phase-3" id="cart-confirm"
+             onclick="openLightbox('images/購物車_獎品確認.jpg', '購物車 — 獎品確認', 'cart-confirm')">
+          <span class="card-phase">P3</span>
+          <img src="images/購物車_獎品確認.jpg" alt="購物車 獎品確認">
+          <div class="card-label">購物車 — 獎品確認<span class="card-tag">勾選獎品 · 申請/放棄</span></div>
+        </div>
+
+        <div class="flow-arrow colored-orange" style="margin-top:50px;">›</div>
+
+        <div class="page-card phase-3" id="cart-ship"
+             onclick="openLightbox('images/購物車_申請出貨.jpg', '購物車 — 申請出貨', 'cart-ship')">
+          <span class="card-phase">P3</span>
+          <img src="images/購物車_申請出貨.jpg" alt="購物車 申請出貨">
+          <div class="card-label">購物車 — 申請出貨<span class="card-tag">收貨資料 · 確認</span></div>
+        </div>
+
+        <div class="flow-arrow colored-orange" style="margin-top:50px;">›</div>
+
+        <div class="page-card missing" id="cart-promo">
+          <div class="missing-body">
+            <div class="missing-icon">❌</div>
+            <div class="missing-title">行銷活動輸入</div>
+            <div class="missing-desc">優惠碼輸入頁面<br>活動折扣確認</div>
+            <div class="missing-q">? 流程位置待確認</div>
+          </div>
+          <div class="missing-label">缺 · 待設計</div>
+        </div>
+
+        <div class="flow-arrow" style="margin-top:50px;">›</div>
+
+        <div class="page-card missing" id="cart-summary">
+          <div class="missing-body">
+            <div class="missing-icon">❌</div>
+            <div class="missing-title">購物明細</div>
+            <div class="missing-desc">訂單商品清單<br>金額明細確認</div>
+          </div>
+          <div class="missing-label">缺 · 待設計</div>
+        </div>
+
+        <div class="flow-arrow" style="margin-top:50px;">›</div>
+
+        <div class="page-card missing" id="cart-payment">
+          <div class="missing-body">
+            <div class="missing-icon">❌</div>
+            <div class="missing-title">購物確認</div>
+            <div class="missing-desc">最終確認頁<br>付款方式選擇</div>
+          </div>
+          <div class="missing-label">缺 · 待設計</div>
+        </div>
+
+        <div class="flow-arrow" style="margin-top:50px;">›</div>
+
+        <div class="page-card paused" id="cart-paused-1">
+          <div class="paused-body">
+            <div class="paused-icon">⏸</div>
+            <div class="paused-title">暫時不需要</div>
+          </div>
+          <div class="paused-label">已暫緩</div>
+        </div>
+
+        <div class="page-card paused" id="cart-paused-2">
+          <div class="paused-body">
+            <div class="paused-icon">⏸</div>
+            <div class="paused-title">暫時不需要</div>
+          </div>
+          <div class="paused-label">已暫緩</div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
-  <div class="page-card mod-recommend" id="recommend-detail" style="top: 160px; left: 330px;"
-       onclick="openLightbox('images/商城推薦_詳情.jpg', '商城推薦 — 詳情頁')">
-    <img src="images/商城推薦_詳情.jpg" alt="商城推薦 詳情">
-    <div class="card-label">商城推薦 — 詳情<span class="card-tag">抽取 · 剩餘全包</span></div>
+  <div class="section-sep"></div>
+
+  <!-- ── ROW 4: 會員系統 ── -->
+  <div class="module-section" id="sec-member">
+    <div class="module-title-bar mt-member">
+      <span class="mod-icon">👤</span>
+      <span class="mod-name">會員系統</span>
+      <span class="mod-count">8 頁 · Phase 1</span>
+    </div>
+    <div class="module-row" style="flex-wrap: wrap; gap: 16px;">
+
+      <div class="page-card phase-1" id="member-register"
+           onclick="openLightbox('images/phase1/日日欣_會員系統_會員註冊.jpg', '會員系統 — 註冊', 'member-register')">
+        <span class="card-phase">P1</span>
+        <img src="images/phase1/日日欣_會員系統_會員註冊.jpg" alt="會員系統 註冊">
+        <div class="card-label">會員 — 註冊<span class="card-tag">Email · 密碼 · 驗證</span></div>
+      </div>
+
+      <div class="page-card phase-1" id="member-login"
+           onclick="openLightbox('images/phase1/日日欣_會員系統_會員登入.jpg', '會員系統 — 登入/忘記密碼', 'member-login')">
+        <span class="card-phase">P1</span>
+        <img src="images/phase1/日日欣_會員系統_會員登入.jpg" alt="會員系統 登入">
+        <div class="card-label">會員 — 登入/忘記密碼<span class="card-tag">帳號登入 · 重設密碼</span></div>
+      </div>
+
+      <div class="page-card phase-1" id="member-profile"
+           onclick="openLightbox('images/phase1/日日欣_會員系統_會員資料.jpg', '會員系統 — 基本資料修改', 'member-profile')">
+        <span class="card-phase">P1</span>
+        <img src="images/phase1/日日欣_會員系統_會員資料.jpg" alt="會員系統 資料">
+        <div class="card-label">會員 — 基本資料修改<span class="card-tag">姓名 · 地址 · 電話</span></div>
+      </div>
+
+      <div class="page-card phase-1" id="member-points"
+           onclick="openLightbox('images/phase1/日日欣_會員系統_積分紀錄.jpg', '會員系統 — 積分紀錄', 'member-points')">
+        <span class="card-phase">P1</span>
+        <img src="images/phase1/日日欣_會員系統_積分紀錄.jpg" alt="會員系統 積分">
+        <div class="card-label">會員 — 積分紀錄<span class="card-tag">點數明細 · 兌換</span></div>
+      </div>
+
+      <div class="page-card phase-1" id="member-tokens"
+           onclick="openLightbox('images/phase1/20251114-日日欣_會員系統_代幣紀錄.jpg', '會員系統 — 代幣紀錄', 'member-tokens')">
+        <span class="card-phase">P1</span>
+        <img src="images/phase1/20251114-日日欣_會員系統_代幣紀錄.jpg" alt="會員系統 代幣">
+        <div class="card-label">會員 — 代幣紀錄<span class="card-tag">消費/購買明細</span></div>
+      </div>
+
+      <div class="page-card phase-1" id="member-coupon"
+           onclick="openLightbox('images/phase1/日日欣_會員系統_優惠券.jpg', '會員系統 — 優惠券', 'member-coupon')">
+        <span class="card-phase">P1</span>
+        <img src="images/phase1/日日欣_會員系統_優惠券.jpg" alt="會員系統 優惠券">
+        <div class="card-label">會員 — 優惠券<span class="card-tag">可用/已用/已過期</span></div>
+      </div>
+
+      <div class="page-card phase-3" id="member-prizes"
+           onclick="openLightbox('images/會員系統_獎品紀錄.jpg', '會員系統 — 獎品紀錄', 'member-prizes')">
+        <span class="card-phase">P3</span>
+        <img src="images/會員系統_獎品紀錄.jpg" alt="會員系統 獎品紀錄">
+        <div class="card-label">會員 — 獎品紀錄<span class="card-tag">待出貨+已出貨 (合併)</span></div>
+      </div>
+
+      <div class="page-card phase-3" id="member-abandon"
+           onclick="openLightbox('images/會員系統_放棄獎品紀錄.jpg', '會員系統 — 放棄獎品紀錄', 'member-abandon')">
+        <span class="card-phase">P3</span>
+        <img src="images/會員系統_放棄獎品紀錄.jpg" alt="會員系統 放棄獎品">
+        <div class="card-label">會員 — 放棄獎品紀錄<span class="card-tag">放棄歷史 · 代幣返還</span></div>
+      </div>
+
+    </div>
   </div>
 
-  <div class="page-card mod-clearance" id="clearance-list" style="top: 160px; left: 680px;"
-       onclick="openLightbox('images/低價出清_列表.jpg', '低價出清 — 列表頁')">
-    <img src="images/低價出清_列表.jpg" alt="低價出清 列表">
-    <div class="card-label">低價出清 — 列表<span class="card-tag">商品瀏覽 · 分類篩選</span></div>
+  <div class="section-sep"></div>
+
+  <!-- ── ROW 5: 獨立頁面 ── -->
+  <div class="module-section" id="sec-misc">
+    <div class="module-title-bar mt-misc">
+      <span class="mod-icon">📄</span>
+      <span class="mod-name">獨立頁面</span>
+      <span class="mod-count">6 頁 · Phase 2–3</span>
+    </div>
+    <div class="module-row">
+
+      <div class="page-card phase-3" id="sec-misc-token"
+           onclick="openLightbox('images/購買代幣.jpg', '購買代幣', 'buy-token')">
+        <span class="card-phase">P3</span>
+        <img src="images/購買代幣.jpg" alt="購買代幣">
+        <div class="card-label">購買代幣<span class="card-tag">金額 → 發票 → 付款</span></div>
+      </div>
+
+      <div class="page-card phase-3" id="sec-misc-faq"
+           onclick="openLightbox('images/客服中心.jpg', '客服中心', 'faq')">
+        <span class="card-phase">P3</span>
+        <img src="images/客服中心.jpg" alt="客服中心">
+        <div class="card-label">客服中心<span class="card-tag">FAQ 常見問題</span></div>
+      </div>
+
+      <div class="page-card phase-3" id="sec-misc-contact"
+           onclick="openLightbox('images/聯絡我們.jpg', '聯絡我們', 'contact')">
+        <span class="card-phase">P3</span>
+        <img src="images/聯絡我們.jpg" alt="聯絡我們">
+        <div class="card-label">聯絡我們<span class="card-tag">表單 · reCAPTCHA</span></div>
+      </div>
+
+      <div class="page-card phase-2" id="about"
+           onclick="openLightbox('images/phase2/日日欣_公司簡介.jpg', '公司簡介', 'about')">
+        <span class="card-phase">P2</span>
+        <img src="images/phase2/日日欣_公司簡介.jpg" alt="公司簡介">
+        <div class="card-label">公司簡介<span class="card-tag">品牌介紹 · Footer 連結</span></div>
+      </div>
+
+      <div class="page-card phase-2" id="terms"
+           onclick="openLightbox('images/phase2/日日欣_會員條款.jpg', '會員條款', 'terms')">
+        <span class="card-phase">P2</span>
+        <img src="images/phase2/日日欣_會員條款.jpg" alt="會員條款">
+        <div class="card-label">會員條款<span class="card-tag">服務條款 · Footer</span></div>
+      </div>
+
+      <div class="page-card phase-3" id="privacy"
+           onclick="openLightbox('images/隱私權政策.jpg', '隱私權政策', 'privacy')">
+        <span class="card-phase">P3</span>
+        <img src="images/隱私權政策.jpg" alt="隱私權政策">
+        <div class="card-label">隱私權政策<span class="card-tag">資料保護 · Footer</span></div>
+      </div>
+
+    </div>
   </div>
 
-  <div class="page-card mod-clearance" id="clearance-detail" style="top: 160px; left: 970px;"
-       onclick="openLightbox('images/低價出清_詳情.jpg', '低價出清 — 詳情頁')">
-    <img src="images/低價出清_詳情.jpg" alt="低價出清 詳情">
-    <div class="card-label">低價出清 — 詳情<span class="card-tag">抽取 · 剩餘全包</span></div>
+  <div class="section-sep"></div>
+
+  <!-- ── ROW 6: 確認/成功頁（缺） ── -->
+  <div class="module-section" id="sec-confirm">
+    <div class="module-title-bar mt-confirm">
+      <span class="mod-icon">✅</span>
+      <span class="mod-name">確認 / 成功頁</span>
+      <span class="mod-count">4 頁 · 全部缺 · 需討論</span>
+    </div>
+    <div class="module-row">
+
+      <div class="page-card missing" id="success-ship">
+        <div class="missing-body">
+          <div class="missing-icon">❌</div>
+          <div class="missing-title">出貨成功頁</div>
+          <div class="missing-desc">申請出貨完成後<br>顯示訂單編號<br>預計出貨時間</div>
+          <div class="missing-q">? 是獨立頁面還是彈窗?</div>
+        </div>
+        <div class="missing-label">缺 · 需討論設計</div>
+      </div>
+
+      <div class="page-card missing" id="success-payment">
+        <div class="missing-body">
+          <div class="missing-icon">❌</div>
+          <div class="missing-title">付款成功/失敗頁</div>
+          <div class="missing-desc">金流回傳後顯示<br>成功或失敗狀態<br>後續操作引導</div>
+          <div class="missing-q">? 串接第三方金流後確認</div>
+        </div>
+        <div class="missing-label">缺 · 需討論設計</div>
+      </div>
+
+      <div class="page-card missing" id="success-contact">
+        <div class="missing-body">
+          <div class="missing-icon">❌</div>
+          <div class="missing-title">聯絡我們送出成功</div>
+          <div class="missing-desc">表單送出後<br>顯示感謝訊息<br>後續聯絡說明</div>
+          <div class="missing-q">? 是獨立頁或 inline 訊息?</div>
+        </div>
+        <div class="missing-label">缺 · 需討論設計</div>
+      </div>
+
+      <div class="page-card missing" id="confirm-abandon">
+        <div class="missing-body">
+          <div class="missing-icon">❌</div>
+          <div class="missing-title">放棄獎品確認</div>
+          <div class="missing-desc">放棄前確認步驟<br>說明代幣返還規則<br>二次確認防誤觸</div>
+          <div class="missing-q">? 彈窗或獨立頁?</div>
+        </div>
+        <div class="missing-label">缺 · 需討論設計</div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- ROW 2: 一番賞 + 購物車 (top: 680) -->
-  <div class="page-card mod-lottery" id="lottery-01" style="top: 680px; left: 40px;"
-       onclick="openLightbox('images/一番賞_抽獎頁面_01.jpg', '一番賞 — 選號碼')">
-    <img src="images/一番賞_抽獎頁面_01.jpg" alt="一番賞 01">
-    <div class="card-label">一番賞 — 選號碼<span class="card-tag">獎項列表 · 號碼盤 · 選號</span></div>
-  </div>
-
-  <div class="page-card mod-lottery" id="lottery-02" style="top: 680px; left: 330px;"
-       onclick="openLightbox('images/一番賞_抽獎頁面_02.jpg', '一番賞 — 確認抽取（彈窗）')">
-    <img src="images/一番賞_抽獎頁面_02.jpg" alt="一番賞 02">
-    <div class="card-label">一番賞 — 確認抽取<span class="card-tag">彈窗 · 消耗代幣確認</span></div>
-  </div>
-
-  <div class="page-card mod-lottery" id="lottery-03" style="top: 680px; left: 620px;"
-       onclick="openLightbox('images/一番賞_抽獎頁面_03.jpg', '一番賞 — 抽獎結果（彈窗）')">
-    <img src="images/一番賞_抽獎頁面_03.jpg" alt="一番賞 03">
-    <div class="card-label">一番賞 — 抽獎結果<span class="card-tag">彈窗 · 前往收貨 / 繼續購買</span></div>
-  </div>
-
-  <div class="page-card mod-cart" id="cart-confirm" style="top: 680px; left: 970px;"
-       onclick="openLightbox('images/購物車_獎品確認.jpg', '購物車 — 獎品確認')">
-    <img src="images/購物車_獎品確認.jpg" alt="購物車 獎品確認">
-    <div class="card-label">購物車 — 獎品確認<span class="card-tag">勾選獎品 · 申請出貨 / 放棄</span></div>
-  </div>
-
-  <div class="page-card mod-cart" id="cart-ship" style="top: 680px; left: 1260px;"
-       onclick="openLightbox('images/購物車_申請出貨.jpg', '購物車 — 申請出貨')">
-    <img src="images/購物車_申請出貨.jpg" alt="購物車 申請出貨">
-    <div class="card-label">購物車 — 申請出貨<span class="card-tag">填寫收貨資料 · 確認出貨</span></div>
-  </div>
-
-  <!-- ROW 3: 獨立頁面 + 會員 (top: 1200) -->
-  <div class="page-card mod-other" id="buy-token" style="top: 1200px; left: 40px;"
-       onclick="openLightbox('images/購買代幣.jpg', '購買代幣')">
-    <img src="images/購買代幣.jpg" alt="購買代幣">
-    <div class="card-label">購買代幣<span class="card-tag">三步驟：金額 → 發票 → 付款</span></div>
-  </div>
-
-  <div class="page-card mod-other" id="faq" style="top: 1200px; left: 330px;"
-       onclick="openLightbox('images/客服中心.jpg', '客服中心')">
-    <img src="images/客服中心.jpg" alt="客服中心">
-    <div class="card-label">客服中心<span class="card-tag">FAQ 常見問題</span></div>
-  </div>
-
-  <div class="page-card mod-other" id="contact" style="top: 1200px; left: 620px;"
-       onclick="openLightbox('images/聯絡我們.jpg', '聯絡我們')">
-    <img src="images/聯絡我們.jpg" alt="聯絡我們">
-    <div class="card-label">聯絡我們<span class="card-tag">表單 · reCAPTCHA</span></div>
-  </div>
-
-  <div class="page-card mod-member" id="member-prizes" style="top: 1200px; left: 970px;"
-       onclick="openLightbox('images/會員系統_獎品紀錄.jpg', '會員 — 獎品紀錄')">
-    <img src="images/會員系統_獎品紀錄.jpg" alt="會員 獎品紀錄">
-    <div class="card-label">會員 — 獎品紀錄<span class="card-tag">訂單列表 · 展開明細</span></div>
-  </div>
-
-  <div class="page-card mod-member" id="member-abandon" style="top: 1200px; left: 1260px;"
-       onclick="openLightbox('images/會員系統_放棄獎品紀錄.jpg', '會員 — 放棄獎品紀錄')">
-    <img src="images/會員系統_放棄獎品紀錄.jpg" alt="會員 放棄獎品紀錄">
-    <div class="card-label">會員 — 放棄獎品紀錄<span class="card-tag">放棄歷史 · 代幣數 · 時間</span></div>
-  </div>
-
-  <!-- ROW 4: 隱私權 (top: 1700) -->
-  <div class="page-card mod-other" id="privacy" style="top: 1700px; left: 40px;"
-       onclick="openLightbox('images/隱私權政策.jpg', '隱私權政策')">
-    <img src="images/隱私權政策.jpg" alt="隱私權政策">
-    <div class="card-label">隱私權政策<span class="card-tag">Footer 連結</span></div>
-  </div>
-
-</div>
+</div><!-- /canvas -->
 
 <script>
-// Lightbox data
+// ── All navigable cards (with images) ──
 const allCards = [
-  { id: 'recommend-list', img: 'images/商城推薦_列表.jpg', title: '商城推薦 — 列表頁' },
-  { id: 'recommend-detail', img: 'images/商城推薦_詳情.jpg', title: '商城推薦 — 詳情頁' },
-  { id: 'clearance-list', img: 'images/低價出清_列表.jpg', title: '低價出清 — 列表頁' },
-  { id: 'clearance-detail', img: 'images/低價出清_詳情.jpg', title: '低價出清 — 詳情頁' },
-  { id: 'lottery-01', img: 'images/一番賞_抽獎頁面_01.jpg', title: '一番賞 — 選號碼' },
-  { id: 'lottery-02', img: 'images/一番賞_抽獎頁面_02.jpg', title: '一番賞 — 確認抽取' },
-  { id: 'lottery-03', img: 'images/一番賞_抽獎頁面_03.jpg', title: '一番賞 — 抽獎結果' },
-  { id: 'cart-confirm', img: 'images/購物車_獎品確認.jpg', title: '購物車 — 獎品確認' },
-  { id: 'cart-ship', img: 'images/購物車_申請出貨.jpg', title: '購物車 — 申請出貨' },
-  { id: 'member-prizes', img: 'images/會員系統_獎品紀錄.jpg', title: '會員 — 獎品紀錄' },
-  { id: 'member-abandon', img: 'images/會員系統_放棄獎品紀錄.jpg', title: '會員 — 放棄獎品紀錄' },
-  { id: 'buy-token', img: 'images/購買代幣.jpg', title: '購買代幣' },
-  { id: 'faq', img: 'images/客服中心.jpg', title: '客服中心' },
-  { id: 'contact', img: 'images/聯絡我們.jpg', title: '聯絡我們' },
-  { id: 'privacy', img: 'images/隱私權政策.jpg', title: '隱私權政策' },
+  { id: 'commerce-all',    img: 'images/phase2/日日欣_全館商城_總列表.jpg',           title: '全館商城 — 總列表' },
+  { id: 'commerce-list',   img: 'images/phase2/日日欣_全館商城_列表.jpg',             title: '全館商城 — 列表' },
+  { id: 'commerce-detail', img: 'images/phase2/日日欣_全館商城_詳情.jpg',             title: '全館商城 — 詳情' },
+  { id: 'news-list',       img: 'images/phase2/日日欣_最新消息_列表.jpg',             title: '最新消息 — 列表' },
+  { id: 'news-detail',     img: 'images/phase2/日日欣_最新消息_詳情.jpg',             title: '最新消息 — 詳情' },
+  { id: 'recommend-list',  img: 'images/商城推薦_列表.jpg',                           title: '商城推薦 — 列表' },
+  { id: 'recommend-detail',img: 'images/商城推薦_詳情.jpg',                           title: '商城推薦 — 詳情' },
+  { id: 'clearance-list',  img: 'images/低價出清_列表.jpg',                           title: '低價出清 — 列表' },
+  { id: 'clearance-detail',img: 'images/低價出清_詳情.jpg',                           title: '低價出清 — 詳情' },
+  { id: 'lottery-01',      img: 'images/一番賞_抽獎頁面_01.jpg',                      title: '一番賞 — 選號碼' },
+  { id: 'lottery-02',      img: 'images/一番賞_抽獎頁面_02.jpg',                      title: '一番賞 — 確認抽取' },
+  { id: 'lottery-03',      img: 'images/一番賞_抽獎頁面_03.jpg',                      title: '一番賞 — 抽獎結果' },
+  { id: 'cart-confirm',    img: 'images/購物車_獎品確認.jpg',                         title: '購物車 — 獎品確認' },
+  { id: 'cart-ship',       img: 'images/購物車_申請出貨.jpg',                         title: '購物車 — 申請出貨' },
+  { id: 'member-register', img: 'images/phase1/日日欣_會員系統_會員註冊.jpg',         title: '會員系統 — 註冊' },
+  { id: 'member-login',    img: 'images/phase1/日日欣_會員系統_會員登入.jpg',         title: '會員系統 — 登入/忘記密碼' },
+  { id: 'member-profile',  img: 'images/phase1/日日欣_會員系統_會員資料.jpg',         title: '會員系統 — 基本資料修改' },
+  { id: 'member-points',   img: 'images/phase1/日日欣_會員系統_積分紀錄.jpg',         title: '會員系統 — 積分紀錄' },
+  { id: 'member-tokens',   img: 'images/phase1/20251114-日日欣_會員系統_代幣紀錄.jpg',title: '會員系統 — 代幣紀錄' },
+  { id: 'member-coupon',   img: 'images/phase1/日日欣_會員系統_優惠券.jpg',           title: '會員系統 — 優惠券' },
+  { id: 'member-prizes',   img: 'images/會員系統_獎品紀錄.jpg',                       title: '會員系統 — 獎品紀錄' },
+  { id: 'member-abandon',  img: 'images/會員系統_放棄獎品紀錄.jpg',                   title: '會員系統 — 放棄獎品紀錄' },
+  { id: 'buy-token',       img: 'images/購買代幣.jpg',                               title: '購買代幣' },
+  { id: 'faq',             img: 'images/客服中心.jpg',                               title: '客服中心' },
+  { id: 'contact',         img: 'images/聯絡我們.jpg',                               title: '聯絡我們' },
+  { id: 'about',           img: 'images/phase2/日日欣_公司簡介.jpg',                  title: '公司簡介' },
+  { id: 'terms',           img: 'images/phase2/日日欣_會員條款.jpg',                  title: '會員條款' },
+  { id: 'privacy',         img: 'images/隱私權政策.jpg',                             title: '隱私權政策' },
 ];
 
 let currentIdx = 0;
@@ -402,12 +1001,23 @@ function zoomTo(newScale) {
   updateTransform();
 }
 
-function openLightbox(src, title) {
-  currentIdx = allCards.findIndex(c => c.img === src);
+function updateCounter() {
+  const el = document.getElementById('lb-counter');
+  if (currentIdx >= 0) {
+    el.textContent = (currentIdx + 1) + ' / ' + allCards.length;
+  } else {
+    el.textContent = '';
+  }
+}
+
+function openLightbox(src, title, cardId) {
+  const idx = allCards.findIndex(c => c.id === cardId || c.img === src);
+  currentIdx = idx >= 0 ? idx : 0;
   document.getElementById('lb-title').textContent = title;
   document.getElementById('lightbox').classList.add('active');
   lbImg.onload = () => zoomFit();
   lbImg.src = src;
+  updateCounter();
 }
 
 function closeLightbox() {
@@ -421,6 +1031,7 @@ function navigateLB(dir) {
   document.getElementById('lb-title').textContent = c.title;
   lbImg.onload = () => zoomFit();
   lbImg.src = c.img;
+  updateCounter();
 }
 
 // Wheel zoom
@@ -452,7 +1063,7 @@ window.addEventListener('mousemove', (e) => {
 });
 window.addEventListener('mouseup', () => { isDragging = false; viewport.classList.remove('dragging'); });
 
-// Touch
+// Touch support
 let lastTouchDist = 0;
 viewport.addEventListener('touchstart', (e) => {
   if (e.touches.length === 1) {
@@ -461,7 +1072,10 @@ viewport.addEventListener('touchstart', (e) => {
     startPanX = panX; startPanY = panY;
   } else if (e.touches.length === 2) {
     isDragging = false;
-    lastTouchDist = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY);
+    lastTouchDist = Math.hypot(
+      e.touches[1].clientX - e.touches[0].clientX,
+      e.touches[1].clientY - e.touches[0].clientY
+    );
   }
 }, { passive: false });
 viewport.addEventListener('touchmove', (e) => {
@@ -471,7 +1085,10 @@ viewport.addEventListener('touchmove', (e) => {
     panY = startPanY + (e.touches[0].clientY - dragStartY);
     updateTransform();
   } else if (e.touches.length === 2) {
-    const dist = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY);
+    const dist = Math.hypot(
+      e.touches[1].clientX - e.touches[0].clientX,
+      e.touches[1].clientY - e.touches[0].clientY
+    );
     const rect = viewport.getBoundingClientRect();
     const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
     const my = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
@@ -485,7 +1102,7 @@ viewport.addEventListener('touchmove', (e) => {
 }, { passive: false });
 viewport.addEventListener('touchend', () => { isDragging = false; });
 
-// Double click toggle
+// Double click to toggle zoom
 viewport.addEventListener('dblclick', (e) => {
   const rect = viewport.getBoundingClientRect();
   const mx = e.clientX - rect.left, my = e.clientY - rect.top;
@@ -509,90 +1126,11 @@ document.addEventListener('keydown', (e) => {
   if (e.key === '0') zoomFit();
 });
 
-function scrollToCard(id) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+// Section scroll
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
-// Draw arrows
-function drawArrows() {
-  const svg = document.getElementById('arrowsSvg');
-  const canvas = document.getElementById('canvas');
-  const canvasRect = canvas.getBoundingClientRect();
-
-  const connections = [
-    { from: 'recommend-list', to: 'recommend-detail', color: '#2ecc71', marker: 'arrowGreen' },
-    { from: 'clearance-list', to: 'clearance-detail', color: '#3498db', marker: 'arrowBlue' },
-    { from: 'recommend-detail', to: 'lottery-01', color: '#2ecc71', marker: 'arrowGreen', fromSide: 'bottom', toSide: 'top' },
-    { from: 'clearance-detail', to: 'lottery-01', color: '#3498db', marker: 'arrowBlue', fromSide: 'bottom', toSide: 'top' },
-    { from: 'lottery-01', to: 'lottery-02', color: '#e74c3c', marker: 'arrowRed' },
-    { from: 'lottery-02', to: 'lottery-03', color: '#e74c3c', marker: 'arrowRed' },
-    { from: 'lottery-03', to: 'cart-confirm', color: '#e67e22', marker: 'arrowOrange' },
-    { from: 'cart-confirm', to: 'cart-ship', color: '#e67e22', marker: 'arrowOrange' },
-    { from: 'cart-ship', to: 'member-prizes', color: '#9b59b6', marker: 'arrowPurple', fromSide: 'bottom', toSide: 'top' },
-    { from: 'member-prizes', to: 'member-abandon', color: '#9b59b6', marker: 'arrowPurple' },
-  ];
-
-  let pathsHTML = '';
-
-  connections.forEach(conn => {
-    const fromEl = document.getElementById(conn.from);
-    const toEl = document.getElementById(conn.to);
-    if (!fromEl || !toEl) return;
-
-    const fromRect = fromEl.getBoundingClientRect();
-    const toRect = toEl.getBoundingClientRect();
-    const fromSide = conn.fromSide || 'right';
-    const toSide = conn.toSide || 'left';
-    let x1, y1, x2, y2;
-
-    if (fromSide === 'right') {
-      x1 = fromRect.right - canvasRect.left;
-      y1 = fromRect.top + fromRect.height / 2 - canvasRect.top;
-    } else {
-      x1 = fromRect.left + fromRect.width / 2 - canvasRect.left;
-      y1 = fromRect.bottom - canvasRect.top;
-    }
-    if (toSide === 'left') {
-      x2 = toRect.left - canvasRect.left;
-      y2 = toRect.top + toRect.height / 2 - canvasRect.top;
-    } else {
-      x2 = toRect.left + toRect.width / 2 - canvasRect.left;
-      y2 = toRect.top - canvasRect.top;
-    }
-
-    let cx1, cy1, cx2, cy2;
-    if (fromSide === 'right' && toSide === 'left') {
-      const midX = (x1 + x2) / 2;
-      cx1 = midX; cy1 = y1; cx2 = midX; cy2 = y2;
-    } else {
-      cx1 = x1; cy1 = (y1 + y2) / 2; cx2 = x2; cy2 = (y1 + y2) / 2;
-    }
-
-    pathsHTML += `<path d="M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}"
-      fill="none" stroke="${conn.color}" stroke-width="2.5" stroke-dasharray="8 4"
-      marker-end="url(#${conn.marker})" opacity="0.7" />`;
-  });
-
-  // Return arrow: lottery-03 → lottery-01
-  const l03 = document.getElementById('lottery-03');
-  const l01 = document.getElementById('lottery-01');
-  if (l03 && l01) {
-    const l03R = l03.getBoundingClientRect();
-    const l01R = l01.getBoundingClientRect();
-    const x1 = l03R.left + l03R.width / 2 - canvasRect.left;
-    const y1 = l03R.bottom - canvasRect.top;
-    const x2 = l01R.left + l01R.width / 2 - canvasRect.left;
-    const y2 = l01R.bottom - canvasRect.top;
-    pathsHTML += `<path d="M ${x1} ${y1} C ${x1} ${y1 + 50}, ${x2} ${y2 + 50}, ${x2} ${y2}"
-      fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6 4"
-      marker-end="url(#arrowRed)" opacity="0.5" />`;
-  }
-
-  svg.innerHTML = svg.querySelector('defs').outerHTML + pathsHTML;
-}
-
-window.addEventListener('load', () => setTimeout(drawArrows, 300));
-window.addEventListener('resize', drawArrows);
 </script>
 
 </body>
