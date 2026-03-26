@@ -1473,12 +1473,13 @@ function relRect(el) {
   const canvas = document.querySelector('.canvas');
   const cr = canvas.getBoundingClientRect();
   const r = el.getBoundingClientRect();
+  const s = typeof pageScale !== 'undefined' ? pageScale : 1;
   return {
-    top: r.top - cr.top, left: r.left - cr.left,
-    bottom: r.bottom - cr.top, right: r.right - cr.left,
-    cx: r.left - cr.left + r.width / 2,
-    cy: r.top - cr.top + r.height / 2,
-    w: r.width, h: r.height
+    top: (r.top - cr.top) / s, left: (r.left - cr.left) / s,
+    bottom: (r.bottom - cr.top) / s, right: (r.right - cr.left) / s,
+    cx: (r.left - cr.left + r.width / 2) / s,
+    cy: (r.top - cr.top + r.height / 2) / s,
+    w: r.width / s, h: r.height / s
   };
 }
 
