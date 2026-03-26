@@ -31,14 +31,14 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
   .header-left { display: flex; align-items: center; gap: 14px; }
-  .header h1 { font-size: 20px; color: #b8860b; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; }
-  .header .subtitle { font-size: 13px; color: #999; white-space: nowrap; }
+  .header h1 { font-size: 22px; color: #b8860b; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; }
+  .header .subtitle { font-size: 14px; color: #999; white-space: nowrap; }
   .header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 
   /* Phase legend tags */
-  .phase-key { display: flex; gap: 8px; font-size: 12px; flex-wrap: nowrap; }
+  .phase-key { display: flex; gap: 8px; font-size: 14px; flex-wrap: nowrap; }
   .phase-tag {
-    padding: 3px 10px; border-radius: 4px; font-size: 12px; font-weight: 600;
+    padding: 4px 12px; border-radius: 4px; font-size: 14px; font-weight: 600;
     border: 1px solid; white-space: nowrap;
   }
   .p1   { border-color: #9b59b6; color: #7b2d8e; background: rgba(155,89,182,0.08); }
@@ -109,14 +109,14 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.04);
   }
   .budget-item {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.5;
     text-align: center;
-    padding: 4px 12px;
+    padding: 6px 14px;
     border-radius: 6px;
   }
   .budget-item .label { color: #888; }
-  .budget-item .val { font-weight: 700; font-size: 14px; }
+  .budget-item .val { font-weight: 700; font-size: 18px; }
   .budget-save { background: #edf7ed; color: #1a9e4e; }
   .budget-need { background: #fff5f5; color: #c0392b; }
   .budget-net  { background: #f0f4ff; color: #2176ad; }
@@ -124,7 +124,7 @@
   /* ── Saved tag on cards ── */
   .saved-tag {
     display: inline-block;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
     color: #1a9e4e;
     background: #edf7ed;
@@ -135,7 +135,7 @@
   }
   .use-saved-tag {
     display: inline-block;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
     color: #2176ad;
     background: #edf5ff;
@@ -159,8 +159,8 @@
     text-align: center;
     box-shadow: 0 2px 12px rgba(184,134,11,0.12);
   }
-  .root-box .root-title { font-size: 16px; font-weight: 700; color: #b8860b; letter-spacing: 0.5px; }
-  .root-box .root-sub   { font-size: 12px; color: #aaa; margin-top: 3px; }
+  .root-box .root-title { font-size: 20px; font-weight: 700; color: #b8860b; letter-spacing: 0.5px; }
+  .root-box .root-sub   { font-size: 14px; color: #aaa; margin-top: 3px; }
 
   /* Vertical stub from root to h-bar */
   .root-stub {
@@ -196,8 +196,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 190px;
-    width: 190px;
+    min-width: 210px;
+    width: 210px;
     flex-shrink: 0;
     position: relative;
     z-index: 2;
@@ -219,9 +219,9 @@
 
   /* Branch header label */
   .branch-header {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 700;
-    padding: 6px 14px;
+    padding: 8px 16px;
     border-radius: 6px;
     text-align: center;
     white-space: nowrap;
@@ -258,7 +258,7 @@
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
-    width: 176px;
+    width: 196px;
     flex-shrink: 0;
     position: relative;
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
@@ -271,7 +271,7 @@
   }
   .tree-card img {
     width: 100%;
-    height: 120px;
+    height: 135px;
     object-fit: cover;
     object-position: top;
     display: block;
@@ -279,16 +279,16 @@
     background: #f9f9f9;
   }
   .card-label {
-    padding: 7px 10px;
-    font-size: 13px;
+    padding: 8px 10px;
+    font-size: 15px;
     font-weight: 600;
     text-align: center;
     line-height: 1.4;
   }
   .card-phase-badge {
     position: absolute; top: 5px; left: 5px;
-    font-size: 10px; font-weight: 700;
-    padding: 2px 6px; border-radius: 4px;
+    font-size: 12px; font-weight: 700;
+    padding: 3px 8px; border-radius: 4px;
     border: 1px solid;
   }
 
@@ -345,11 +345,11 @@
     justify-content: center;
     gap: 6px;
   }
-  .missing-icon  { font-size: 22px; }
-  .missing-title { font-size: 13px; font-weight: 700; color: #c0392b; line-height: 1.4; }
+  .missing-icon  { font-size: 24px; }
+  .missing-title { font-size: 15px; font-weight: 700; color: #c0392b; line-height: 1.4; }
   .missing-label {
-    padding: 6px 10px;
-    font-size: 11px;
+    padding: 7px 10px;
+    font-size: 13px;
     font-weight: 600;
     text-align: center;
     color: #c0392b;
@@ -381,13 +381,13 @@
 
   /* ── Flow action annotation ── */
   .flow-action {
-    font-size: 12px;
+    font-size: 14px;
     color: #666;
-    padding: 5px 10px;
+    padding: 7px 12px;
     border: 1px dashed #ccc;
     border-radius: 6px;
     text-align: center;
-    width: 174px;
+    width: 194px;
     line-height: 1.5;
     background: #fff;
   }
@@ -427,37 +427,38 @@
     justify-content: center;
     gap: 5px;
   }
-  .designer-q-icon  { font-size: 18px; }
-  .designer-q-title { font-size: 12px; font-weight: 700; color: #7b2d8e; line-height: 1.4; }
-  .designer-q-desc  { font-size: 10px; color: #999; line-height: 1.4; margin-top: 2px; }
+  .designer-q-icon  { font-size: 22px; }
+  .designer-q-title { font-size: 15px; font-weight: 700; color: #7b2d8e; line-height: 1.4; }
+  .designer-q-desc  { font-size: 12px; color: #888; line-height: 1.5; margin-top: 3px; }
   .designer-q-label {
-    padding: 5px 10px;
-    font-size: 10px;
-    font-weight: 600;
+    padding: 8px 10px;
+    font-size: 14px;
+    font-weight: 700;
     text-align: center;
-    color: #8e44ad;
-    border-top: 1px dashed #d4a8e8;
+    color: #fff;
+    background: #8e44ad;
+    border-top: none;
   }
   .designer-q-tag {
     display: inline-block;
-    font-size: 9px;
-    font-weight: 600;
-    color: #8e44ad;
-    background: #f3e8ff;
-    border: 1px solid #d4a8e8;
-    padding: 1px 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    background: #8e44ad;
+    border: none;
+    padding: 3px 10px;
     border-radius: 4px;
   }
 
   /* ── Wide column override (member system) ── */
   .branch-col.wide {
-    min-width: 200px;
-    width: 200px;
+    min-width: 220px;
+    width: 220px;
   }
-  .branch-col.wide .tree-card       { width: 186px; }
-  .branch-col.wide .tree-card img   { height: 115px; }
-  .branch-col.wide .flow-action     { width: 184px; }
-  .branch-col.wide .missing-body    { min-height: 86px; }
+  .branch-col.wide .tree-card       { width: 206px; }
+  .branch-col.wide .tree-card img   { height: 130px; }
+  .branch-col.wide .flow-action     { width: 204px; }
+  .branch-col.wide .missing-body    { min-height: 90px; }
 
   /* ── Lightbox ── */
   .lightbox {
