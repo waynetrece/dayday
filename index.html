@@ -36,6 +36,22 @@
     padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
   }
 
+  /* ── View toggle ── */
+  .view-toggle {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 1px solid #d4a853;
+    color: #d4a853;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+  .view-toggle:hover { background: #d4a853; color: #000; }
+
   /* ── Legend / Nav bar ── */
   .legend {
     position: sticky; top: 53px; z-index: 199;
@@ -418,6 +434,7 @@
       <span class="phase-tag pmiss">缺 待設計</span>
     </div>
     <div class="badge">33 頁面 · 12 模組</div>
+    <a href="flow.html" class="view-toggle">Flow 版 →</a>
   </div>
 </div>
 
