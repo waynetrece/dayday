@@ -1234,14 +1234,14 @@ function relRect(el) {
   const canvasRect = document.getElementById('flow-canvas').getBoundingClientRect();
   const r = el.getBoundingClientRect();
   return {
-    top:    r.top    - canvasRect.top    + window.scrollY,
-    left:   r.left   - canvasRect.left   + window.scrollX,
-    bottom: r.bottom - canvasRect.top    + window.scrollY,
-    right:  r.right  - canvasRect.left   + window.scrollX,
+    top:    r.top    - canvasRect.top,
+    left:   r.left   - canvasRect.left,
+    bottom: r.bottom - canvasRect.top,
+    right:  r.right  - canvasRect.left,
     width:  r.width,
     height: r.height,
-    cx:     r.left   - canvasRect.left   + window.scrollX + r.width  / 2,
-    cy:     r.top    - canvasRect.top    + window.scrollY + r.height / 2,
+    cx:     r.left   - canvasRect.left + r.width  / 2,
+    cy:     r.top    - canvasRect.top  + r.height / 2,
   };
 }
 
@@ -1444,8 +1444,6 @@ function drawArrows() {
 // Draw on load and resize
 window.addEventListener('load', () => { setTimeout(drawArrows, 200); });
 window.addEventListener('resize', () => { setTimeout(drawArrows, 100); });
-// Also redraw after any scroll that might shift layout
-document.addEventListener('scroll', () => { setTimeout(drawArrows, 50); }, { passive: true });
 </script>
 
 </body>
