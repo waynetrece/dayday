@@ -399,6 +399,56 @@
   .at-purple { color: #7b2d8e; }
   .at-muted  { color: #aaa; }
 
+  /* ── Designer question card ── */
+  .tree-card.designer-q {
+    border: 2px dashed #8e44ad;
+    cursor: default;
+    background: repeating-linear-gradient(
+      -45deg,
+      #faf5ff,
+      #faf5ff 5px,
+      #f3e8ff 5px,
+      #f3e8ff 10px
+    );
+    box-shadow: none;
+  }
+  .tree-card.designer-q:hover {
+    border-color: #8e44ad;
+    transform: none;
+    box-shadow: 0 4px 14px rgba(142,68,173,0.12);
+  }
+  .designer-q-body {
+    padding: 14px 10px 10px;
+    text-align: center;
+    min-height: 86px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  .designer-q-icon  { font-size: 18px; }
+  .designer-q-title { font-size: 12px; font-weight: 700; color: #7b2d8e; line-height: 1.4; }
+  .designer-q-desc  { font-size: 10px; color: #999; line-height: 1.4; margin-top: 2px; }
+  .designer-q-label {
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    color: #8e44ad;
+    border-top: 1px dashed #d4a8e8;
+  }
+  .designer-q-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 600;
+    color: #8e44ad;
+    background: #f3e8ff;
+    border: 1px solid #d4a8e8;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
   /* ── Wide column override (member system) ── */
   .branch-col.wide {
     min-width: 200px;
@@ -479,6 +529,7 @@
       <span class="phase-tag p2">P2 商城/內容</span>
       <span class="phase-tag p3">P3 功能頁</span>
       <span class="phase-tag pmiss">❌ 缺 待設計</span>
+      <span class="phase-tag" style="border-color:#8e44ad;color:#7b2d8e;background:rgba(142,68,173,0.08);">💬 設計師提問</span>
     </div>
     <a href="index.html" class="view-toggle">區塊整理版 →</a>
   </div>
@@ -529,14 +580,19 @@
       <div class="label">客服-1 · 購物車-4 · 獎品紀錄合併-1</div>
     </div>
     <div class="budget-item budget-need">
-      <div class="label">需補頁面</div>
+      <div class="label">已確認需補</div>
       <div class="val">-6 頁</div>
-      <div class="label">確認頁 · 成功頁 · 折扣碼等</div>
+      <div class="label">出貨明細 · 出貨確認 · 成功頁等</div>
     </div>
     <div class="budget-item budget-net">
-      <div class="label">頁數差額</div>
+      <div class="label">確認部分差額</div>
       <div class="val">± 0</div>
       <div class="label">省下的剛好補齊</div>
+    </div>
+    <div class="budget-item" style="background:#faf5ff;color:#7b2d8e;">
+      <div class="label">設計師提問</div>
+      <div class="val">+1~3 頁？</div>
+      <div class="label">忘記密碼 · 積分說明 · 積分兌換</div>
     </div>
   </div>
 
@@ -730,35 +786,23 @@
         </div>
         <div class="tree-line orange"></div>
 
-        <!-- 行銷活動輸入：已設計，位置待確認 -->
-        <div class="tree-card missing" style="border-color:#e67e22; background:repeating-linear-gradient(-45deg,#fffaf0,#fffaf0 5px,#fff5e6 5px,#fff5e6 10px);">
-          <div class="missing-body">
-            <div class="missing-icon" style="font-size:22px;">⚠️</div>
-            <div class="missing-title" style="color:#c56b15;">行銷活動 / 折扣碼</div>
-            <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">已設計，流程位置待確認<br>一番賞：抽取前選折扣碼？</div>
-          </div>
-          <div class="missing-label" style="color:#c56b15;border-color:#f0d8b0;">待確認位置</div>
-        </div>
-        <div class="tree-line" style="height:10px;"></div>
-
-        <!-- 購物明細：顯示訂單內容 -->
-        <div class="tree-line" style="height:10px;"></div>
+        <!-- 出貨明細：申請出貨後的明細 -->
         <div class="tree-card missing">
           <div class="missing-body">
             <div class="missing-icon">❌</div>
-            <div class="missing-title">購物明細</div>
-            <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">獎品清單、運費<br>折扣碼套用、金額小計</div>
+            <div class="missing-title">出貨明細</div>
+            <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">獎品清單、收貨地址<br>運費計算、金額小計</div>
           </div>
           <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
         </div>
         <div class="tree-line" style="height:10px;"></div>
 
-        <!-- 購物確認：最終確認送出 -->
+        <!-- 出貨確認：最終確認送出 -->
         <div class="tree-card missing">
           <div class="missing-body">
             <div class="missing-icon">❌</div>
-            <div class="missing-title">購物確認</div>
-            <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">收貨資訊確認<br>付款方式選擇<br>點「確認送出」</div>
+            <div class="missing-title">出貨確認</div>
+            <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">收貨資訊確認<br>點「確認送出」</div>
           </div>
           <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
         </div>
@@ -972,6 +1016,17 @@
         </div>
         <div class="tree-line purple"></div>
 
+        <!-- 設計師提問：忘記密碼獨立頁 -->
+        <div class="tree-card designer-q" style="width:186px;">
+          <div class="designer-q-body">
+            <div class="designer-q-icon">💬</div>
+            <div class="designer-q-title">忘記密碼 — 獨立頁？</div>
+            <div class="designer-q-desc">輸入 Email → 寄驗證信 → 重設密碼<br>標準 UX 需至少 1 頁</div>
+          </div>
+          <div class="designer-q-label"><span class="designer-q-tag">設計師提問</span> 建議需要</div>
+        </div>
+        <div class="tree-line purple"></div>
+
         <!-- 基本資料修改 -->
         <div class="tree-card tc-p1"
              onclick="openLightbox('images/phase1/日日欣_會員系統_會員資料.jpg','會員系統 — 基本資料修改','member-profile')">
@@ -987,6 +1042,28 @@
           <span class="card-phase-badge">P1</span>
           <img src="images/phase1/日日欣_會員系統_積分紀錄.jpg" alt="會員系統 積分" loading="lazy">
           <div class="card-label">積分紀錄</div>
+        </div>
+        <div class="tree-line purple"></div>
+
+        <!-- 設計師提問：積分說明 -->
+        <div class="tree-card designer-q" style="width:186px;">
+          <div class="designer-q-body">
+            <div class="designer-q-icon">💬</div>
+            <div class="designer-q-title">積分說明頁？</div>
+            <div class="designer-q-desc">積分 vs 代幣差異說明<br>獲取規則、使用方式、有效期</div>
+          </div>
+          <div class="designer-q-label"><span class="designer-q-tag">設計師提問</span> 建議有</div>
+        </div>
+        <div class="tree-line purple"></div>
+
+        <!-- 設計師提問：積分兌換 -->
+        <div class="tree-card designer-q" style="width:186px;">
+          <div class="designer-q-body">
+            <div class="designer-q-icon">💬</div>
+            <div class="designer-q-title">積分使用方式？</div>
+            <div class="designer-q-desc">① 折抵金額（不需獨立頁）<br>② 兌換商品（需積分商城頁）<br>參考：OneOne 有專屬兌換頁</div>
+          </div>
+          <div class="designer-q-label"><span class="designer-q-tag">設計師提問</span> 待討論</div>
         </div>
         <div class="tree-line purple"></div>
 
