@@ -162,46 +162,105 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.92);
+    background: rgba(0,0,0,0.95);
     z-index: 1000;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    cursor: pointer;
+    overflow: hidden;
   }
   .lightbox.active { display: flex; }
-  .lightbox img {
-    max-width: 90vw;
-    max-height: 82vh;
-    border-radius: 8px;
-    box-shadow: 0 0 60px rgba(0,0,0,0.8);
+  .lb-viewport {
+    flex: 1;
+    overflow: hidden;
+    cursor: grab;
+    position: relative;
   }
-  .lightbox .lb-title {
+  .lb-viewport.dragging { cursor: grabbing; }
+  .lb-viewport img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .lb-toolbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    padding: 16px 24px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 1002;
+  }
+  .lb-title {
     color: #d4a853;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    margin-top: 16px;
   }
+  .lb-zoom-info {
+    color: #888;
+    font-size: 12px;
+    margin-left: 12px;
+  }
+  .lb-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+  .lb-btn:hover { background: rgba(255,255,255,0.2); }
   .lightbox .lb-close {
     position: absolute;
-    top: 24px;
-    right: 32px;
-    font-size: 32px;
+    top: 16px;
+    right: 20px;
+    font-size: 28px;
     color: #fff;
     cursor: pointer;
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     background: rgba(255,255,255,0.1);
+    z-index: 1003;
   }
-  .lightbox .lb-close:hover { background: rgba(255,255,255,0.2); }
-  .lightbox .lb-nav {
-    color: #888;
-    font-size: 13px;
-    margin-top: 8px;
+  .lightbox .lb-close:hover { background: rgba(255,255,255,0.25); }
+  .lb-nav-arrows {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 36px;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    z-index: 1003;
+    width: 48px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
+  .lb-nav-arrows:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .lb-nav-prev { left: 12px; }
+  .lb-nav-next { right: 12px; }
+  .lb-hint {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #666;
+    font-size: 12px;
+    z-index: 1003;
+    pointer-events: none;
   }
 
   /* Nav indicator */
@@ -266,11 +325,23 @@
 </div>
 
 <!-- Lightbox -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+<div class="lightbox" id="lightbox">
   <div class="lb-close" onclick="closeLightbox()">&times;</div>
-  <img id="lb-img" src="" alt="">
-  <div class="lb-title" id="lb-title"></div>
-  <div class="lb-nav">按 ESC 或點擊任意處關閉 · ← → 切換頁面</div>
+  <div class="lb-hint">滾輪縮放 · 拖曳平移 · ← → 切換 · ESC 關閉</div>
+  <div class="lb-nav-arrows lb-nav-prev" onclick="navigateLB(-1)">&#8249;</div>
+  <div class="lb-nav-arrows lb-nav-next" onclick="navigateLB(1)">&#8250;</div>
+  <div class="lb-viewport" id="lb-viewport">
+    <img id="lb-img" src="" alt="">
+  </div>
+  <div class="lb-toolbar">
+    <div class="lb-btn" onclick="zoomTo(0.5)">50%</div>
+    <div class="lb-btn" onclick="zoomTo(0.75)">75%</div>
+    <div class="lb-btn" onclick="zoomFit()">適合畫面</div>
+    <div class="lb-btn" onclick="zoomTo(1)">100%</div>
+    <div class="lb-btn" onclick="zoomTo(1.5)">150%</div>
+    <div class="lb-title" id="lb-title"></div>
+    <div class="lb-zoom-info" id="lb-zoom-info">100%</div>
+  </div>
 </div>
 
 <div class="canvas" id="canvas">
@@ -424,7 +495,7 @@
 </div>
 
 <script>
-// Lightbox
+// Lightbox data
 const allCards = [
   { id: 'recommend-list', img: 'images/商城推薦_列表.jpg', title: '商城推薦 — 列表頁' },
   { id: 'recommend-detail', img: 'images/商城推薦_詳情.jpg', title: '商城推薦 — 詳情頁' },
@@ -444,29 +515,162 @@ const allCards = [
 ];
 
 let currentIdx = 0;
+let scale = 1, panX = 0, panY = 0;
+let isDragging = false, dragStartX = 0, dragStartY = 0, startPanX = 0, startPanY = 0;
+const lbImg = document.getElementById('lb-img');
+const viewport = document.getElementById('lb-viewport');
+
+function updateTransform() {
+  lbImg.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+  document.getElementById('lb-zoom-info').textContent = Math.round(scale * 100) + '%';
+}
+
+function zoomFit() {
+  const vw = viewport.clientWidth;
+  const vh = viewport.clientHeight;
+  const iw = lbImg.naturalWidth;
+  const ih = lbImg.naturalHeight;
+  if (!iw || !ih) return;
+  scale = Math.min(vw / iw, vh / ih, 1);
+  panX = (vw - iw * scale) / 2;
+  panY = (vh - ih * scale) / 2;
+  updateTransform();
+}
+
+function zoomTo(newScale) {
+  const vw = viewport.clientWidth;
+  const vh = viewport.clientHeight;
+  const iw = lbImg.naturalWidth;
+  const ih = lbImg.naturalHeight;
+  // Zoom centered on viewport center
+  const cx = vw / 2, cy = vh / 2;
+  panX = cx - (cx - panX) * (newScale / scale);
+  panY = cy - (cy - panY) * (newScale / scale);
+  scale = newScale;
+  updateTransform();
+}
 
 function openLightbox(src, title) {
   currentIdx = allCards.findIndex(c => c.img === src);
-  document.getElementById('lb-img').src = src;
+  const lb = document.getElementById('lightbox');
   document.getElementById('lb-title').textContent = title;
-  document.getElementById('lightbox').classList.add('active');
+  lb.classList.add('active');
+  // Load image and fit
+  lbImg.onload = () => zoomFit();
+  lbImg.src = src;
 }
 
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('active');
+  lbImg.src = '';
 }
 
-function navigate(dir) {
+function navigateLB(dir) {
   currentIdx = (currentIdx + dir + allCards.length) % allCards.length;
   const c = allCards[currentIdx];
-  document.getElementById('lb-img').src = c.img;
   document.getElementById('lb-title').textContent = c.title;
+  lbImg.onload = () => zoomFit();
+  lbImg.src = c.img;
 }
 
+// Wheel zoom (zoom towards cursor)
+viewport.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const rect = viewport.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+  const newScale = Math.min(Math.max(scale * factor, 0.1), 5);
+  panX = mx - (mx - panX) * (newScale / scale);
+  panY = my - (my - panY) * (newScale / scale);
+  scale = newScale;
+  updateTransform();
+}, { passive: false });
+
+// Drag to pan
+viewport.addEventListener('mousedown', (e) => {
+  if (e.button !== 0) return;
+  isDragging = true;
+  dragStartX = e.clientX;
+  dragStartY = e.clientY;
+  startPanX = panX;
+  startPanY = panY;
+  viewport.classList.add('dragging');
+});
+window.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  panX = startPanX + (e.clientX - dragStartX);
+  panY = startPanY + (e.clientY - dragStartY);
+  updateTransform();
+});
+window.addEventListener('mouseup', () => {
+  isDragging = false;
+  viewport.classList.remove('dragging');
+});
+
+// Touch support for mobile
+let lastTouchDist = 0;
+viewport.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1) {
+    isDragging = true;
+    dragStartX = e.touches[0].clientX;
+    dragStartY = e.touches[0].clientY;
+    startPanX = panX;
+    startPanY = panY;
+  } else if (e.touches.length === 2) {
+    isDragging = false;
+    lastTouchDist = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY);
+  }
+}, { passive: false });
+viewport.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  if (e.touches.length === 1 && isDragging) {
+    panX = startPanX + (e.touches[0].clientX - dragStartX);
+    panY = startPanY + (e.touches[0].clientY - dragStartY);
+    updateTransform();
+  } else if (e.touches.length === 2) {
+    const dist = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY);
+    const factor = dist / lastTouchDist;
+    const rect = viewport.getBoundingClientRect();
+    const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+    const my = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+    const newScale = Math.min(Math.max(scale * factor, 0.1), 5);
+    panX = mx - (mx - panX) * (newScale / scale);
+    panY = my - (my - panY) * (newScale / scale);
+    scale = newScale;
+    lastTouchDist = dist;
+    updateTransform();
+  }
+}, { passive: false });
+viewport.addEventListener('touchend', () => { isDragging = false; });
+
+// Double click to toggle zoom
+viewport.addEventListener('dblclick', (e) => {
+  const rect = viewport.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  if (scale < 0.9) {
+    // Zoom to 100% at cursor
+    const newScale = 1;
+    panX = mx - (mx - panX) * (newScale / scale);
+    panY = my - (my - panY) * (newScale / scale);
+    scale = newScale;
+    updateTransform();
+  } else {
+    zoomFit();
+  }
+});
+
+// Keyboard
 document.addEventListener('keydown', (e) => {
+  const lb = document.getElementById('lightbox');
+  if (!lb.classList.contains('active')) return;
   if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') navigate(-1);
-  if (e.key === 'ArrowRight') navigate(1);
+  if (e.key === 'ArrowLeft') navigateLB(-1);
+  if (e.key === 'ArrowRight') navigateLB(1);
+  if (e.key === '+' || e.key === '=') zoomTo(Math.min(scale * 1.2, 5));
+  if (e.key === '-') zoomTo(Math.max(scale / 1.2, 0.1));
+  if (e.key === '0') zoomFit();
 });
 
 function scrollToCard(id) {
