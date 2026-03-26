@@ -13,7 +13,6 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
     overflow-x: auto;
     overflow-y: auto;
-    min-width: 320px;
   }
 
   /* ── Header ── */
@@ -28,14 +27,23 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    min-width: max-content;
   }
   .header-left { display: flex; align-items: center; gap: 14px; }
-  .header h1 { font-size: 19px; color: #d4a853; font-weight: 700; letter-spacing: 0.5px; }
-  .header .subtitle { font-size: 12px; color: #666; }
-  .header .badge {
-    background: #d4a853; color: #000;
-    padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  .header h1 { font-size: 19px; color: #d4a853; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; }
+  .header .subtitle { font-size: 12px; color: #666; white-space: nowrap; }
+  .header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+  /* Phase legend tags */
+  .phase-key { display: flex; gap: 8px; font-size: 11px; flex-wrap: nowrap; }
+  .phase-tag {
+    padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600;
+    border: 1px solid; opacity: 0.85; white-space: nowrap;
   }
+  .p1   { border-color: #9b59b6; color: #9b59b6; background: rgba(155,89,182,0.08); }
+  .p2   { border-color: #3498db; color: #3498db; background: rgba(52,152,219,0.08); }
+  .p3   { border-color: #2ecc71; color: #2ecc71; background: rgba(46,204,113,0.08); }
+  .pmiss{ border-color: #e74c3c; color: #e74c3c; background: rgba(231,76,60,0.08); }
 
   /* ── View toggle ── */
   .view-toggle {
@@ -53,182 +61,193 @@
   }
   .view-toggle:hover { background: #d4a853; color: #000; }
 
-  /* ── Legend bar ── */
-  .legend {
-    position: sticky; top: 53px; z-index: 199;
-    background: #111; border-bottom: 1px solid #1e1e1e;
-    padding: 8px 28px;
-    display: flex; gap: 6px; font-size: 12px; flex-wrap: wrap;
-    align-items: center;
-  }
-  .phase-key { display: flex; gap: 8px; font-size: 11px; flex-wrap: wrap; align-items: center; }
-  .phase-tag {
-    padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600;
-    border: 1px solid; opacity: 0.85;
-  }
-  .p1   { border-color: #9b59b6; color: #9b59b6; background: rgba(155,89,182,0.08); }
-  .p2   { border-color: #3498db; color: #3498db; background: rgba(52,152,219,0.08); }
-  .p3   { border-color: #2ecc71; color: #2ecc71; background: rgba(46,204,113,0.08); }
-  .pmiss{ border-color: #e74c3c; color: #e74c3c; background: rgba(231,76,60,0.08); }
-  .legend-hint { margin-left: auto; color: #444; font-size: 11px; }
-
-  /* ══════════════════════════════════════
-     TREE LAYOUT
-  ══════════════════════════════════════ */
-  .tree-canvas {
-    padding: 36px 48px 80px;
-    /* allow horizontal scroll for narrow viewports */
+  /* ── Main canvas ── */
+  .canvas {
+    padding: 28px 32px 80px;
     min-width: max-content;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 
   /* ── Root node ── */
+  .root-node {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0;
+  }
   .root-box {
-    background: linear-gradient(135deg, #1a1500, #1c1a00);
+    background: linear-gradient(135deg, #1e1700, #2a2000);
     border: 2px solid #d4a853;
     border-radius: 12px;
-    padding: 13px 36px;
+    padding: 12px 36px;
     text-align: center;
-    box-shadow: 0 0 32px rgba(212,168,83,0.15);
+    box-shadow: 0 0 24px rgba(212,168,83,0.15);
   }
-  .root-label { font-size: 15px; font-weight: 700; color: #d4a853; letter-spacing: 0.5px; }
-  .root-sub   { font-size: 10px; color: #7a6015; margin-top: 3px; letter-spacing: 0.3px; }
+  .root-box .root-title { font-size: 14px; font-weight: 700; color: #d4a853; letter-spacing: 0.5px; }
+  .root-box .root-sub   { font-size: 10px; color: #8a6e2a; margin-top: 2px; }
 
-  /* ── Generic connector lines ── */
-  .vl { /* vertical line */ width: 2px; background: #252525; margin: 0 auto; }
-  .vl-20  { height: 20px; }
-  .vl-24  { height: 24px; }
-  .vl-28  { height: 28px; }
-  .vl-16  { height: 16px; }
-
-  /* ── Main branches row ──
-     All 6 branch columns sit in this flex row.
-     We draw the H-bar via a pseudo-element on .branches-hbar.
-  ── */
-  .branches-outer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-
-  /* The H-bar is a div whose left and right edges span across all branches.
-     We set it up as a flex row of spacers (one per branch) with border-top. */
-  .hbar-row {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    border-top: 2px solid #252525;
-    /* width is set to stretch across all branch columns */
-  }
-
-  /* Each branch column in the hbar row has only a stub going DOWN */
-  .hbar-stub {
-    /* This stub connects the H-bar down to each branch header */
+  /* Vertical stub from root to h-bar */
+  .root-stub {
     width: 2px;
-    height: 24px;
-    background: #252525;
+    height: 28px;
+    background: #d4a853;
     margin: 0 auto;
   }
 
-  /* Spacer between branch stubs inside the hbar-row */
-  .hbar-gap { background: transparent; flex-shrink: 0; }
+  /* ── Branches area ── */
+  .branches-wrapper {
+    position: relative;
+  }
+  .branches-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    position: relative;
+  }
+  /* Gold horizontal bar at top of branches-row, connecting all branch stubs */
+  .h-connector {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #d4a853;
+    z-index: 1;
+  }
 
   /* ── Branch column ── */
   .branch-col {
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 162px;
+    width: 162px;
     flex-shrink: 0;
+    position: relative;
+    z-index: 2;
   }
 
-  /* ── Branch header pill ── */
+  /* Vertical stub from h-bar down to branch header */
+  .branch-stub {
+    width: 2px;
+    height: 20px;
+    background: #444;
+    flex-shrink: 0;
+  }
+  .branch-stub.blue   { background: rgba(52,152,219,0.7); }
+  .branch-stub.green  { background: rgba(46,204,113,0.7); }
+  .branch-stub.red    { background: rgba(231,76,60,0.7); }
+  .branch-stub.orange { background: rgba(230,126,34,0.7); }
+  .branch-stub.purple { background: rgba(155,89,182,0.7); }
+  .branch-stub.gold   { background: rgba(212,168,83,0.7); }
+
+  /* Branch header label */
   .branch-header {
-    border-radius: 8px;
-    padding: 7px 16px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 6px;
     text-align: center;
     white-space: nowrap;
     letter-spacing: 0.3px;
-    min-width: 90px;
+    border: 1px solid;
+    background: rgba(0,0,0,0.3);
   }
-  .bh-blue   { border: 1px solid #3498db; color: #3498db; background: rgba(52,152,219,0.08); }
-  .bh-green  { border: 1px solid #2ecc71; color: #2ecc71; background: rgba(46,204,113,0.08); }
-  .bh-red    { border: 1px solid #e74c3c; color: #e74c3c; background: rgba(231,76,60,0.10); }
-  .bh-purple { border: 1px solid #9b59b6; color: #9b59b6; background: rgba(155,89,182,0.08); }
-  .bh-gold   { border: 1px solid #d4a853; color: #d4a853; background: rgba(212,168,83,0.08); }
-  .bh-orange { border: 1px solid #e67e22; color: #e67e22; background: rgba(230,126,34,0.08); }
+  .bh-blue   { color: #3498db; border-color: rgba(52,152,219,0.5);  background: rgba(52,152,219,0.08); }
+  .bh-green  { color: #2ecc71; border-color: rgba(46,204,113,0.5);  background: rgba(46,204,113,0.08); }
+  .bh-red    { color: #e74c3c; border-color: rgba(231,76,60,0.5);   background: rgba(231,76,60,0.08); }
+  .bh-orange { color: #e67e22; border-color: rgba(230,126,34,0.5);  background: rgba(230,126,34,0.08); }
+  .bh-purple { color: #9b59b6; border-color: rgba(155,89,182,0.5);  background: rgba(155,89,182,0.08); }
+  .bh-gold   { color: #d4a853; border-color: rgba(212,168,83,0.5);  background: rgba(212,168,83,0.08); }
 
-  /* Gap between branch columns */
-  .branch-spacer { flex-shrink: 0; }
+  /* Vertical tree connector line */
+  .tree-line {
+    width: 2px;
+    height: 14px;
+    background: #252525;
+    flex-shrink: 0;
+  }
+  .tree-line.blue   { background: rgba(52,152,219,0.35); }
+  .tree-line.green  { background: rgba(46,204,113,0.35); }
+  .tree-line.red    { background: rgba(231,76,60,0.35); }
+  .tree-line.orange { background: rgba(230,126,34,0.35); }
+  .tree-line.purple { background: rgba(155,89,182,0.35); }
+  .tree-line.gold   { background: rgba(212,168,83,0.35); }
 
-  /* ══════════════════════════════════════
-     TREE CARDS
-  ══════════════════════════════════════ */
-
-  /* ── Image card ── */
+  /* ── Tree card (compact thumbnail) ── */
   .tree-card {
     background: #141414;
     border: 2px solid #333;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
-    width: 160px;
+    width: 150px;
     flex-shrink: 0;
     position: relative;
   }
   .tree-card:hover {
     border-color: #d4a853;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 28px rgba(212,168,83,0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212,168,83,0.2);
     z-index: 10;
   }
   .tree-card img {
     width: 100%;
+    height: 100px;
+    object-fit: cover;
+    object-position: top;
     display: block;
     border-bottom: 1px solid #1e1e1e;
     background: #111;
-    height: 112px;
-    object-fit: cover;
-    object-position: top;
   }
   .card-label {
-    padding: 6px 8px;
+    padding: 5px 8px;
     font-size: 10px;
     font-weight: 600;
     text-align: center;
-    line-height: 1.4;
+    line-height: 1.35;
   }
-  .card-phase {
+  .card-phase-badge {
     position: absolute; top: 4px; left: 4px;
     font-size: 8px; font-weight: 700;
     padding: 1px 4px; border-radius: 3px;
     border: 1px solid; opacity: 0.9;
   }
 
-  /* Phase colors */
-  .phase-1 { border-color: #9b59b6; }
-  .phase-1 .card-label { color: #9b59b6; }
-  .phase-1 .card-phase { border-color:#9b59b6; color:#9b59b6; background:rgba(155,89,182,0.15); }
+  /* Phase color variants */
+  .tc-p1 { border-color: #9b59b6; }
+  .tc-p1 .card-label { color: #9b59b6; }
+  .tc-p1 .card-phase-badge { border-color: #9b59b6; color: #9b59b6; background: rgba(155,89,182,0.15); }
 
-  .phase-2 { border-color: #3498db; }
-  .phase-2 .card-label { color: #3498db; }
-  .phase-2 .card-phase { border-color:#3498db; color:#3498db; background:rgba(52,152,219,0.15); }
+  .tc-p2 { border-color: #3498db; }
+  .tc-p2 .card-label { color: #3498db; }
+  .tc-p2 .card-phase-badge { border-color: #3498db; color: #3498db; background: rgba(52,152,219,0.15); }
 
-  .phase-3 { border-color: #2ecc71; }
-  .phase-3 .card-label { color: #2ecc71; }
-  .phase-3 .card-phase { border-color:#2ecc71; color:#2ecc71; background:rgba(46,204,113,0.15); }
+  .tc-p3 { border-color: #2ecc71; }
+  .tc-p3 .card-label { color: #2ecc71; }
+  .tc-p3 .card-phase-badge { border-color: #2ecc71; color: #2ecc71; background: rgba(46,204,113,0.15); }
+
+  .tc-red { border-color: #e74c3c; }
+  .tc-red .card-label { color: #e74c3c; }
+  .tc-red .card-phase-badge { border-color: #e74c3c; color: #e74c3c; background: rgba(231,76,60,0.15); }
+
+  .tc-orange { border-color: #e67e22; }
+  .tc-orange .card-label { color: #e67e22; }
+  .tc-orange .card-phase-badge { border-color: #e67e22; color: #e67e22; background: rgba(230,126,34,0.15); }
+
+  .tc-purple { border-color: #9b59b6; }
+  .tc-purple .card-label { color: #9b59b6; }
+  .tc-purple .card-phase-badge { border-color: #9b59b6; color: #9b59b6; background: rgba(155,89,182,0.15); }
 
   /* ── Missing card ── */
   .tree-card.missing {
     border: 2px dashed #e74c3c;
     cursor: default;
     background: repeating-linear-gradient(
-      -45deg, #111, #111 6px, #161616 6px, #161616 12px
+      -45deg,
+      #111,
+      #111 5px,
+      #161616 5px,
+      #161616 10px
     );
   }
   .tree-card.missing:hover {
@@ -237,81 +256,77 @@
     box-shadow: 0 4px 14px rgba(231,76,60,0.15);
   }
   .missing-body {
-    padding: 16px 8px 10px;
+    padding: 14px 8px 10px;
     text-align: center;
-    min-height: 112px;
+    min-height: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 5px;
   }
-  .missing-icon  { font-size: 22px; opacity: 0.7; }
-  .missing-title { font-size: 10px; font-weight: 700; color: #e74c3c; line-height: 1.4; }
+  .missing-icon  { font-size: 20px; opacity: 0.7; }
+  .missing-title { font-size: 10px; font-weight: 700; color: #e74c3c; line-height: 1.3; }
   .missing-label {
-    padding: 5px 8px; font-size: 9px; font-weight: 600;
-    text-align: center; color: #e74c3c; border-top: 1px dashed #2a2a2a;
+    padding: 5px 8px;
+    font-size: 9px;
+    font-weight: 600;
+    text-align: center;
+    color: #e74c3c;
+    border-top: 1px dashed #2a2a2a;
   }
 
   /* ── Paused card ── */
   .tree-card.paused {
-    border: 2px dashed #444;
+    border: 2px dashed #555;
     cursor: default;
     opacity: 0.5;
   }
-  .tree-card.paused:hover { border-color: #444; transform: none; box-shadow: none; }
+  .tree-card.paused:hover { border-color: #555; transform: none; box-shadow: none; }
   .paused-body {
-    padding: 16px 8px 10px;
+    padding: 14px 8px;
     text-align: center;
-    min-height: 112px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-  }
-  .paused-icon  { font-size: 20px; opacity: 0.5; }
-  .paused-title { font-size: 10px; font-weight: 600; color: #777; }
-  .paused-label { padding: 5px; font-size: 9px; color: #444; border-top: 1px dashed #222; text-align: center; }
-
-  /* ── Cross-link annotation ── */
-  .cross-link {
-    font-size: 9px; border: 1px dashed #333; border-radius: 4px;
-    padding: 3px 9px; text-align: center; white-space: nowrap;
-    background: rgba(255,255,255,0.02); letter-spacing: 0.2px;
-    color: #666;
-  }
-  .cross-link.green  { color: #2ecc71; border-color: rgba(46,204,113,0.35); background: rgba(46,204,113,0.04); }
-  .cross-link.red    { color: #e74c3c; border-color: rgba(231,76,60,0.35);  background: rgba(231,76,60,0.04); }
-  .cross-link.orange { color: #e67e22; border-color: rgba(230,126,34,0.35); background: rgba(230,126,34,0.04); }
-
-  /* ── Sub-label (e.g. "購物車" inside the lottery branch) ── */
-  .sub-label {
-    font-size: 10px; font-weight: 700; letter-spacing: 0.3px;
-    padding: 4px 14px; border-radius: 5px;
-  }
-
-  /* ── Split-branch (two children side by side, sharing a top H-bar) ── */
-  .split-row {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: center;
-  }
-  .split-col {
+    min-height: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex-shrink: 0;
-  }
-  .split-spacer { width: 16px; flex-shrink: 0; }
-
-  /* Paused pair */
-  .paused-pair {
-    display: flex; flex-direction: row;
-    align-items: flex-start; gap: 10px;
     justify-content: center;
+    gap: 5px;
+    font-size: 10px;
+    color: #666;
   }
+  .paused-label { padding: 5px 8px; font-size: 9px; color: #555; border-top: 1px dashed #222; text-align: center; }
 
-  /* ══════════════════════════════════════
-     LIGHTBOX  (exact copy from index.html)
-  ══════════════════════════════════════ */
+  /* ── Flow action annotation ── */
+  .flow-action {
+    font-size: 9px;
+    color: #777;
+    padding: 3px 7px;
+    border: 1px dashed #2a2a2a;
+    border-radius: 4px;
+    text-align: center;
+    width: 148px;
+    line-height: 1.45;
+  }
+  .flow-action .action-label  { display: block; color: #666; }
+  .flow-action .action-target { font-weight: 600; }
+  .at-red    { color: #e74c3c; }
+  .at-orange { color: #e67e22; }
+  .at-green  { color: #2ecc71; }
+  .at-purple { color: #9b59b6; }
+  .at-muted  { color: #999; }
+
+  /* ── Wide column override (member system) ── */
+  .branch-col.wide {
+    min-width: 174px;
+    width: 174px;
+  }
+  .branch-col.wide .tree-card       { width: 160px; }
+  .branch-col.wide .tree-card img   { height: 95px; }
+  .branch-col.wide .flow-action     { width: 158px; }
+  .branch-col.wide .missing-body    { min-height: 76px; }
+
+  /* ── Lightbox ── */
   .lightbox {
     display: none; position: fixed; inset: 0;
     background: rgba(0,0,0,0.95); z-index: 1000;
@@ -373,34 +388,17 @@
 <div class="header">
   <div class="header-left">
     <h1>日日欣 — 網站架構流程圖</h1>
-    <span class="subtitle">Site Architecture</span>
+    <span class="subtitle">Site Architecture · User Flow</span>
   </div>
-  <div style="display:flex;align-items:center;gap:10px;">
+  <div class="header-right">
     <div class="phase-key">
       <span class="phase-tag p1">P1 會員系統</span>
       <span class="phase-tag p2">P2 商城/內容</span>
       <span class="phase-tag p3">P3 功能頁</span>
-      <span class="phase-tag pmiss">缺 待設計</span>
+      <span class="phase-tag pmiss">❌ 缺 待設計</span>
     </div>
-    <div class="badge">37 頁面</div>
     <a href="index.html" class="view-toggle">區塊整理版 →</a>
   </div>
-</div>
-
-<!-- ── Legend bar ── -->
-<div class="legend">
-  <span style="color:#3498db;font-size:11px;font-weight:700;">全館商城</span>
-  <span style="color:#333;font-size:13px;">·</span>
-  <span style="color:#2ecc71;font-size:11px;font-weight:700;">商城推薦</span>
-  <span style="color:#333;font-size:13px;">·</span>
-  <span style="color:#2ecc71;font-size:11px;font-weight:700;">低價出清</span>
-  <span style="color:#333;font-size:13px;">·</span>
-  <span style="color:#e74c3c;font-size:11px;font-weight:700;">一番賞</span>
-  <span style="color:#333;font-size:13px;">·</span>
-  <span style="color:#9b59b6;font-size:11px;font-weight:700;">會員系統</span>
-  <span style="color:#333;font-size:13px;">·</span>
-  <span style="color:#d4a853;font-size:11px;font-weight:700;">獨立頁面</span>
-  <span class="legend-hint">點卡片放大 · 滾輪縮放 · ← → 切換 · ESC 關閉</span>
 </div>
 
 <!-- ── Lightbox ── -->
@@ -424,476 +422,525 @@
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     TREE CANVAS
+<!-- ══════════════════════════════════════════
+     MAIN CANVAS
 ════════════════════════════════════════════ -->
-<div class="tree-canvas">
+<div class="canvas">
 
-  <!-- ══ ROOT NODE ══ -->
-  <div class="root-box">
-    <div class="root-label">首頁 / 導覽列</div>
-    <div class="root-sub">Homepage &amp; Navigation Bar</div>
+  <!-- Root node -->
+  <div class="root-node">
+    <div class="root-box">
+      <div class="root-title">首頁 / 導覽列</div>
+      <div class="root-sub">Navigation Root · 13 Branches</div>
+    </div>
   </div>
 
-  <!-- Vertical stem from root -->
-  <div class="vl vl-28"></div>
+  <!-- Stub from root down to horizontal connector -->
+  <div class="root-stub"></div>
 
-  <!-- ══════════════════════════════════════
-       H-BAR + 6 BRANCH COLUMNS
-       The horizontal bar is drawn by using a flex row
-       where each branch's top-stub shares a common
-       border-top via the .hbar-row wrapper.
-  ══════════════════════════════════════ -->
+  <!-- ── Branches tree ── -->
+  <div class="branches-wrapper">
+    <!-- Gold horizontal connector across all branch tops -->
+    <div class="h-connector"></div>
 
-  <!--
-    Layout:
-    hbar-row = flex row, border-top draws the H-line
-    Inside each branch "slot" in the hbar-row: a .hbar-stub (vertical line downward)
-    Between slots: .hbar-gap (transparent spacer matching branch column width)
-  -->
+    <div class="branches-row">
 
-  <!-- We use a two-layer approach:
-       Layer 1: hbar-row (draws H-bar + stubs)
-       Layer 2: branches-flex (the actual branch columns)
-       Both are centered and share the same total width.
-  -->
-
-  <div id="tree-body" style="display:flex;flex-direction:column;align-items:center;">
-
-    <!-- H-bar row: stubs + gaps must mirror exact widths of branch columns + spacers below -->
-    <div id="hbar-row" class="hbar-row">
-      <!-- Branch 1 stub: 160px wide column -->
-      <div style="width:184px;display:flex;justify-content:center;"><div class="hbar-stub"></div></div>
-      <!-- gap: 48px -->
-      <div class="hbar-gap" style="width:48px;"></div>
-      <!-- Branch 2 stub -->
-      <div style="width:184px;display:flex;justify-content:center;"><div class="hbar-stub"></div></div>
-      <!-- gap -->
-      <div class="hbar-gap" style="width:48px;"></div>
-      <!-- Branch 3 stub -->
-      <div style="width:184px;display:flex;justify-content:center;"><div class="hbar-stub"></div></div>
-      <!-- gap -->
-      <div class="hbar-gap" style="width:48px;"></div>
-      <!-- Branch 4 stub: wider because it contains 購物車 sub-branch -->
-      <div style="width:356px;display:flex;justify-content:center;"><div class="hbar-stub"></div></div>
-      <!-- gap -->
-      <div class="hbar-gap" style="width:48px;"></div>
-      <!-- Branch 5 stub -->
-      <div style="width:184px;display:flex;justify-content:center;"><div class="hbar-stub"></div></div>
-      <!-- gap -->
-      <div class="hbar-gap" style="width:48px;"></div>
-      <!-- Branch 6 stub -->
-      <div style="width:184px;display:flex;justify-content:center;"><div class="hbar-stub"></div></div>
-    </div>
-
-    <!-- ── Branch columns row ── -->
-    <div style="display:flex;flex-direction:row;align-items:flex-start;gap:0;">
-
-      <!-- ════ BRANCH 1: 全館商城 ════ -->
-      <div class="branch-col" style="width:184px;">
+      <!-- ══════════════════════════════════════
+           BRANCH 1: 全館商城  (P2 blue)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub blue"></div>
         <div class="branch-header bh-blue">全館商城</div>
-        <div class="vl vl-16"></div>
+        <div class="tree-line blue"></div>
 
-        <!-- 總列表 -->
-        <div class="tree-card phase-2" id="commerce-all"
+        <div class="tree-card tc-p2"
              onclick="openLightbox('images/phase2/日日欣_全館商城_總列表.jpg','全館商城 — 總列表','commerce-all')">
-          <span class="card-phase">P2</span>
+          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_全館商城_總列表.jpg" alt="全館商城 總列表" loading="lazy">
-          <div class="card-label">全館商城 總列表</div>
+          <div class="card-label">總列表</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line blue"></div>
 
-        <!-- 列表 -->
-        <div class="tree-card phase-2" id="commerce-list"
+        <div class="tree-card tc-p2"
              onclick="openLightbox('images/phase2/日日欣_全館商城_列表.jpg','全館商城 — 列表','commerce-list')">
-          <span class="card-phase">P2</span>
+          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_全館商城_列表.jpg" alt="全館商城 列表" loading="lazy">
-          <div class="card-label">全館商城 列表</div>
+          <div class="card-label">列表</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line blue"></div>
 
-        <!-- 詳情 -->
-        <div class="tree-card phase-2" id="commerce-detail"
+        <div class="tree-card tc-p2"
              onclick="openLightbox('images/phase2/日日欣_全館商城_詳情.jpg','全館商城 — 詳情','commerce-detail')">
-          <span class="card-phase">P2</span>
+          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_全館商城_詳情.jpg" alt="全館商城 詳情" loading="lazy">
-          <div class="card-label">全館商城 詳情</div>
+          <div class="card-label">詳情</div>
         </div>
-        <div class="vl vl-16"></div>
-        <div class="cross-link green">抽取 → 一番賞</div>
+        <div class="tree-line blue"></div>
+
+        <div class="flow-action">
+          <span class="action-label">點擊「抽取」</span>
+          <span class="action-target at-red">→ 一番賞</span>
+        </div>
       </div>
 
-      <div class="branch-spacer" style="width:48px;"></div>
-
-      <!-- ════ BRANCH 2: 商城推薦 ════ -->
-      <div class="branch-col" style="width:184px;">
+      <!-- ══════════════════════════════════════
+           BRANCH 2: 商城推薦  (P3 green)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub green"></div>
         <div class="branch-header bh-green">商城推薦</div>
-        <div class="vl vl-16"></div>
+        <div class="tree-line green"></div>
 
-        <!-- 列表 -->
-        <div class="tree-card phase-3" id="recommend-list"
+        <div class="tree-card tc-p3"
              onclick="openLightbox('images/商城推薦_列表.jpg','商城推薦 — 列表','recommend-list')">
-          <span class="card-phase">P3</span>
+          <span class="card-phase-badge">P3</span>
           <img src="images/商城推薦_列表.jpg" alt="商城推薦 列表" loading="lazy">
-          <div class="card-label">商城推薦 列表</div>
+          <div class="card-label">列表</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line green"></div>
 
-        <!-- 詳情 -->
-        <div class="tree-card phase-3" id="recommend-detail"
+        <div class="tree-card tc-p3"
              onclick="openLightbox('images/商城推薦_詳情.jpg','商城推薦 — 詳情','recommend-detail')">
-          <span class="card-phase">P3</span>
+          <span class="card-phase-badge">P3</span>
           <img src="images/商城推薦_詳情.jpg" alt="商城推薦 詳情" loading="lazy">
-          <div class="card-label">商城推薦 詳情</div>
+          <div class="card-label">詳情</div>
         </div>
-        <div class="vl vl-16"></div>
-        <div class="cross-link green">抽取 → 一番賞</div>
+        <div class="tree-line green"></div>
+
+        <div class="flow-action">
+          <span class="action-label">點擊「抽取」</span>
+          <span class="action-target at-red">→ 一番賞</span>
+        </div>
       </div>
 
-      <div class="branch-spacer" style="width:48px;"></div>
-
-      <!-- ════ BRANCH 3: 低價出清 ════ -->
-      <div class="branch-col" style="width:184px;">
+      <!-- ══════════════════════════════════════
+           BRANCH 3: 低價出清  (P3 green)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub green"></div>
         <div class="branch-header bh-green">低價出清</div>
-        <div class="vl vl-16"></div>
+        <div class="tree-line green"></div>
 
-        <!-- 列表 -->
-        <div class="tree-card phase-3" id="clearance-list"
+        <div class="tree-card tc-p3"
              onclick="openLightbox('images/低價出清_列表.jpg','低價出清 — 列表','clearance-list')">
-          <span class="card-phase">P3</span>
+          <span class="card-phase-badge">P3</span>
           <img src="images/低價出清_列表.jpg" alt="低價出清 列表" loading="lazy">
-          <div class="card-label">低價出清 列表</div>
+          <div class="card-label">列表</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line green"></div>
 
-        <!-- 詳情 -->
-        <div class="tree-card phase-3" id="clearance-detail"
+        <div class="tree-card tc-p3"
              onclick="openLightbox('images/低價出清_詳情.jpg','低價出清 — 詳情','clearance-detail')">
-          <span class="card-phase">P3</span>
+          <span class="card-phase-badge">P3</span>
           <img src="images/低價出清_詳情.jpg" alt="低價出清 詳情" loading="lazy">
-          <div class="card-label">低價出清 詳情</div>
+          <div class="card-label">詳情</div>
         </div>
-        <div class="vl vl-16"></div>
-        <div class="cross-link green">抽取 → 一番賞</div>
+        <div class="tree-line green"></div>
+
+        <div class="flow-action">
+          <span class="action-label">點擊「抽取」</span>
+          <span class="action-target at-red">→ 一番賞</span>
+        </div>
       </div>
 
-      <div class="branch-spacer" style="width:48px;"></div>
+      <!-- ══════════════════════════════════════
+           BRANCH 4: 一番賞  (P3 red)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub red"></div>
+        <div class="branch-header bh-red">一番賞</div>
+        <div class="tree-line red"></div>
 
-      <!-- ════ BRANCH 4: 一番賞 + 購物車 ════ -->
-      <!-- This branch is wider: 160px card + spacing + potential sub-branch split -->
-      <div class="branch-col" style="width:356px;">
-        <div class="branch-header bh-red" style="min-width:120px;">一番賞</div>
-        <div class="vl vl-16"></div>
-
-        <!-- 選號碼 -->
-        <div class="tree-card phase-3" id="lottery-01"
+        <div class="tree-card tc-red"
              onclick="openLightbox('images/一番賞_抽獎頁面_01.jpg','一番賞 — 選號碼','lottery-01')">
-          <span class="card-phase">P3</span>
-          <img src="images/一番賞_抽獎頁面_01.jpg" alt="一番賞 選號碼" loading="lazy">
+          <span class="card-phase-badge">P3</span>
+          <img src="images/一番賞_抽獎頁面_01.jpg" alt="一番賞 01" loading="lazy">
           <div class="card-label">選號碼</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line red"></div>
 
-        <!-- 確認抽取 -->
-        <div class="tree-card phase-3" id="lottery-02"
+        <div class="tree-card tc-red"
              onclick="openLightbox('images/一番賞_抽獎頁面_02.jpg','一番賞 — 確認抽取','lottery-02')">
-          <span class="card-phase">P3</span>
-          <img src="images/一番賞_抽獎頁面_02.jpg" alt="一番賞 確認抽取" loading="lazy">
+          <span class="card-phase-badge">P3</span>
+          <img src="images/一番賞_抽獎頁面_02.jpg" alt="一番賞 02" loading="lazy">
           <div class="card-label">確認抽取</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line red"></div>
 
-        <!-- 抽獎結果 -->
-        <div class="tree-card phase-3" id="lottery-03"
+        <div class="tree-card tc-red"
              onclick="openLightbox('images/一番賞_抽獎頁面_03.jpg','一番賞 — 抽獎結果','lottery-03')">
-          <span class="card-phase">P3</span>
-          <img src="images/一番賞_抽獎頁面_03.jpg" alt="一番賞 抽獎結果" loading="lazy">
+          <span class="card-phase-badge">P3</span>
+          <img src="images/一番賞_抽獎頁面_03.jpg" alt="一番賞 03" loading="lazy">
           <div class="card-label">抽獎結果</div>
         </div>
-        <div class="vl vl-16"></div>
-        <div class="cross-link red" style="margin-bottom:6px;">↺ 繼續購買 → 回到選號碼</div>
-        <div class="vl vl-16"></div>
-        <div class="cross-link orange" style="margin-bottom:6px;">前往收貨 → 購物車 ↓</div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line red"></div>
 
-        <!-- Sub-label: 購物車 -->
-        <div class="sub-label bh-orange" style="margin-bottom:0;">購物車</div>
-        <div class="vl vl-16"></div>
+        <!-- Fork: two outcomes from result page -->
+        <div class="flow-action" style="margin-bottom:5px;">
+          <span class="action-label">「繼續購買」</span>
+          <span class="action-target at-red">↺ 回到選號碼</span>
+        </div>
+        <div class="tree-line red" style="height:8px;"></div>
+        <div class="flow-action">
+          <span class="action-label">「前往收貨」</span>
+          <span class="action-target at-orange">→ 購物車</span>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           BRANCH 5: 購物車  (P3 orange)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub orange"></div>
+        <div class="branch-header bh-orange">購物車</div>
+        <div class="tree-line orange"></div>
 
         <!-- 獎品確認 -->
-        <div class="tree-card phase-3" id="cart-confirm"
+        <div class="tree-card tc-orange"
              onclick="openLightbox('images/購物車_獎品確認.jpg','購物車 — 獎品確認','cart-confirm')">
-          <span class="card-phase">P3</span>
+          <span class="card-phase-badge">P3</span>
           <img src="images/購物車_獎品確認.jpg" alt="購物車 獎品確認" loading="lazy">
           <div class="card-label">獎品確認</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line orange"></div>
+
+        <div class="flow-action" style="margin-bottom:5px;">
+          <span class="action-label">操作：「申請出貨」</span>
+        </div>
+        <div class="tree-line orange"></div>
 
         <!-- 申請出貨 -->
-        <div class="tree-card phase-3" id="cart-ship"
+        <div class="tree-card tc-orange"
              onclick="openLightbox('images/購物車_申請出貨.jpg','購物車 — 申請出貨','cart-ship')">
-          <span class="card-phase">P3</span>
+          <span class="card-phase-badge">P3</span>
           <img src="images/購物車_申請出貨.jpg" alt="購物車 申請出貨" loading="lazy">
           <div class="card-label">申請出貨</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line orange"></div>
 
-        <!-- 行銷活動輸入 ❌ -->
-        <div class="tree-card missing" id="cart-promo">
+        <!-- Missing: 行銷活動輸入 -->
+        <div class="tree-card missing">
           <div class="missing-body">
             <div class="missing-icon">❌</div>
             <div class="missing-title">行銷活動輸入</div>
           </div>
           <div class="missing-label">缺 · 待設計</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line" style="height:10px;"></div>
 
-        <!-- 購物明細 ❌ -->
-        <div class="tree-card missing" id="cart-summary">
+        <!-- Missing: 購物明細 -->
+        <div class="tree-card missing">
           <div class="missing-body">
             <div class="missing-icon">❌</div>
             <div class="missing-title">購物明細</div>
           </div>
           <div class="missing-label">缺 · 待設計</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line" style="height:10px;"></div>
 
-        <!-- 購物確認 ❌ -->
-        <div class="tree-card missing" id="cart-payment">
+        <!-- Missing: 購物確認 -->
+        <div class="tree-card missing">
           <div class="missing-body">
             <div class="missing-icon">❌</div>
             <div class="missing-title">購物確認</div>
           </div>
           <div class="missing-label">缺 · 待設計</div>
         </div>
-        <div class="vl vl-16"></div>
+        <div class="tree-line" style="height:10px;"></div>
 
-        <!-- Split: 出貨成功 | 付款結果 -->
-        <!-- H-bar for the split -->
-        <div style="display:flex;flex-direction:row;border-top:2px solid #252525;align-items:flex-start;">
-          <div style="width:178px;display:flex;justify-content:center;">
-            <div class="vl vl-20"></div>
-          </div>
-          <div style="width:178px;display:flex;justify-content:center;">
-            <div class="vl vl-20"></div>
-          </div>
-        </div>
-
-        <div class="split-row" style="gap:16px;">
-          <!-- 出貨成功頁 ❌ -->
-          <div class="split-col">
-            <div class="tree-card missing" id="success-ship">
-              <div class="missing-body">
-                <div class="missing-icon">❌</div>
-                <div class="missing-title">出貨成功頁</div>
-              </div>
-              <div class="missing-label">缺 · 待設計</div>
-            </div>
-          </div>
-
-          <!-- 付款結果頁 ❌ -->
-          <div class="split-col">
-            <div class="tree-card missing" id="success-payment">
-              <div class="missing-body">
-                <div class="missing-icon">❌</div>
-                <div class="missing-title">付款結果頁</div>
-              </div>
-              <div class="missing-label">缺 · 待設計</div>
-            </div>
-          </div>
-        </div><!-- /split-row -->
-
-        <!-- Paused cards -->
-        <div class="vl vl-16"></div>
-        <div style="font-size:9px;color:#3a3a3a;margin-bottom:8px;letter-spacing:0.3px;">— 暫緩 —</div>
-        <div class="paused-pair">
-          <div class="tree-card paused">
-            <div class="paused-body">
-              <div class="paused-icon">⏸</div>
-              <div class="paused-title">暫時不需要</div>
-            </div>
-            <div class="paused-label">已暫緩</div>
-          </div>
-          <div class="tree-card paused">
-            <div class="paused-body">
-              <div class="paused-icon">⏸</div>
-              <div class="paused-title">暫時不需要</div>
-            </div>
-            <div class="paused-label">已暫緩</div>
-          </div>
-        </div>
-
-      </div><!-- /branch 4 -->
-
-      <div class="branch-spacer" style="width:48px;"></div>
-
-      <!-- ════ BRANCH 5: 會員系統 ════ -->
-      <div class="branch-col" style="width:184px;">
-        <div class="branch-header bh-purple">會員系統</div>
-        <div class="vl vl-16"></div>
-
-        <!-- 註冊 -->
-        <div class="tree-card phase-1" id="member-register"
-             onclick="openLightbox('images/phase1/日日欣_會員系統_會員註冊.jpg','會員系統 — 註冊','member-register')">
-          <span class="card-phase">P1</span>
-          <img src="images/phase1/日日欣_會員系統_會員註冊.jpg" alt="會員系統 註冊" loading="lazy">
-          <div class="card-label">註冊</div>
-        </div>
-        <div class="vl vl-20"></div>
-
-        <!-- 登入 -->
-        <div class="tree-card phase-1" id="member-login"
-             onclick="openLightbox('images/phase1/日日欣_會員系統_會員登入.jpg','會員系統 — 登入','member-login')">
-          <span class="card-phase">P1</span>
-          <img src="images/phase1/日日欣_會員系統_會員登入.jpg" alt="會員系統 登入" loading="lazy">
-          <div class="card-label">登入</div>
-        </div>
-        <div class="vl vl-20"></div>
-
-        <!-- 基本資料 -->
-        <div class="tree-card phase-1" id="member-profile"
-             onclick="openLightbox('images/phase1/日日欣_會員系統_會員資料.jpg','會員系統 — 基本資料','member-profile')">
-          <span class="card-phase">P1</span>
-          <img src="images/phase1/日日欣_會員系統_會員資料.jpg" alt="會員系統 資料" loading="lazy">
-          <div class="card-label">基本資料</div>
-        </div>
-        <div class="vl vl-20"></div>
-
-        <!-- 積分紀錄 -->
-        <div class="tree-card phase-1" id="member-points"
-             onclick="openLightbox('images/phase1/日日欣_會員系統_積分紀錄.jpg','會員系統 — 積分紀錄','member-points')">
-          <span class="card-phase">P1</span>
-          <img src="images/phase1/日日欣_會員系統_積分紀錄.jpg" alt="會員系統 積分" loading="lazy">
-          <div class="card-label">積分紀錄</div>
-        </div>
-        <div class="vl vl-20"></div>
-
-        <!-- 代幣紀錄 -->
-        <div class="tree-card phase-1" id="member-tokens"
-             onclick="openLightbox('images/phase1/20251114-日日欣_會員系統_代幣紀錄.jpg','會員系統 — 代幣紀錄','member-tokens')">
-          <span class="card-phase">P1</span>
-          <img src="images/phase1/20251114-日日欣_會員系統_代幣紀錄.jpg" alt="會員系統 代幣" loading="lazy">
-          <div class="card-label">代幣紀錄</div>
-        </div>
-        <div class="vl vl-20"></div>
-
-        <!-- 優惠券 -->
-        <div class="tree-card phase-1" id="member-coupon"
-             onclick="openLightbox('images/phase1/日日欣_會員系統_優惠券.jpg','會員系統 — 優惠券','member-coupon')">
-          <span class="card-phase">P1</span>
-          <img src="images/phase1/日日欣_會員系統_優惠券.jpg" alt="會員系統 優惠券" loading="lazy">
-          <div class="card-label">優惠券</div>
-        </div>
-        <div class="vl vl-20"></div>
-
-        <!-- 獎品紀錄 -->
-        <div class="tree-card phase-3" id="member-prizes"
-             onclick="openLightbox('images/會員系統_獎品紀錄.jpg','會員系統 — 獎品紀錄','member-prizes')">
-          <span class="card-phase">P3</span>
-          <img src="images/會員系統_獎品紀錄.jpg" alt="會員系統 獎品紀錄" loading="lazy">
-          <div class="card-label">獎品紀錄</div>
-        </div>
-        <div class="vl vl-20"></div>
-
-        <!-- 放棄獎品紀錄 -->
-        <div class="tree-card phase-3" id="member-abandon"
-             onclick="openLightbox('images/會員系統_放棄獎品紀錄.jpg','會員系統 — 放棄獎品紀錄','member-abandon')">
-          <span class="card-phase">P3</span>
-          <img src="images/會員系統_放棄獎品紀錄.jpg" alt="會員系統 放棄獎品" loading="lazy">
-          <div class="card-label">放棄獎品紀錄</div>
-        </div>
-        <div class="vl vl-20"></div>
-
-        <!-- 放棄確認 ❌ -->
-        <div class="tree-card missing" id="confirm-abandon">
+        <!-- Missing: 出貨成功頁 -->
+        <div class="tree-card missing">
           <div class="missing-body">
             <div class="missing-icon">❌</div>
-            <div class="missing-title">放棄確認</div>
+            <div class="missing-title">出貨成功頁</div>
           </div>
           <div class="missing-label">缺 · 待設計</div>
         </div>
+        <div class="tree-line" style="height:6px;"></div>
 
-      </div><!-- /branch 5 -->
+        <div class="flow-action" style="border-color:#3a1a1a; margin-bottom:5px;">
+          <span class="action-label" style="color:#666;">或付款流程</span>
+        </div>
+        <div class="tree-line" style="height:6px;"></div>
 
-      <div class="branch-spacer" style="width:48px;"></div>
+        <!-- Missing: 付款成功/失敗頁 -->
+        <div class="tree-card missing">
+          <div class="missing-body">
+            <div class="missing-icon">❌</div>
+            <div class="missing-title">付款成功/失敗頁</div>
+          </div>
+          <div class="missing-label">缺 · 待設計</div>
+        </div>
+        <div class="tree-line orange" style="height:10px;"></div>
 
-      <!-- ════ BRANCH 6: 獨立頁面 ════ -->
-      <div class="branch-col" style="width:184px;">
-        <div class="branch-header bh-gold">獨立頁面</div>
-        <div class="vl vl-16"></div>
+        <!-- Action: 放棄獎品 -->
+        <div class="flow-action" style="margin-bottom:5px;">
+          <span class="action-label">「放棄獎品」</span>
+          <span class="action-target at-purple">→ 放棄獎品紀錄</span>
+        </div>
+        <div class="tree-line orange" style="height:10px;"></div>
 
-        <!-- 購買代幣 -->
-        <div class="tree-card phase-3" id="buy-token"
+        <!-- Paused x2 -->
+        <div class="tree-card paused">
+          <div class="paused-body">⏸ 暫時不需要</div>
+          <div class="paused-label">已暫緩</div>
+        </div>
+        <div class="tree-line" style="height:8px;"></div>
+        <div class="tree-card paused">
+          <div class="paused-body">⏸ 暫時不需要</div>
+          <div class="paused-label">已暫緩</div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           BRANCH 6: 購買代幣  (P3 green)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub green"></div>
+        <div class="branch-header bh-green">購買代幣</div>
+        <div class="tree-line green"></div>
+
+        <div class="tree-card tc-p3"
              onclick="openLightbox('images/購買代幣.jpg','購買代幣','buy-token')">
-          <span class="card-phase">P3</span>
+          <span class="card-phase-badge">P3</span>
           <img src="images/購買代幣.jpg" alt="購買代幣" loading="lazy">
           <div class="card-label">購買代幣</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line green"></div>
 
-        <!-- 客服中心 -->
-        <div class="tree-card phase-3" id="faq"
+        <div class="flow-action">
+          <span class="action-label">金額選擇</span>
+          <span class="action-label">→ 發票 → 付款</span>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           BRANCH 7: 最新消息  (P2 blue)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub blue"></div>
+        <div class="branch-header bh-blue">最新消息</div>
+        <div class="tree-line blue"></div>
+
+        <div class="tree-card tc-p2"
+             onclick="openLightbox('images/phase2/日日欣_最新消息_列表.jpg','最新消息 — 列表','news-list')">
+          <span class="card-phase-badge">P2</span>
+          <img src="images/phase2/日日欣_最新消息_列表.jpg" alt="最新消息 列表" loading="lazy">
+          <div class="card-label">列表</div>
+        </div>
+        <div class="tree-line blue"></div>
+
+        <div class="tree-card tc-p2"
+             onclick="openLightbox('images/phase2/日日欣_最新消息_詳情.jpg','最新消息 — 詳情','news-detail')">
+          <span class="card-phase-badge">P2</span>
+          <img src="images/phase2/日日欣_最新消息_詳情.jpg" alt="最新消息 詳情" loading="lazy">
+          <div class="card-label">詳情</div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           BRANCH 8: 客服中心  (P3 green)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub green"></div>
+        <div class="branch-header bh-green">客服中心</div>
+        <div class="tree-line green"></div>
+
+        <div class="tree-card tc-p3"
              onclick="openLightbox('images/客服中心.jpg','客服中心','faq')">
-          <span class="card-phase">P3</span>
+          <span class="card-phase-badge">P3</span>
           <img src="images/客服中心.jpg" alt="客服中心" loading="lazy">
           <div class="card-label">客服中心</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line green"></div>
 
-        <!-- 聯絡我們 -->
-        <div class="tree-card phase-3" id="contact"
+        <div class="flow-action">
+          <span class="action-label">FAQ 常見問題</span>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           BRANCH 9: 聯絡我們  (P3 green)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub green"></div>
+        <div class="branch-header bh-green">聯絡我們</div>
+        <div class="tree-line green"></div>
+
+        <div class="tree-card tc-p3"
              onclick="openLightbox('images/聯絡我們.jpg','聯絡我們','contact')">
-          <span class="card-phase">P3</span>
+          <span class="card-phase-badge">P3</span>
           <img src="images/聯絡我們.jpg" alt="聯絡我們" loading="lazy">
           <div class="card-label">聯絡我們</div>
         </div>
-        <div class="vl vl-20"></div>
+        <div class="tree-line green"></div>
 
-        <!-- 聯絡送出成功 ❌ (child of 聯絡我們) -->
-        <div class="tree-card missing" id="success-contact">
+        <div class="flow-action" style="margin-bottom:5px;">
+          <span class="action-label">送出表單</span>
+        </div>
+        <div class="tree-line" style="height:10px;"></div>
+
+        <!-- Missing: 聯絡送出成功 -->
+        <div class="tree-card missing">
           <div class="missing-body">
             <div class="missing-icon">❌</div>
             <div class="missing-title">聯絡送出成功</div>
           </div>
           <div class="missing-label">缺 · 待設計</div>
         </div>
-        <div class="vl vl-20"></div>
+      </div>
 
-        <!-- 公司簡介 -->
-        <div class="tree-card phase-2" id="about"
+      <!-- ══════════════════════════════════════
+           BRANCH 10: 公司簡介  (P2 blue)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub blue"></div>
+        <div class="branch-header bh-blue">公司簡介</div>
+        <div class="tree-line blue"></div>
+
+        <div class="tree-card tc-p2"
              onclick="openLightbox('images/phase2/日日欣_公司簡介.jpg','公司簡介','about')">
-          <span class="card-phase">P2</span>
+          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_公司簡介.jpg" alt="公司簡介" loading="lazy">
           <div class="card-label">公司簡介</div>
         </div>
-        <div class="vl vl-20"></div>
+      </div>
 
-        <!-- 會員條款 -->
-        <div class="tree-card phase-2" id="terms"
+      <!-- ══════════════════════════════════════
+           BRANCH 11: 會員條款  (P2 blue)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub blue"></div>
+        <div class="branch-header bh-blue">會員條款</div>
+        <div class="tree-line blue"></div>
+
+        <div class="tree-card tc-p2"
              onclick="openLightbox('images/phase2/日日欣_會員條款.jpg','會員條款','terms')">
-          <span class="card-phase">P2</span>
+          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_會員條款.jpg" alt="會員條款" loading="lazy">
           <div class="card-label">會員條款</div>
         </div>
-        <div class="vl vl-20"></div>
+      </div>
 
-        <!-- 隱私權政策 -->
-        <div class="tree-card phase-3" id="privacy"
+      <!-- ══════════════════════════════════════
+           BRANCH 12: 隱私權政策  (P3 green)
+      ══════════════════════════════════════ -->
+      <div class="branch-col">
+        <div class="branch-stub green"></div>
+        <div class="branch-header bh-green">隱私權政策</div>
+        <div class="tree-line green"></div>
+
+        <div class="tree-card tc-p3"
              onclick="openLightbox('images/隱私權政策.jpg','隱私權政策','privacy')">
-          <span class="card-phase">P3</span>
+          <span class="card-phase-badge">P3</span>
           <img src="images/隱私權政策.jpg" alt="隱私權政策" loading="lazy">
           <div class="card-label">隱私權政策</div>
         </div>
+      </div>
 
-      </div><!-- /branch 6 -->
+      <!-- ══════════════════════════════════════
+           BRANCH 13: 會員 ▾ 系統  (P1 purple)
+      ══════════════════════════════════════ -->
+      <div class="branch-col wide">
+        <div class="branch-stub purple"></div>
+        <div class="branch-header bh-purple">會員 ▾ 系統</div>
+        <div class="tree-line purple"></div>
 
-    </div><!-- /branches flex row -->
-  </div><!-- /tree-body -->
+        <!-- 註冊 -->
+        <div class="tree-card tc-p1"
+             onclick="openLightbox('images/phase1/日日欣_會員系統_會員註冊.jpg','會員系統 — 註冊','member-register')">
+          <span class="card-phase-badge">P1</span>
+          <img src="images/phase1/日日欣_會員系統_會員註冊.jpg" alt="會員系統 註冊" loading="lazy">
+          <div class="card-label">註冊</div>
+        </div>
+        <div class="tree-line purple"></div>
 
-</div><!-- /tree-canvas -->
+        <!-- 登入/忘記密碼 -->
+        <div class="tree-card tc-p1"
+             onclick="openLightbox('images/phase1/日日欣_會員系統_會員登入.jpg','會員系統 — 登入/忘記密碼','member-login')">
+          <span class="card-phase-badge">P1</span>
+          <img src="images/phase1/日日欣_會員系統_會員登入.jpg" alt="會員系統 登入" loading="lazy">
+          <div class="card-label">登入 / 忘記密碼</div>
+        </div>
+        <div class="tree-line purple"></div>
+
+        <!-- 基本資料修改 -->
+        <div class="tree-card tc-p1"
+             onclick="openLightbox('images/phase1/日日欣_會員系統_會員資料.jpg','會員系統 — 基本資料修改','member-profile')">
+          <span class="card-phase-badge">P1</span>
+          <img src="images/phase1/日日欣_會員系統_會員資料.jpg" alt="會員系統 資料" loading="lazy">
+          <div class="card-label">基本資料修改</div>
+        </div>
+        <div class="tree-line purple"></div>
+
+        <!-- 積分紀錄 -->
+        <div class="tree-card tc-p1"
+             onclick="openLightbox('images/phase1/日日欣_會員系統_積分紀錄.jpg','會員系統 — 積分紀錄','member-points')">
+          <span class="card-phase-badge">P1</span>
+          <img src="images/phase1/日日欣_會員系統_積分紀錄.jpg" alt="會員系統 積分" loading="lazy">
+          <div class="card-label">積分紀錄</div>
+        </div>
+        <div class="tree-line purple"></div>
+
+        <!-- 代幣紀錄 -->
+        <div class="tree-card tc-p1"
+             onclick="openLightbox('images/phase1/20251114-日日欣_會員系統_代幣紀錄.jpg','會員系統 — 代幣紀錄','member-tokens')">
+          <span class="card-phase-badge">P1</span>
+          <img src="images/phase1/20251114-日日欣_會員系統_代幣紀錄.jpg" alt="會員系統 代幣" loading="lazy">
+          <div class="card-label">代幣紀錄</div>
+        </div>
+        <div class="tree-line purple"></div>
+
+        <!-- 優惠券 -->
+        <div class="tree-card tc-p1"
+             onclick="openLightbox('images/phase1/日日欣_會員系統_優惠券.jpg','會員系統 — 優惠券','member-coupon')">
+          <span class="card-phase-badge">P1</span>
+          <img src="images/phase1/日日欣_會員系統_優惠券.jpg" alt="會員系統 優惠券" loading="lazy">
+          <div class="card-label">優惠券</div>
+        </div>
+        <div class="tree-line purple"></div>
+
+        <!-- 獎品紀錄 (P3 with purple styling) -->
+        <div class="tree-card tc-purple"
+             onclick="openLightbox('images/會員系統_獎品紀錄.jpg','會員系統 — 獎品紀錄','member-prizes')">
+          <span class="card-phase-badge">P3</span>
+          <img src="images/會員系統_獎品紀錄.jpg" alt="會員系統 獎品紀錄" loading="lazy">
+          <div class="card-label">獎品紀錄<br><span style="font-size:8px;font-weight:400;color:#7a4fa0;">待出貨+已出貨 合併</span></div>
+        </div>
+        <div class="tree-line purple"></div>
+
+        <!-- 放棄獎品紀錄 (P3 with purple styling) -->
+        <div class="tree-card tc-purple"
+             onclick="openLightbox('images/會員系統_放棄獎品紀錄.jpg','會員系統 — 放棄獎品紀錄','member-abandon')">
+          <span class="card-phase-badge">P3</span>
+          <img src="images/會員系統_放棄獎品紀錄.jpg" alt="會員系統 放棄獎品紀錄" loading="lazy">
+          <div class="card-label">放棄獎品紀錄</div>
+        </div>
+        <div class="tree-line purple"></div>
+
+        <!-- Action -->
+        <div class="flow-action" style="margin-bottom:5px;">
+          <span class="action-label">點擊「放棄」</span>
+        </div>
+        <div class="tree-line purple" style="height:10px;"></div>
+
+        <!-- Missing: 放棄獎品確認 -->
+        <div class="tree-card missing" style="width:160px;">
+          <div class="missing-body">
+            <div class="missing-icon">❌</div>
+            <div class="missing-title">放棄獎品確認</div>
+          </div>
+          <div class="missing-label">缺 · 待設計</div>
+        </div>
+      </div>
+
+    </div><!-- /branches-row -->
+  </div><!-- /branches-wrapper -->
+
+</div><!-- /canvas -->
 
 <script>
-// ── All navigable cards (with images) ──
+// ── All navigable cards with images ──
 const allCards = [
   { id: 'commerce-all',    img: 'images/phase2/日日欣_全館商城_總列表.jpg',            title: '全館商城 — 總列表' },
   { id: 'commerce-list',   img: 'images/phase2/日日欣_全館商城_列表.jpg',              title: '全館商城 — 列表' },
@@ -907,20 +954,22 @@ const allCards = [
   { id: 'lottery-03',      img: 'images/一番賞_抽獎頁面_03.jpg',                       title: '一番賞 — 抽獎結果' },
   { id: 'cart-confirm',    img: 'images/購物車_獎品確認.jpg',                          title: '購物車 — 獎品確認' },
   { id: 'cart-ship',       img: 'images/購物車_申請出貨.jpg',                          title: '購物車 — 申請出貨' },
-  { id: 'member-register', img: 'images/phase1/日日欣_會員系統_會員註冊.jpg',          title: '會員系統 — 註冊' },
-  { id: 'member-login',    img: 'images/phase1/日日欣_會員系統_會員登入.jpg',          title: '會員系統 — 登入' },
-  { id: 'member-profile',  img: 'images/phase1/日日欣_會員系統_會員資料.jpg',          title: '會員系統 — 基本資料' },
-  { id: 'member-points',   img: 'images/phase1/日日欣_會員系統_積分紀錄.jpg',          title: '會員系統 — 積分紀錄' },
-  { id: 'member-tokens',   img: 'images/phase1/20251114-日日欣_會員系統_代幣紀錄.jpg', title: '會員系統 — 代幣紀錄' },
-  { id: 'member-coupon',   img: 'images/phase1/日日欣_會員系統_優惠券.jpg',            title: '會員系統 — 優惠券' },
-  { id: 'member-prizes',   img: 'images/會員系統_獎品紀錄.jpg',                        title: '會員系統 — 獎品紀錄' },
-  { id: 'member-abandon',  img: 'images/會員系統_放棄獎品紀錄.jpg',                    title: '會員系統 — 放棄獎品紀錄' },
   { id: 'buy-token',       img: 'images/購買代幣.jpg',                                title: '購買代幣' },
+  { id: 'news-list',       img: 'images/phase2/日日欣_最新消息_列表.jpg',              title: '最新消息 — 列表' },
+  { id: 'news-detail',     img: 'images/phase2/日日欣_最新消息_詳情.jpg',              title: '最新消息 — 詳情' },
   { id: 'faq',             img: 'images/客服中心.jpg',                                title: '客服中心' },
   { id: 'contact',         img: 'images/聯絡我們.jpg',                                title: '聯絡我們' },
   { id: 'about',           img: 'images/phase2/日日欣_公司簡介.jpg',                   title: '公司簡介' },
   { id: 'terms',           img: 'images/phase2/日日欣_會員條款.jpg',                   title: '會員條款' },
   { id: 'privacy',         img: 'images/隱私權政策.jpg',                              title: '隱私權政策' },
+  { id: 'member-register', img: 'images/phase1/日日欣_會員系統_會員註冊.jpg',          title: '會員系統 — 註冊' },
+  { id: 'member-login',    img: 'images/phase1/日日欣_會員系統_會員登入.jpg',          title: '會員系統 — 登入/忘記密碼' },
+  { id: 'member-profile',  img: 'images/phase1/日日欣_會員系統_會員資料.jpg',          title: '會員系統 — 基本資料修改' },
+  { id: 'member-points',   img: 'images/phase1/日日欣_會員系統_積分紀錄.jpg',          title: '會員系統 — 積分紀錄' },
+  { id: 'member-tokens',   img: 'images/phase1/20251114-日日欣_會員系統_代幣紀錄.jpg', title: '會員系統 — 代幣紀錄' },
+  { id: 'member-coupon',   img: 'images/phase1/日日欣_會員系統_優惠券.jpg',            title: '會員系統 — 優惠券' },
+  { id: 'member-prizes',   img: 'images/會員系統_獎品紀錄.jpg',                        title: '會員系統 — 獎品紀錄' },
+  { id: 'member-abandon',  img: 'images/會員系統_放棄獎品紀錄.jpg',                    title: '會員系統 — 放棄獎品紀錄' },
 ];
 
 let currentIdx = 0;
@@ -985,7 +1034,7 @@ function navigateLB(dir) {
   updateCounter();
 }
 
-// Wheel zoom
+// Wheel zoom centered on cursor
 viewport.addEventListener('wheel', (e) => {
   e.preventDefault();
   const rect = viewport.getBoundingClientRect();
@@ -1012,9 +1061,12 @@ window.addEventListener('mousemove', (e) => {
   panY = startPanY + (e.clientY - dragStartY);
   updateTransform();
 });
-window.addEventListener('mouseup', () => { isDragging = false; viewport.classList.remove('dragging'); });
+window.addEventListener('mouseup', () => {
+  isDragging = false;
+  viewport.classList.remove('dragging');
+});
 
-// Touch support
+// Touch pinch zoom + drag
 let lastTouchDist = 0;
 viewport.addEventListener('touchstart', (e) => {
   if (e.touches.length === 1) {
@@ -1053,7 +1105,7 @@ viewport.addEventListener('touchmove', (e) => {
 }, { passive: false });
 viewport.addEventListener('touchend', () => { isDragging = false; });
 
-// Double-click to toggle zoom
+// Double click to toggle fit/100%
 viewport.addEventListener('dblclick', (e) => {
   const rect = viewport.getBoundingClientRect();
   const mx = e.clientX - rect.left, my = e.clientY - rect.top;
@@ -1065,16 +1117,16 @@ viewport.addEventListener('dblclick', (e) => {
   } else { zoomFit(); }
 });
 
-// Keyboard
+// Keyboard: ESC, arrows, +/-, 0
 document.addEventListener('keydown', (e) => {
   const lb = document.getElementById('lightbox');
   if (!lb.classList.contains('active')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') navigateLB(-1);
-  if (e.key === 'ArrowRight') navigateLB(1);
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowLeft')   navigateLB(-1);
+  if (e.key === 'ArrowRight')  navigateLB(1);
   if (e.key === '+' || e.key === '=') zoomTo(Math.min(scale * 1.2, 5));
-  if (e.key === '-') zoomTo(Math.max(scale / 1.2, 0.1));
-  if (e.key === '0') zoomFit();
+  if (e.key === '-')           zoomTo(Math.max(scale / 1.2, 0.1));
+  if (e.key === '0')           zoomFit();
 });
 </script>
 
