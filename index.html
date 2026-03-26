@@ -27,67 +27,43 @@
     align-items: center;
     justify-content: space-between;
   }
-  .header h1 {
-    font-size: 20px;
-    color: #d4a853;
-    font-weight: 600;
-  }
+  .header h1 { font-size: 20px; color: #d4a853; font-weight: 600; }
   .header .badge {
-    background: #d4a853;
-    color: #000;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
+    background: #d4a853; color: #000;
+    padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;
   }
-  .header .subtitle {
-    font-size: 13px;
-    color: #888;
-    margin-left: 16px;
-  }
+  .header .subtitle { font-size: 13px; color: #888; margin-left: 16px; }
 
-  /* Legend */
+  /* Legend — clickable */
   .legend {
-    position: sticky;
-    top: 57px;
-    z-index: 99;
-    background: #111;
-    border-bottom: 1px solid #222;
-    padding: 10px 32px;
-    display: flex;
-    gap: 24px;
-    font-size: 13px;
-    flex-wrap: wrap;
+    position: sticky; top: 57px; z-index: 99;
+    background: #111; border-bottom: 1px solid #222;
+    padding: 10px 32px; display: flex; gap: 20px; font-size: 13px; flex-wrap: wrap;
   }
   .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer; padding: 4px 10px; border-radius: 6px;
+    transition: background 0.2s;
   }
-  .legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-  }
+  .legend-item:hover { background: rgba(255,255,255,0.08); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+  .legend-hint { margin-left: auto; color: #555; font-size: 12px; cursor: default; }
+  .legend-hint:hover { background: transparent; }
 
-  /* Canvas */
+  /* Canvas — fits ~1440px viewport */
   .canvas {
     position: relative;
-    width: 2400px;
-    min-height: 2600px;
+    width: 1500px;
+    min-height: 2400px;
     margin: 0 auto;
-    padding: 40px;
+    padding: 40px 0;
   }
 
   /* SVG Arrows */
   .arrows-svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 1;
   }
 
   /* Page Card */
@@ -100,7 +76,7 @@
     cursor: pointer;
     transition: all 0.25s ease;
     z-index: 2;
-    width: 240px;
+    width: 230px;
   }
   .page-card:hover {
     border-color: #d4a853;
@@ -108,24 +84,9 @@
     box-shadow: 0 8px 32px rgba(212, 168, 83, 0.2);
     z-index: 10;
   }
-  .page-card img {
-    width: 100%;
-    display: block;
-    border-bottom: 1px solid #333;
-  }
-  .page-card .card-label {
-    padding: 10px 12px;
-    font-size: 13px;
-    font-weight: 600;
-    text-align: center;
-  }
-  .page-card .card-tag {
-    display: block;
-    font-size: 11px;
-    font-weight: 400;
-    color: #888;
-    margin-top: 2px;
-  }
+  .page-card img { width: 100%; display: block; border-bottom: 1px solid #333; }
+  .page-card .card-label { padding: 8px 10px; font-size: 12px; font-weight: 600; text-align: center; }
+  .page-card .card-tag { display: block; font-size: 10px; font-weight: 400; color: #888; margin-top: 2px; }
 
   /* Module colors */
   .mod-lottery { border-color: #e74c3c; }
@@ -141,167 +102,80 @@
   .mod-other { border-color: #d4a853; }
   .mod-other .card-label { color: #d4a853; }
 
-  /* Module Group Labels */
-  .module-group {
-    position: absolute;
-    z-index: 1;
-    border-radius: 16px;
-    padding: 16px;
-  }
-  .module-group .group-title {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    padding: 4px 12px;
-    border-radius: 6px;
-    display: inline-block;
-  }
-
   /* Lightbox */
   .lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.95);
-    z-index: 1000;
-    flex-direction: column;
-    overflow: hidden;
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.95); z-index: 1000;
+    flex-direction: column; overflow: hidden;
   }
   .lightbox.active { display: flex; }
-  .lb-viewport {
-    flex: 1;
-    overflow: hidden;
-    cursor: grab;
-    position: relative;
-  }
+  .lb-viewport { flex: 1; overflow: hidden; cursor: grab; position: relative; }
   .lb-viewport.dragging { cursor: grabbing; }
   .lb-viewport img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-origin: 0 0;
-    user-select: none;
-    -webkit-user-drag: none;
+    position: absolute; top: 0; left: 0;
+    transform-origin: 0 0; user-select: none; -webkit-user-drag: none;
   }
   .lb-toolbar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: absolute; bottom: 0; left: 0; right: 0;
     background: linear-gradient(transparent, rgba(0,0,0,0.9));
     padding: 16px 24px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
     z-index: 1002;
   }
-  .lb-title {
-    color: #d4a853;
-    font-size: 16px;
-    font-weight: 600;
-  }
-  .lb-zoom-info {
-    color: #888;
-    font-size: 12px;
-    margin-left: 12px;
-  }
+  .lb-title { color: #d4a853; font-size: 16px; font-weight: 600; }
+  .lb-zoom-info { color: #888; font-size: 12px; margin-left: 12px; }
   .lb-btn {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: all 0.2s;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; padding: 6px 14px; border-radius: 6px;
+    cursor: pointer; font-size: 13px; transition: all 0.2s;
   }
   .lb-btn:hover { background: rgba(255,255,255,0.2); }
   .lightbox .lb-close {
-    position: absolute;
-    top: 16px;
-    right: 20px;
-    font-size: 28px;
-    color: #fff;
-    cursor: pointer;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.1);
-    z-index: 1003;
+    position: absolute; top: 16px; right: 20px;
+    font-size: 28px; color: #fff; cursor: pointer;
+    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; background: rgba(255,255,255,0.1); z-index: 1003;
   }
   .lightbox .lb-close:hover { background: rgba(255,255,255,0.25); }
   .lb-nav-arrows {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 36px;
-    color: rgba(255,255,255,0.5);
-    cursor: pointer;
-    z-index: 1003;
-    width: 48px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-size: 36px; color: rgba(255,255,255,0.5); cursor: pointer;
+    z-index: 1003; width: 48px; height: 80px;
+    display: flex; align-items: center; justify-content: center; border-radius: 8px;
   }
   .lb-nav-arrows:hover { color: #fff; background: rgba(255,255,255,0.1); }
   .lb-nav-prev { left: 12px; }
   .lb-nav-next { right: 12px; }
   .lb-hint {
-    position: absolute;
-    top: 16px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #666;
-    font-size: 12px;
-    z-index: 1003;
-    pointer-events: none;
+    position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+    color: #666; font-size: 12px; z-index: 1003; pointer-events: none;
   }
 
-  /* Nav indicator */
+  /* Nav bar on canvas */
   .nav-bar-indicator {
-    position: absolute;
-    z-index: 3;
+    position: absolute; z-index: 3;
     background: linear-gradient(135deg, #1a1a1a, #222);
-    border: 2px solid #d4a853;
-    border-radius: 12px;
-    padding: 16px 24px;
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
+    border: 2px solid #d4a853; border-radius: 12px;
+    padding: 14px 20px;
+    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
   }
   .nav-item {
-    font-size: 12px;
-    color: #d4a853;
-    padding: 6px 12px;
-    border: 1px solid #d4a853;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
+    font-size: 12px; color: #d4a853;
+    padding: 5px 10px; border: 1px solid #d4a853; border-radius: 6px;
+    cursor: pointer; transition: all 0.2s;
   }
-  .nav-item:hover {
-    background: #d4a853;
-    color: #000;
-  }
+  .nav-item:hover { background: #d4a853; color: #000; }
 
   /* Arrow label */
   .arrow-label {
-    position: absolute;
-    z-index: 5;
-    font-size: 11px;
-    color: #aaa;
-    background: #0a0a0a;
-    padding: 2px 8px;
-    border-radius: 4px;
-    white-space: nowrap;
-    pointer-events: none;
+    position: absolute; z-index: 5;
+    font-size: 11px; color: #aaa; background: #0a0a0a;
+    padding: 2px 8px; border-radius: 4px;
+    white-space: nowrap; pointer-events: none;
   }
+
+  /* Section anchors (invisible) */
+  .section-anchor { position: absolute; }
 </style>
 </head>
 <body>
@@ -315,13 +189,13 @@
 </div>
 
 <div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>一番賞抽獎</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div>低價出清</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div>商城推薦</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>購物車</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div>會員系統</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#d4a853"></div>獨立頁面</div>
-  <div class="legend-item" style="margin-left:auto; color:#666;">點擊卡片可放大查看</div>
+  <div class="legend-item" onclick="scrollToCard('recommend-list')"><div class="legend-dot" style="background:#2ecc71"></div>商城推薦</div>
+  <div class="legend-item" onclick="scrollToCard('clearance-list')"><div class="legend-dot" style="background:#3498db"></div>低價出清</div>
+  <div class="legend-item" onclick="scrollToCard('lottery-01')"><div class="legend-dot" style="background:#e74c3c"></div>一番賞抽獎</div>
+  <div class="legend-item" onclick="scrollToCard('cart-confirm')"><div class="legend-dot" style="background:#e67e22"></div>購物車</div>
+  <div class="legend-item" onclick="scrollToCard('member-prizes')"><div class="legend-dot" style="background:#9b59b6"></div>會員系統</div>
+  <div class="legend-item" onclick="scrollToCard('buy-token')"><div class="legend-dot" style="background:#d4a853"></div>獨立頁面</div>
+  <div class="legend-item legend-hint">← 點擊可跳到該區塊 · 點卡片可放大</div>
 </div>
 
 <!-- Lightbox -->
@@ -350,29 +224,23 @@
   <svg class="arrows-svg" id="arrowsSvg">
     <defs>
       <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#e74c3c" />
-      </marker>
+        <polygon points="0 0, 10 3.5, 0 7" fill="#e74c3c" /></marker>
       <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#3498db" />
-      </marker>
+        <polygon points="0 0, 10 3.5, 0 7" fill="#3498db" /></marker>
       <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#2ecc71" />
-      </marker>
+        <polygon points="0 0, 10 3.5, 0 7" fill="#2ecc71" /></marker>
       <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#e67e22" />
-      </marker>
+        <polygon points="0 0, 10 3.5, 0 7" fill="#e67e22" /></marker>
       <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#9b59b6" />
-      </marker>
+        <polygon points="0 0, 10 3.5, 0 7" fill="#9b59b6" /></marker>
       <marker id="arrowGold" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#d4a853" />
-      </marker>
+        <polygon points="0 0, 10 3.5, 0 7" fill="#d4a853" /></marker>
     </defs>
   </svg>
 
   <!-- NAV BAR -->
-  <div class="nav-bar-indicator" style="top: 30px; left: 400px; width: 1200px;" id="navbar">
-    <div style="font-size: 14px; font-weight: 700; color: #d4a853; width: 100%; text-align: center; margin-bottom: 4px;">
+  <div class="nav-bar-indicator" style="top: 20px; left: 150px; width: 1200px;" id="navbar">
+    <div style="font-size: 14px; font-weight: 700; color: #d4a853; width: 100%; text-align: center; margin-bottom: 2px;">
       頂部導覽列 Navigation Bar
     </div>
     <div class="nav-item" onclick="scrollToCard('recommend-list')">商城推薦</div>
@@ -381,116 +249,103 @@
     <div class="nav-item" onclick="scrollToCard('lottery-01')">一番賞</div>
     <div class="nav-item" onclick="scrollToCard('faq')">客服中心</div>
     <div class="nav-item" onclick="scrollToCard('contact')">聯絡我們</div>
-    <div class="nav-item" onclick="scrollToCard('member-prizes')">👤 會員</div>
-    <div class="nav-item" onclick="scrollToCard('cart-confirm')">🛒 購物車</div>
+    <div class="nav-item" onclick="scrollToCard('member-prizes')">會員</div>
+    <div class="nav-item" onclick="scrollToCard('cart-confirm')">購物車</div>
   </div>
 
-  <!-- ROW 1: 商城推薦 -->
-  <div class="page-card mod-recommend" id="recommend-list" style="top: 200px; left: 80px;"
+  <!-- ROW 1: 商城推薦 + 低價出清 (top: 160) -->
+  <div class="page-card mod-recommend" id="recommend-list" style="top: 160px; left: 40px;"
        onclick="openLightbox('images/商城推薦_列表.jpg', '商城推薦 — 列表頁')">
     <img src="images/商城推薦_列表.jpg" alt="商城推薦 列表">
     <div class="card-label">商城推薦 — 列表<span class="card-tag">商品瀏覽 · 分類篩選</span></div>
   </div>
 
-  <div class="page-card mod-recommend" id="recommend-detail" style="top: 200px; left: 400px;"
+  <div class="page-card mod-recommend" id="recommend-detail" style="top: 160px; left: 330px;"
        onclick="openLightbox('images/商城推薦_詳情.jpg', '商城推薦 — 詳情頁')">
     <img src="images/商城推薦_詳情.jpg" alt="商城推薦 詳情">
     <div class="card-label">商城推薦 — 詳情<span class="card-tag">抽取 · 剩餘全包</span></div>
   </div>
 
-  <!-- ROW 1: 低價出清 -->
-  <div class="page-card mod-clearance" id="clearance-list" style="top: 200px; left: 780px;"
+  <div class="page-card mod-clearance" id="clearance-list" style="top: 160px; left: 680px;"
        onclick="openLightbox('images/低價出清_列表.jpg', '低價出清 — 列表頁')">
     <img src="images/低價出清_列表.jpg" alt="低價出清 列表">
     <div class="card-label">低價出清 — 列表<span class="card-tag">商品瀏覽 · 分類篩選</span></div>
   </div>
 
-  <div class="page-card mod-clearance" id="clearance-detail" style="top: 200px; left: 1100px;"
+  <div class="page-card mod-clearance" id="clearance-detail" style="top: 160px; left: 970px;"
        onclick="openLightbox('images/低價出清_詳情.jpg', '低價出清 — 詳情頁')">
     <img src="images/低價出清_詳情.jpg" alt="低價出清 詳情">
     <div class="card-label">低價出清 — 詳情<span class="card-tag">抽取 · 剩餘全包</span></div>
   </div>
 
-  <!-- ROW 2: 一番賞流程 -->
-  <div class="page-card mod-lottery" id="lottery-01" style="top: 750px; left: 80px;"
+  <!-- ROW 2: 一番賞 + 購物車 (top: 680) -->
+  <div class="page-card mod-lottery" id="lottery-01" style="top: 680px; left: 40px;"
        onclick="openLightbox('images/一番賞_抽獎頁面_01.jpg', '一番賞 — 選號碼')">
     <img src="images/一番賞_抽獎頁面_01.jpg" alt="一番賞 01">
     <div class="card-label">一番賞 — 選號碼<span class="card-tag">獎項列表 · 號碼盤 · 選號</span></div>
   </div>
 
-  <div class="page-card mod-lottery" id="lottery-02" style="top: 750px; left: 400px;"
+  <div class="page-card mod-lottery" id="lottery-02" style="top: 680px; left: 330px;"
        onclick="openLightbox('images/一番賞_抽獎頁面_02.jpg', '一番賞 — 確認抽取（彈窗）')">
     <img src="images/一番賞_抽獎頁面_02.jpg" alt="一番賞 02">
     <div class="card-label">一番賞 — 確認抽取<span class="card-tag">彈窗 · 消耗代幣確認</span></div>
   </div>
 
-  <div class="page-card mod-lottery" id="lottery-03" style="top: 750px; left: 720px;"
+  <div class="page-card mod-lottery" id="lottery-03" style="top: 680px; left: 620px;"
        onclick="openLightbox('images/一番賞_抽獎頁面_03.jpg', '一番賞 — 抽獎結果（彈窗）')">
     <img src="images/一番賞_抽獎頁面_03.jpg" alt="一番賞 03">
     <div class="card-label">一番賞 — 抽獎結果<span class="card-tag">彈窗 · 前往收貨 / 繼續購買</span></div>
   </div>
 
-  <!-- ROW 2: 購物車 -->
-  <div class="page-card mod-cart" id="cart-confirm" style="top: 750px; left: 1100px;"
+  <div class="page-card mod-cart" id="cart-confirm" style="top: 680px; left: 970px;"
        onclick="openLightbox('images/購物車_獎品確認.jpg', '購物車 — 獎品確認')">
     <img src="images/購物車_獎品確認.jpg" alt="購物車 獎品確認">
     <div class="card-label">購物車 — 獎品確認<span class="card-tag">勾選獎品 · 申請出貨 / 放棄</span></div>
   </div>
 
-  <div class="page-card mod-cart" id="cart-ship" style="top: 750px; left: 1420px;"
+  <div class="page-card mod-cart" id="cart-ship" style="top: 680px; left: 1260px;"
        onclick="openLightbox('images/購物車_申請出貨.jpg', '購物車 — 申請出貨')">
     <img src="images/購物車_申請出貨.jpg" alt="購物車 申請出貨">
     <div class="card-label">購物車 — 申請出貨<span class="card-tag">填寫收貨資料 · 確認出貨</span></div>
   </div>
 
-  <!-- ROW 3: 會員系統 -->
-  <div class="page-card mod-member" id="member-prizes" style="top: 1300px; left: 1100px;"
-       onclick="openLightbox('images/會員系統_獎品紀錄.jpg', '會員 — 獎品紀錄')">
-    <img src="images/會員系統_獎品紀錄.jpg" alt="會員 獎品紀錄">
-    <div class="card-label">會員 — 獎品紀錄<span class="card-tag">訂單列表 · 展開明細</span></div>
-  </div>
-
-  <div class="page-card mod-member" id="member-abandon" style="top: 1300px; left: 1420px;"
-       onclick="openLightbox('images/會員系統_放棄獎品紀錄.jpg', '會員 — 放棄獎品紀錄')">
-    <img src="images/會員系統_放棄獎品紀錄.jpg" alt="會員 放棄獎品紀錄">
-    <div class="card-label">會員 — 放棄獎品紀錄<span class="card-tag">放棄歷史 · 代幣數 · 時間</span></div>
-  </div>
-
-  <!-- ROW 3: 獨立頁面 -->
-  <div class="page-card mod-other" id="buy-token" style="top: 1300px; left: 80px;"
+  <!-- ROW 3: 獨立頁面 + 會員 (top: 1200) -->
+  <div class="page-card mod-other" id="buy-token" style="top: 1200px; left: 40px;"
        onclick="openLightbox('images/購買代幣.jpg', '購買代幣')">
     <img src="images/購買代幣.jpg" alt="購買代幣">
     <div class="card-label">購買代幣<span class="card-tag">三步驟：金額 → 發票 → 付款</span></div>
   </div>
 
-  <div class="page-card mod-other" id="faq" style="top: 1300px; left: 400px;"
+  <div class="page-card mod-other" id="faq" style="top: 1200px; left: 330px;"
        onclick="openLightbox('images/客服中心.jpg', '客服中心')">
     <img src="images/客服中心.jpg" alt="客服中心">
     <div class="card-label">客服中心<span class="card-tag">FAQ 常見問題</span></div>
   </div>
 
-  <div class="page-card mod-other" id="contact" style="top: 1300px; left: 720px;"
+  <div class="page-card mod-other" id="contact" style="top: 1200px; left: 620px;"
        onclick="openLightbox('images/聯絡我們.jpg', '聯絡我們')">
     <img src="images/聯絡我們.jpg" alt="聯絡我們">
     <div class="card-label">聯絡我們<span class="card-tag">表單 · reCAPTCHA</span></div>
   </div>
 
-  <div class="page-card mod-other" id="privacy" style="top: 1300px; left: 80px; top: 1800px;"
+  <div class="page-card mod-member" id="member-prizes" style="top: 1200px; left: 970px;"
+       onclick="openLightbox('images/會員系統_獎品紀錄.jpg', '會員 — 獎品紀錄')">
+    <img src="images/會員系統_獎品紀錄.jpg" alt="會員 獎品紀錄">
+    <div class="card-label">會員 — 獎品紀錄<span class="card-tag">訂單列表 · 展開明細</span></div>
+  </div>
+
+  <div class="page-card mod-member" id="member-abandon" style="top: 1200px; left: 1260px;"
+       onclick="openLightbox('images/會員系統_放棄獎品紀錄.jpg', '會員 — 放棄獎品紀錄')">
+    <img src="images/會員系統_放棄獎品紀錄.jpg" alt="會員 放棄獎品紀錄">
+    <div class="card-label">會員 — 放棄獎品紀錄<span class="card-tag">放棄歷史 · 代幣數 · 時間</span></div>
+  </div>
+
+  <!-- ROW 4: 隱私權 (top: 1700) -->
+  <div class="page-card mod-other" id="privacy" style="top: 1700px; left: 40px;"
        onclick="openLightbox('images/隱私權政策.jpg', '隱私權政策')">
     <img src="images/隱私權政策.jpg" alt="隱私權政策">
     <div class="card-label">隱私權政策<span class="card-tag">Footer 連結</span></div>
   </div>
-
-  <!-- Arrow Labels -->
-  <div class="arrow-label" style="top: 430px; left: 310px;">點擊商品</div>
-  <div class="arrow-label" style="top: 430px; left: 940px;">點擊商品</div>
-  <div class="arrow-label" style="top: 660px; left: 520px;">按「抽取」</div>
-  <div class="arrow-label" style="top: 660px; left: 1180px;">按「抽取」</div>
-  <div class="arrow-label" style="top: 980px; left: 275px;">按「抽取」</div>
-  <div class="arrow-label" style="top: 980px; left: 590px;">按「確認」</div>
-  <div class="arrow-label" style="top: 980px; left: 900px;">「前往收貨」</div>
-  <div class="arrow-label" style="top: 980px; left: 1280px;">「申請出貨」</div>
-  <div class="arrow-label" style="top: 1230px; left: 1280px;">查看紀錄</div>
 
 </div>
 
@@ -540,9 +395,6 @@ function zoomFit() {
 function zoomTo(newScale) {
   const vw = viewport.clientWidth;
   const vh = viewport.clientHeight;
-  const iw = lbImg.naturalWidth;
-  const ih = lbImg.naturalHeight;
-  // Zoom centered on viewport center
   const cx = vw / 2, cy = vh / 2;
   panX = cx - (cx - panX) * (newScale / scale);
   panY = cy - (cy - panY) * (newScale / scale);
@@ -552,10 +404,8 @@ function zoomTo(newScale) {
 
 function openLightbox(src, title) {
   currentIdx = allCards.findIndex(c => c.img === src);
-  const lb = document.getElementById('lightbox');
   document.getElementById('lb-title').textContent = title;
-  lb.classList.add('active');
-  // Load image and fit
+  document.getElementById('lightbox').classList.add('active');
   lbImg.onload = () => zoomFit();
   lbImg.src = src;
 }
@@ -573,12 +423,11 @@ function navigateLB(dir) {
   lbImg.src = c.img;
 }
 
-// Wheel zoom (zoom towards cursor)
+// Wheel zoom
 viewport.addEventListener('wheel', (e) => {
   e.preventDefault();
   const rect = viewport.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
   const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
   const newScale = Math.min(Math.max(scale * factor, 0.1), 5);
   panX = mx - (mx - panX) * (newScale / scale);
@@ -591,10 +440,8 @@ viewport.addEventListener('wheel', (e) => {
 viewport.addEventListener('mousedown', (e) => {
   if (e.button !== 0) return;
   isDragging = true;
-  dragStartX = e.clientX;
-  dragStartY = e.clientY;
-  startPanX = panX;
-  startPanY = panY;
+  dragStartX = e.clientX; dragStartY = e.clientY;
+  startPanX = panX; startPanY = panY;
   viewport.classList.add('dragging');
 });
 window.addEventListener('mousemove', (e) => {
@@ -603,20 +450,15 @@ window.addEventListener('mousemove', (e) => {
   panY = startPanY + (e.clientY - dragStartY);
   updateTransform();
 });
-window.addEventListener('mouseup', () => {
-  isDragging = false;
-  viewport.classList.remove('dragging');
-});
+window.addEventListener('mouseup', () => { isDragging = false; viewport.classList.remove('dragging'); });
 
-// Touch support for mobile
+// Touch
 let lastTouchDist = 0;
 viewport.addEventListener('touchstart', (e) => {
   if (e.touches.length === 1) {
     isDragging = true;
-    dragStartX = e.touches[0].clientX;
-    dragStartY = e.touches[0].clientY;
-    startPanX = panX;
-    startPanY = panY;
+    dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY;
+    startPanX = panX; startPanY = panY;
   } else if (e.touches.length === 2) {
     isDragging = false;
     lastTouchDist = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY);
@@ -630,11 +472,10 @@ viewport.addEventListener('touchmove', (e) => {
     updateTransform();
   } else if (e.touches.length === 2) {
     const dist = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY);
-    const factor = dist / lastTouchDist;
     const rect = viewport.getBoundingClientRect();
     const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
     const my = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
-    const newScale = Math.min(Math.max(scale * factor, 0.1), 5);
+    const newScale = Math.min(Math.max(scale * (dist / lastTouchDist), 0.1), 5);
     panX = mx - (mx - panX) * (newScale / scale);
     panY = my - (my - panY) * (newScale / scale);
     scale = newScale;
@@ -644,21 +485,16 @@ viewport.addEventListener('touchmove', (e) => {
 }, { passive: false });
 viewport.addEventListener('touchend', () => { isDragging = false; });
 
-// Double click to toggle zoom
+// Double click toggle
 viewport.addEventListener('dblclick', (e) => {
   const rect = viewport.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
   if (scale < 0.9) {
-    // Zoom to 100% at cursor
-    const newScale = 1;
-    panX = mx - (mx - panX) * (newScale / scale);
-    panY = my - (my - panY) * (newScale / scale);
-    scale = newScale;
-    updateTransform();
-  } else {
-    zoomFit();
-  }
+    const ns = 1;
+    panX = mx - (mx - panX) * (ns / scale);
+    panY = my - (my - panY) * (ns / scale);
+    scale = ns; updateTransform();
+  } else { zoomFit(); }
 });
 
 // Keyboard
@@ -684,25 +520,15 @@ function drawArrows() {
   const canvasRect = canvas.getBoundingClientRect();
 
   const connections = [
-    // 商城推薦: 列表 → 詳情
     { from: 'recommend-list', to: 'recommend-detail', color: '#2ecc71', marker: 'arrowGreen' },
-    // 低價出清: 列表 → 詳情
     { from: 'clearance-list', to: 'clearance-detail', color: '#3498db', marker: 'arrowBlue' },
-    // 商城推薦詳情 → 一番賞
     { from: 'recommend-detail', to: 'lottery-01', color: '#2ecc71', marker: 'arrowGreen', fromSide: 'bottom', toSide: 'top' },
-    // 低價出清詳情 → 一番賞
     { from: 'clearance-detail', to: 'lottery-01', color: '#3498db', marker: 'arrowBlue', fromSide: 'bottom', toSide: 'top' },
-    // 一番賞 01 → 02
     { from: 'lottery-01', to: 'lottery-02', color: '#e74c3c', marker: 'arrowRed' },
-    // 一番賞 02 → 03
     { from: 'lottery-02', to: 'lottery-03', color: '#e74c3c', marker: 'arrowRed' },
-    // 一番賞 03 → 購物車
     { from: 'lottery-03', to: 'cart-confirm', color: '#e67e22', marker: 'arrowOrange' },
-    // 購物車確認 → 申請出貨
     { from: 'cart-confirm', to: 'cart-ship', color: '#e67e22', marker: 'arrowOrange' },
-    // 購物車 → 會員獎品紀錄
     { from: 'cart-ship', to: 'member-prizes', color: '#9b59b6', marker: 'arrowPurple', fromSide: 'bottom', toSide: 'top' },
-    // 會員獎品紀錄 ↔ 放棄紀錄
     { from: 'member-prizes', to: 'member-abandon', color: '#9b59b6', marker: 'arrowPurple' },
   ];
 
@@ -715,39 +541,31 @@ function drawArrows() {
 
     const fromRect = fromEl.getBoundingClientRect();
     const toRect = toEl.getBoundingClientRect();
-
-    let x1, y1, x2, y2;
-
     const fromSide = conn.fromSide || 'right';
     const toSide = conn.toSide || 'left';
+    let x1, y1, x2, y2;
 
-    // Calculate from point
     if (fromSide === 'right') {
       x1 = fromRect.right - canvasRect.left;
       y1 = fromRect.top + fromRect.height / 2 - canvasRect.top;
-    } else if (fromSide === 'bottom') {
+    } else {
       x1 = fromRect.left + fromRect.width / 2 - canvasRect.left;
       y1 = fromRect.bottom - canvasRect.top;
     }
-
-    // Calculate to point
     if (toSide === 'left') {
       x2 = toRect.left - canvasRect.left;
       y2 = toRect.top + toRect.height / 2 - canvasRect.top;
-    } else if (toSide === 'top') {
+    } else {
       x2 = toRect.left + toRect.width / 2 - canvasRect.left;
       y2 = toRect.top - canvasRect.top;
     }
 
-    // Bezier curve
     let cx1, cy1, cx2, cy2;
     if (fromSide === 'right' && toSide === 'left') {
       const midX = (x1 + x2) / 2;
-      cx1 = midX; cy1 = y1;
-      cx2 = midX; cy2 = y2;
+      cx1 = midX; cy1 = y1; cx2 = midX; cy2 = y2;
     } else {
-      cx1 = x1; cy1 = (y1 + y2) / 2;
-      cx2 = x2; cy2 = (y1 + y2) / 2;
+      cx1 = x1; cy1 = (y1 + y2) / 2; cx2 = x2; cy2 = (y1 + y2) / 2;
     }
 
     pathsHTML += `<path d="M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}"
@@ -755,26 +573,24 @@ function drawArrows() {
       marker-end="url(#${conn.marker})" opacity="0.7" />`;
   });
 
-  // Add a curved return arrow from lottery-03 back to lottery-01
+  // Return arrow: lottery-03 → lottery-01
   const l03 = document.getElementById('lottery-03');
   const l01 = document.getElementById('lottery-01');
   if (l03 && l01) {
-    const l03Rect = l03.getBoundingClientRect();
-    const l01Rect = l01.getBoundingClientRect();
-    const x1 = l03Rect.left + l03Rect.width / 2 - canvasRect.left;
-    const y1 = l03Rect.bottom - canvasRect.top;
-    const x2 = l01Rect.left + l01Rect.width / 2 - canvasRect.left;
-    const y2 = l01Rect.bottom - canvasRect.top;
-    pathsHTML += `<path d="M ${x1} ${y1} C ${x1} ${y1 + 60}, ${x2} ${y2 + 60}, ${x2} ${y2}"
+    const l03R = l03.getBoundingClientRect();
+    const l01R = l01.getBoundingClientRect();
+    const x1 = l03R.left + l03R.width / 2 - canvasRect.left;
+    const y1 = l03R.bottom - canvasRect.top;
+    const x2 = l01R.left + l01R.width / 2 - canvasRect.left;
+    const y2 = l01R.bottom - canvasRect.top;
+    pathsHTML += `<path d="M ${x1} ${y1} C ${x1} ${y1 + 50}, ${x2} ${y2 + 50}, ${x2} ${y2}"
       fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6 4"
       marker-end="url(#arrowRed)" opacity="0.5" />`;
-    // Label for return
   }
 
   svg.innerHTML = svg.querySelector('defs').outerHTML + pathsHTML;
 }
 
-// Draw on load and resize
 window.addEventListener('load', () => setTimeout(drawArrows, 300));
 window.addEventListener('resize', drawArrows);
 </script>
