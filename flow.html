@@ -65,6 +65,72 @@
     text-align: center;
   }
 
+  /* ── Discussion panel ── */
+  .discuss-panel {
+    margin: 12px auto 0;
+    padding: 14px 20px;
+    background: #fff;
+    border: 2px solid #8e44ad;
+    border-radius: 12px;
+    max-width: 1100px;
+    box-shadow: 0 2px 8px rgba(142,68,173,0.1);
+  }
+  .discuss-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #7b2d8e;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .discuss-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .discuss-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 2px solid #d4a8e8;
+    border-radius: 8px;
+    background: #faf5ff;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 14px;
+    font-weight: 600;
+    color: #7b2d8e;
+  }
+  .discuss-item:hover {
+    background: #8e44ad;
+    color: #fff;
+    border-color: #8e44ad;
+  }
+  .discuss-item .di-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #8e44ad;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .discuss-item:hover .di-num {
+    background: #fff;
+    color: #8e44ad;
+  }
+  .discuss-item .di-branch {
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+
   /* ── Header ── */
   .header {
     position: sticky;
@@ -658,6 +724,43 @@
     </div>
   </div>
 
+  <!-- ── Discussion panel ── -->
+  <div class="discuss-panel">
+    <div class="discuss-title">💬 待討論問題（點擊跳至對應位置）</div>
+    <div class="discuss-list">
+      <div class="discuss-item" onclick="scrollHighlight('q-cart-naming')">
+        <span class="di-num">1</span>
+        購物車命名 — 是否改名或併入會員？
+        <span class="di-branch">購物車</span>
+      </div>
+      <div class="discuss-item" onclick="scrollHighlight('q-ship-success')">
+        <span class="di-num">2</span>
+        出貨成功 — 獨立頁 or 彈窗？
+        <span class="di-branch">購物車</span>
+      </div>
+      <div class="discuss-item" onclick="scrollHighlight('q-register-confirm')">
+        <span class="di-num">3</span>
+        註冊成功確認 — 需要獨立頁嗎？
+        <span class="di-branch">會員系統</span>
+      </div>
+      <div class="discuss-item" onclick="scrollHighlight('q-profile-confirm')">
+        <span class="di-num">4</span>
+        資料修改確認 — 需要獨立頁嗎？
+        <span class="di-branch">會員系統</span>
+      </div>
+      <div class="discuss-item" onclick="scrollHighlight('q-points-info')">
+        <span class="di-num">5</span>
+        積分說明頁 — 積分vs代幣差異
+        <span class="di-branch">會員系統</span>
+      </div>
+      <div class="discuss-item" onclick="scrollHighlight('q-points-usage')">
+        <span class="di-num">6</span>
+        積分使用方式 — 折抵 or 兌換商品？
+        <span class="di-branch">會員系統</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Stub from root down to horizontal connector -->
   <div class="root-stub"></div>
 
@@ -829,7 +932,7 @@
         <div class="branch-header bh-orange">購物車<br><span style="font-size:10px;font-weight:400;">報 8 頁 → 用 4 頁</span></div>
 
         <!-- 討論：購物車命名 -->
-        <div class="tree-card designer-q" style="margin-top:8px;">
+        <div class="tree-card designer-q" id="q-cart-naming" style="margin-top:8px;">
           <div class="designer-q-body" style="min-height:auto;padding:10px;">
             <div class="designer-q-title">命名討論</div>
             <div class="designer-q-desc">此站無傳統購物車<br>功能偏向「獎品管理」<br>是否併入會員系統？<br>參考：OneOne 做法</div>
@@ -874,7 +977,7 @@
         <div class="tree-line orange" style="height:10px;"></div>
 
         <!-- 出貨成功確認：待討論 -->
-        <div class="tree-card designer-q">
+        <div class="tree-card designer-q" id="q-ship-success">
           <div class="designer-q-body">
             <div class="designer-q-icon">💬</div>
             <div class="designer-q-title">出貨成功確認</div>
@@ -1047,7 +1150,7 @@
         <div class="tree-line purple"></div>
 
         <!-- 註冊成功確認：待討論 -->
-        <div class="tree-card designer-q" style="width:186px;">
+        <div class="tree-card designer-q" id="q-register-confirm" style="width:206px;">
           <div class="designer-q-body">
             <div class="designer-q-icon">💬</div>
             <div class="designer-q-title">註冊成功確認</div>
@@ -1087,7 +1190,7 @@
         <div class="tree-line purple"></div>
 
         <!-- 資料修改確認：待討論 -->
-        <div class="tree-card designer-q" style="width:186px;">
+        <div class="tree-card designer-q" id="q-profile-confirm" style="width:206px;">
           <div class="designer-q-body">
             <div class="designer-q-icon">💬</div>
             <div class="designer-q-title">資料修改確認</div>
@@ -1107,7 +1210,7 @@
         <div class="tree-line purple"></div>
 
         <!-- 設計師提問：積分說明 -->
-        <div class="tree-card designer-q" style="width:186px;">
+        <div class="tree-card designer-q" id="q-points-info" style="width:206px;">
           <div class="designer-q-body">
             <div class="designer-q-icon">💬</div>
             <div class="designer-q-title">積分說明頁？</div>
@@ -1118,7 +1221,7 @@
         <div class="tree-line purple"></div>
 
         <!-- 設計師提問：積分兌換 -->
-        <div class="tree-card designer-q" style="width:186px;">
+        <div class="tree-card designer-q" id="q-points-usage" style="width:206px;">
           <div class="designer-q-body">
             <div class="designer-q-icon">💬</div>
             <div class="designer-q-title">積分使用方式？</div>
