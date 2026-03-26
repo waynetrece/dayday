@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日日欣 — 第三階段 頁面流程圖</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+
+  /* Header */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(135deg, #1a1a1a, #111);
+    border-bottom: 1px solid #333;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header h1 {
+    font-size: 20px;
+    color: #d4a853;
+    font-weight: 600;
+  }
+  .header .badge {
+    background: #d4a853;
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .header .subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-left: 16px;
+  }
+
+  /* Legend */
+  .legend {
+    position: sticky;
+    top: 57px;
+    z-index: 99;
+    background: #111;
+    border-bottom: 1px solid #222;
+    padding: 10px 32px;
+    display: flex;
+    gap: 24px;
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+
+  /* Canvas */
+  .canvas {
+    position: relative;
+    width: 2400px;
+    min-height: 2600px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+
+  /* SVG Arrows */
+  .arrows-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Page Card */
+  .page-card {
+    position: absolute;
+    background: #1a1a1a;
+    border: 2px solid #333;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    z-index: 2;
+    width: 240px;
+  }
+  .page-card:hover {
+    border-color: #d4a853;
+    transform: scale(1.03);
+    box-shadow: 0 8px 32px rgba(212, 168, 83, 0.2);
+    z-index: 10;
+  }
+  .page-card img {
+    width: 100%;
+    display: block;
+    border-bottom: 1px solid #333;
+  }
+  .page-card .card-label {
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .page-card .card-tag {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  /* Module colors */
+  .mod-lottery { border-color: #e74c3c; }
+  .mod-lottery .card-label { color: #e74c3c; }
+  .mod-clearance { border-color: #3498db; }
+  .mod-clearance .card-label { color: #3498db; }
+  .mod-recommend { border-color: #2ecc71; }
+  .mod-recommend .card-label { color: #2ecc71; }
+  .mod-cart { border-color: #e67e22; }
+  .mod-cart .card-label { color: #e67e22; }
+  .mod-member { border-color: #9b59b6; }
+  .mod-member .card-label { color: #9b59b6; }
+  .mod-other { border-color: #d4a853; }
+  .mod-other .card-label { color: #d4a853; }
+
+  /* Module Group Labels */
+  .module-group {
+    position: absolute;
+    z-index: 1;
+    border-radius: 16px;
+    padding: 16px;
+  }
+  .module-group .group-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    padding: 4px 12px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 82vh;
+    border-radius: 8px;
+    box-shadow: 0 0 60px rgba(0,0,0,0.8);
+  }
+  .lightbox .lb-title {
+    color: #d4a853;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 16px;
+  }
+  .lightbox .lb-close {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    font-size: 32px;
+    color: #fff;
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+  }
+  .lightbox .lb-close:hover { background: rgba(255,255,255,0.2); }
+  .lightbox .lb-nav {
+    color: #888;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  /* Nav indicator */
+  .nav-bar-indicator {
+    position: absolute;
+    z-index: 3;
+    background: linear-gradient(135deg, #1a1a1a, #222);
+    border: 2px solid #d4a853;
+    border-radius: 12px;
+    padding: 16px 24px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .nav-item {
+    font-size: 12px;
+    color: #d4a853;
+    padding: 6px 12px;
+    border: 1px solid #d4a853;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-item:hover {
+    background: #d4a853;
+    color: #000;
+  }
+
+  /* Arrow label */
+  .arrow-label {
+    position: absolute;
+    z-index: 5;
+    font-size: 11px;
+    color: #aaa;
+    background: #0a0a0a;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div style="display:flex; align-items:center;">
+    <h1>日日欣 オンラインくじ</h1>
+    <span class="subtitle">第三階段 — 內頁流程圖</span>
+  </div>
+  <div class="badge">15 頁面 · 6 模組</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>一番賞抽獎</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3498db"></div>低價出清</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div>商城推薦</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>購物車</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div>會員系統</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#d4a853"></div>獨立頁面</div>
+  <div class="legend-item" style="margin-left:auto; color:#666;">點擊卡片可放大查看</div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lb-close" onclick="closeLightbox()">&times;</div>
+  <img id="lb-img" src="" alt="">
+  <div class="lb-title" id="lb-title"></div>
+  <div class="lb-nav">按 ESC 或點擊任意處關閉 · ← → 切換頁面</div>
+</div>
+
+<div class="canvas" id="canvas">
+
+  <!-- SVG Arrows Layer -->
+  <svg class="arrows-svg" id="arrowsSvg">
+    <defs>
+      <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#e74c3c" />
+      </marker>
+      <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#3498db" />
+      </marker>
+      <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#2ecc71" />
+      </marker>
+      <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#e67e22" />
+      </marker>
+      <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#9b59b6" />
+      </marker>
+      <marker id="arrowGold" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#d4a853" />
+      </marker>
+    </defs>
+  </svg>
+
+  <!-- NAV BAR -->
+  <div class="nav-bar-indicator" style="top: 30px; left: 400px; width: 1200px;" id="navbar">
+    <div style="font-size: 14px; font-weight: 700; color: #d4a853; width: 100%; text-align: center; margin-bottom: 4px;">
+      頂部導覽列 Navigation Bar
+    </div>
+    <div class="nav-item" onclick="scrollToCard('recommend-list')">商城推薦</div>
+    <div class="nav-item" onclick="scrollToCard('clearance-list')">低價出清</div>
+    <div class="nav-item" onclick="scrollToCard('buy-token')">購買代幣</div>
+    <div class="nav-item" onclick="scrollToCard('lottery-01')">一番賞</div>
+    <div class="nav-item" onclick="scrollToCard('faq')">客服中心</div>
+    <div class="nav-item" onclick="scrollToCard('contact')">聯絡我們</div>
+    <div class="nav-item" onclick="scrollToCard('member-prizes')">👤 會員</div>
+    <div class="nav-item" onclick="scrollToCard('cart-confirm')">🛒 購物車</div>
+  </div>
+
+  <!-- ROW 1: 商城推薦 -->
+  <div class="page-card mod-recommend" id="recommend-list" style="top: 200px; left: 80px;"
+       onclick="openLightbox('images/商城推薦_列表.jpg', '商城推薦 — 列表頁')">
+    <img src="images/商城推薦_列表.jpg" alt="商城推薦 列表">
+    <div class="card-label">商城推薦 — 列表<span class="card-tag">商品瀏覽 · 分類篩選</span></div>
+  </div>
+
+  <div class="page-card mod-recommend" id="recommend-detail" style="top: 200px; left: 400px;"
+       onclick="openLightbox('images/商城推薦_詳情.jpg', '商城推薦 — 詳情頁')">
+    <img src="images/商城推薦_詳情.jpg" alt="商城推薦 詳情">
+    <div class="card-label">商城推薦 — 詳情<span class="card-tag">抽取 · 剩餘全包</span></div>
+  </div>
+
+  <!-- ROW 1: 低價出清 -->
+  <div class="page-card mod-clearance" id="clearance-list" style="top: 200px; left: 780px;"
+       onclick="openLightbox('images/低價出清_列表.jpg', '低價出清 — 列表頁')">
+    <img src="images/低價出清_列表.jpg" alt="低價出清 列表">
+    <div class="card-label">低價出清 — 列表<span class="card-tag">商品瀏覽 · 分類篩選</span></div>
+  </div>
+
+  <div class="page-card mod-clearance" id="clearance-detail" style="top: 200px; left: 1100px;"
+       onclick="openLightbox('images/低價出清_詳情.jpg', '低價出清 — 詳情頁')">
+    <img src="images/低價出清_詳情.jpg" alt="低價出清 詳情">
+    <div class="card-label">低價出清 — 詳情<span class="card-tag">抽取 · 剩餘全包</span></div>
+  </div>
+
+  <!-- ROW 2: 一番賞流程 -->
+  <div class="page-card mod-lottery" id="lottery-01" style="top: 750px; left: 80px;"
+       onclick="openLightbox('images/一番賞_抽獎頁面_01.jpg', '一番賞 — 選號碼')">
+    <img src="images/一番賞_抽獎頁面_01.jpg" alt="一番賞 01">
+    <div class="card-label">一番賞 — 選號碼<span class="card-tag">獎項列表 · 號碼盤 · 選號</span></div>
+  </div>
+
+  <div class="page-card mod-lottery" id="lottery-02" style="top: 750px; left: 400px;"
+       onclick="openLightbox('images/一番賞_抽獎頁面_02.jpg', '一番賞 — 確認抽取（彈窗）')">
+    <img src="images/一番賞_抽獎頁面_02.jpg" alt="一番賞 02">
+    <div class="card-label">一番賞 — 確認抽取<span class="card-tag">彈窗 · 消耗代幣確認</span></div>
+  </div>
+
+  <div class="page-card mod-lottery" id="lottery-03" style="top: 750px; left: 720px;"
+       onclick="openLightbox('images/一番賞_抽獎頁面_03.jpg', '一番賞 — 抽獎結果（彈窗）')">
+    <img src="images/一番賞_抽獎頁面_03.jpg" alt="一番賞 03">
+    <div class="card-label">一番賞 — 抽獎結果<span class="card-tag">彈窗 · 前往收貨 / 繼續購買</span></div>
+  </div>
+
+  <!-- ROW 2: 購物車 -->
+  <div class="page-card mod-cart" id="cart-confirm" style="top: 750px; left: 1100px;"
+       onclick="openLightbox('images/購物車_獎品確認.jpg', '購物車 — 獎品確認')">
+    <img src="images/購物車_獎品確認.jpg" alt="購物車 獎品確認">
+    <div class="card-label">購物車 — 獎品確認<span class="card-tag">勾選獎品 · 申請出貨 / 放棄</span></div>
+  </div>
+
+  <div class="page-card mod-cart" id="cart-ship" style="top: 750px; left: 1420px;"
+       onclick="openLightbox('images/購物車_申請出貨.jpg', '購物車 — 申請出貨')">
+    <img src="images/購物車_申請出貨.jpg" alt="購物車 申請出貨">
+    <div class="card-label">購物車 — 申請出貨<span class="card-tag">填寫收貨資料 · 確認出貨</span></div>
+  </div>
+
+  <!-- ROW 3: 會員系統 -->
+  <div class="page-card mod-member" id="member-prizes" style="top: 1300px; left: 1100px;"
+       onclick="openLightbox('images/會員系統_獎品紀錄.jpg', '會員 — 獎品紀錄')">
+    <img src="images/會員系統_獎品紀錄.jpg" alt="會員 獎品紀錄">
+    <div class="card-label">會員 — 獎品紀錄<span class="card-tag">訂單列表 · 展開明細</span></div>
+  </div>
+
+  <div class="page-card mod-member" id="member-abandon" style="top: 1300px; left: 1420px;"
+       onclick="openLightbox('images/會員系統_放棄獎品紀錄.jpg', '會員 — 放棄獎品紀錄')">
+    <img src="images/會員系統_放棄獎品紀錄.jpg" alt="會員 放棄獎品紀錄">
+    <div class="card-label">會員 — 放棄獎品紀錄<span class="card-tag">放棄歷史 · 代幣數 · 時間</span></div>
+  </div>
+
+  <!-- ROW 3: 獨立頁面 -->
+  <div class="page-card mod-other" id="buy-token" style="top: 1300px; left: 80px;"
+       onclick="openLightbox('images/購買代幣.jpg', '購買代幣')">
+    <img src="images/購買代幣.jpg" alt="購買代幣">
+    <div class="card-label">購買代幣<span class="card-tag">三步驟：金額 → 發票 → 付款</span></div>
+  </div>
+
+  <div class="page-card mod-other" id="faq" style="top: 1300px; left: 400px;"
+       onclick="openLightbox('images/客服中心.jpg', '客服中心')">
+    <img src="images/客服中心.jpg" alt="客服中心">
+    <div class="card-label">客服中心<span class="card-tag">FAQ 常見問題</span></div>
+  </div>
+
+  <div class="page-card mod-other" id="contact" style="top: 1300px; left: 720px;"
+       onclick="openLightbox('images/聯絡我們.jpg', '聯絡我們')">
+    <img src="images/聯絡我們.jpg" alt="聯絡我們">
+    <div class="card-label">聯絡我們<span class="card-tag">表單 · reCAPTCHA</span></div>
+  </div>
+
+  <div class="page-card mod-other" id="privacy" style="top: 1300px; left: 80px; top: 1800px;"
+       onclick="openLightbox('images/隱私權政策.jpg', '隱私權政策')">
+    <img src="images/隱私權政策.jpg" alt="隱私權政策">
+    <div class="card-label">隱私權政策<span class="card-tag">Footer 連結</span></div>
+  </div>
+
+  <!-- Arrow Labels -->
+  <div class="arrow-label" style="top: 430px; left: 310px;">點擊商品</div>
+  <div class="arrow-label" style="top: 430px; left: 940px;">點擊商品</div>
+  <div class="arrow-label" style="top: 660px; left: 520px;">按「抽取」</div>
+  <div class="arrow-label" style="top: 660px; left: 1180px;">按「抽取」</div>
+  <div class="arrow-label" style="top: 980px; left: 275px;">按「抽取」</div>
+  <div class="arrow-label" style="top: 980px; left: 590px;">按「確認」</div>
+  <div class="arrow-label" style="top: 980px; left: 900px;">「前往收貨」</div>
+  <div class="arrow-label" style="top: 980px; left: 1280px;">「申請出貨」</div>
+  <div class="arrow-label" style="top: 1230px; left: 1280px;">查看紀錄</div>
+
+</div>
+
+<script>
+// Lightbox
+const allCards = [
+  { id: 'recommend-list', img: 'images/商城推薦_列表.jpg', title: '商城推薦 — 列表頁' },
+  { id: 'recommend-detail', img: 'images/商城推薦_詳情.jpg', title: '商城推薦 — 詳情頁' },
+  { id: 'clearance-list', img: 'images/低價出清_列表.jpg', title: '低價出清 — 列表頁' },
+  { id: 'clearance-detail', img: 'images/低價出清_詳情.jpg', title: '低價出清 — 詳情頁' },
+  { id: 'lottery-01', img: 'images/一番賞_抽獎頁面_01.jpg', title: '一番賞 — 選號碼' },
+  { id: 'lottery-02', img: 'images/一番賞_抽獎頁面_02.jpg', title: '一番賞 — 確認抽取' },
+  { id: 'lottery-03', img: 'images/一番賞_抽獎頁面_03.jpg', title: '一番賞 — 抽獎結果' },
+  { id: 'cart-confirm', img: 'images/購物車_獎品確認.jpg', title: '購物車 — 獎品確認' },
+  { id: 'cart-ship', img: 'images/購物車_申請出貨.jpg', title: '購物車 — 申請出貨' },
+  { id: 'member-prizes', img: 'images/會員系統_獎品紀錄.jpg', title: '會員 — 獎品紀錄' },
+  { id: 'member-abandon', img: 'images/會員系統_放棄獎品紀錄.jpg', title: '會員 — 放棄獎品紀錄' },
+  { id: 'buy-token', img: 'images/購買代幣.jpg', title: '購買代幣' },
+  { id: 'faq', img: 'images/客服中心.jpg', title: '客服中心' },
+  { id: 'contact', img: 'images/聯絡我們.jpg', title: '聯絡我們' },
+  { id: 'privacy', img: 'images/隱私權政策.jpg', title: '隱私權政策' },
+];
+
+let currentIdx = 0;
+
+function openLightbox(src, title) {
+  currentIdx = allCards.findIndex(c => c.img === src);
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb-title').textContent = title;
+  document.getElementById('lightbox').classList.add('active');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+}
+
+function navigate(dir) {
+  currentIdx = (currentIdx + dir + allCards.length) % allCards.length;
+  const c = allCards[currentIdx];
+  document.getElementById('lb-img').src = c.img;
+  document.getElementById('lb-title').textContent = c.title;
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navigate(-1);
+  if (e.key === 'ArrowRight') navigate(1);
+});
+
+function scrollToCard(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+}
+
+// Draw arrows
+function drawArrows() {
+  const svg = document.getElementById('arrowsSvg');
+  const canvas = document.getElementById('canvas');
+  const canvasRect = canvas.getBoundingClientRect();
+
+  const connections = [
+    // 商城推薦: 列表 → 詳情
+    { from: 'recommend-list', to: 'recommend-detail', color: '#2ecc71', marker: 'arrowGreen' },
+    // 低價出清: 列表 → 詳情
+    { from: 'clearance-list', to: 'clearance-detail', color: '#3498db', marker: 'arrowBlue' },
+    // 商城推薦詳情 → 一番賞
+    { from: 'recommend-detail', to: 'lottery-01', color: '#2ecc71', marker: 'arrowGreen', fromSide: 'bottom', toSide: 'top' },
+    // 低價出清詳情 → 一番賞
+    { from: 'clearance-detail', to: 'lottery-01', color: '#3498db', marker: 'arrowBlue', fromSide: 'bottom', toSide: 'top' },
+    // 一番賞 01 → 02
+    { from: 'lottery-01', to: 'lottery-02', color: '#e74c3c', marker: 'arrowRed' },
+    // 一番賞 02 → 03
+    { from: 'lottery-02', to: 'lottery-03', color: '#e74c3c', marker: 'arrowRed' },
+    // 一番賞 03 → 購物車
+    { from: 'lottery-03', to: 'cart-confirm', color: '#e67e22', marker: 'arrowOrange' },
+    // 購物車確認 → 申請出貨
+    { from: 'cart-confirm', to: 'cart-ship', color: '#e67e22', marker: 'arrowOrange' },
+    // 購物車 → 會員獎品紀錄
+    { from: 'cart-ship', to: 'member-prizes', color: '#9b59b6', marker: 'arrowPurple', fromSide: 'bottom', toSide: 'top' },
+    // 會員獎品紀錄 ↔ 放棄紀錄
+    { from: 'member-prizes', to: 'member-abandon', color: '#9b59b6', marker: 'arrowPurple' },
+  ];
+
+  let pathsHTML = '';
+
+  connections.forEach(conn => {
+    const fromEl = document.getElementById(conn.from);
+    const toEl = document.getElementById(conn.to);
+    if (!fromEl || !toEl) return;
+
+    const fromRect = fromEl.getBoundingClientRect();
+    const toRect = toEl.getBoundingClientRect();
+
+    let x1, y1, x2, y2;
+
+    const fromSide = conn.fromSide || 'right';
+    const toSide = conn.toSide || 'left';
+
+    // Calculate from point
+    if (fromSide === 'right') {
+      x1 = fromRect.right - canvasRect.left;
+      y1 = fromRect.top + fromRect.height / 2 - canvasRect.top;
+    } else if (fromSide === 'bottom') {
+      x1 = fromRect.left + fromRect.width / 2 - canvasRect.left;
+      y1 = fromRect.bottom - canvasRect.top;
+    }
+
+    // Calculate to point
+    if (toSide === 'left') {
+      x2 = toRect.left - canvasRect.left;
+      y2 = toRect.top + toRect.height / 2 - canvasRect.top;
+    } else if (toSide === 'top') {
+      x2 = toRect.left + toRect.width / 2 - canvasRect.left;
+      y2 = toRect.top - canvasRect.top;
+    }
+
+    // Bezier curve
+    let cx1, cy1, cx2, cy2;
+    if (fromSide === 'right' && toSide === 'left') {
+      const midX = (x1 + x2) / 2;
+      cx1 = midX; cy1 = y1;
+      cx2 = midX; cy2 = y2;
+    } else {
+      cx1 = x1; cy1 = (y1 + y2) / 2;
+      cx2 = x2; cy2 = (y1 + y2) / 2;
+    }
+
+    pathsHTML += `<path d="M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}"
+      fill="none" stroke="${conn.color}" stroke-width="2.5" stroke-dasharray="8 4"
+      marker-end="url(#${conn.marker})" opacity="0.7" />`;
+  });
+
+  // Add a curved return arrow from lottery-03 back to lottery-01
+  const l03 = document.getElementById('lottery-03');
+  const l01 = document.getElementById('lottery-01');
+  if (l03 && l01) {
+    const l03Rect = l03.getBoundingClientRect();
+    const l01Rect = l01.getBoundingClientRect();
+    const x1 = l03Rect.left + l03Rect.width / 2 - canvasRect.left;
+    const y1 = l03Rect.bottom - canvasRect.top;
+    const x2 = l01Rect.left + l01Rect.width / 2 - canvasRect.left;
+    const y2 = l01Rect.bottom - canvasRect.top;
+    pathsHTML += `<path d="M ${x1} ${y1} C ${x1} ${y1 + 60}, ${x2} ${y2 + 60}, ${x2} ${y2}"
+      fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6 4"
+      marker-end="url(#arrowRed)" opacity="0.5" />`;
+    // Label for return
+  }
+
+  svg.innerHTML = svg.querySelector('defs').outerHTML + pathsHTML;
+}
+
+// Draw on load and resize
+window.addEventListener('load', () => setTimeout(drawArrows, 300));
+window.addEventListener('resize', drawArrows);
+</script>
+
+</body>
+</html>
