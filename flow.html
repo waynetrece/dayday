@@ -25,6 +25,46 @@
   body.drag-panning { cursor: grabbing !important; }
   body.drag-panning * { cursor: grabbing !important; user-select: none !important; }
 
+  /* ── Zoom controls ── */
+  .zoom-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 6px 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  }
+  .zoom-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    transition: all 0.15s;
+  }
+  .zoom-btn:hover { background: #f0f0f0; color: #333; }
+  .zoom-btn:active { background: #e0e0e0; }
+  .zoom-level {
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    min-width: 50px;
+    text-align: center;
+  }
+
   /* ── Header ── */
   .header {
     position: sticky;
@@ -528,8 +568,16 @@
 </head>
 <body>
 
+<!-- ── Zoom controls ── -->
+<div class="zoom-controls">
+  <button class="zoom-btn" onclick="pageZoom(-0.1)" title="縮小">−</button>
+  <span class="zoom-level" id="zoom-level">100%</span>
+  <button class="zoom-btn" onclick="pageZoom(0.1)" title="放大">+</button>
+  <button class="zoom-btn" onclick="pageZoomReset()" title="重置" style="font-size:13px;">↺</button>
+</div>
+
 <!-- Page wrapper for full-width sync -->
-<div class="page-wrap">
+<div class="page-wrap" id="page-wrap">
 
 <!-- ── Header ── -->
 <div class="header">
@@ -779,6 +827,16 @@
       <div class="branch-col">
         <div class="branch-stub orange"></div>
         <div class="branch-header bh-orange">購物車<br><span style="font-size:10px;font-weight:400;">報 8 頁 → 用 4 頁</span></div>
+
+        <!-- 討論：購物車命名 -->
+        <div class="tree-card designer-q" style="margin-top:8px;">
+          <div class="designer-q-body" style="min-height:auto;padding:10px;">
+            <div class="designer-q-title">命名討論</div>
+            <div class="designer-q-desc">此站無傳統購物車<br>功能偏向「獎品管理」<br>是否併入會員系統？<br>參考：OneOne 做法</div>
+          </div>
+          <div class="designer-q-label"><span class="designer-q-tag">待討論</span></div>
+        </div>
+
         <div class="tree-line orange"></div>
 
         <!-- 獎品確認 -->
@@ -1428,6 +1486,39 @@ document.addEventListener('keydown', (e) => {
   if (e.key === '-')           zoomTo(Math.max(scale / 1.2, 0.1));
   if (e.key === '0')           zoomFit();
 });
+
+// ── Page zoom (scale the whole canvas) ──
+let pageScale = 1;
+const pageWrap = document.getElementById('page-wrap');
+
+function updatePageZoom() {
+  pageWrap.style.transformOrigin = 'top left';
+  pageWrap.style.transform = `scale(${pageScale})`;
+  document.getElementById('zoom-level').textContent = Math.round(pageScale * 100) + '%';
+  // Redraw arrows after zoom
+  setTimeout(drawCrossArrows, 100);
+}
+
+function pageZoom(delta) {
+  pageScale = Math.min(Math.max(pageScale + delta, 0.3), 2);
+  updatePageZoom();
+}
+
+function pageZoomReset() {
+  pageScale = 1;
+  updatePageZoom();
+}
+
+// Ctrl+scroll to zoom page
+document.addEventListener('wheel', (e) => {
+  if (document.getElementById('lightbox').classList.contains('active')) return;
+  if (e.ctrlKey || e.metaKey) {
+    e.preventDefault();
+    const delta = e.deltaY < 0 ? 0.05 : -0.05;
+    pageScale = Math.min(Math.max(pageScale + delta, 0.3), 2);
+    updatePageZoom();
+  }
+}, { passive: false });
 
 // ── Drag-to-pan on page (scroll by dragging background) ──
 (function() {
