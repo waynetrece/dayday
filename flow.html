@@ -65,6 +65,33 @@
     text-align: center;
   }
 
+  /* ── Discussion toggle (hidden by default) ── */
+  body.hide-discuss .budget-bar,
+  body.hide-discuss .discuss-panel,
+  body.hide-discuss .tree-card.designer-q { display: none; }
+
+  .discuss-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 240px;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 8px 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #888;
+    transition: all 0.15s;
+  }
+  .discuss-toggle:hover { background: #f8f0ff; border-color: #8e44ad; color: #8e44ad; }
+  .discuss-toggle.active { background: #8e44ad; color: #fff; border-color: #8e44ad; }
+
   /* ── Discussion panel ── */
   .discuss-panel {
     margin: 12px auto 0;
@@ -632,7 +659,12 @@
   }
 </style>
 </head>
-<body>
+<body class="hide-discuss">
+
+<!-- ── Discussion toggle ── -->
+<button class="discuss-toggle" id="discuss-toggle" onclick="toggleDiscuss()" title="顯示/隱藏內部討論">
+  討論筆記
+</button>
 
 <!-- ── Zoom controls ── -->
 <div class="zoom-controls">
@@ -1389,6 +1421,12 @@ viewport.addEventListener('dblclick', (e) => {
     scale = ns; updateTransform();
   } else { zoomFit(); }
 });
+
+// ── Toggle discussion notes ──
+function toggleDiscuss() {
+  document.body.classList.toggle('hide-discuss');
+  document.getElementById('discuss-toggle').classList.toggle('active');
+}
 
 // ── Scroll + Highlight target card ──
 function scrollHighlight(targetId) {
