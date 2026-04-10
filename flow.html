@@ -65,10 +65,13 @@
     text-align: center;
   }
 
-  /* ── Discussion toggle (hidden by default) ── */
+  /* ── 客戶版隱藏內部討論/缺頁標示 ── */
   body.hide-discuss .budget-bar,
   body.hide-discuss .discuss-panel,
-  body.hide-discuss .tree-card.designer-q { display: none; }
+  body.hide-discuss .tree-card.designer-q,
+  body.hide-discuss .tree-card.missing,
+  body.hide-discuss .saved-tag,
+  body.hide-discuss .discuss-toggle { display: none; }
 
   .discuss-toggle {
     position: fixed;
@@ -659,10 +662,10 @@
   }
 </style>
 </head>
-<body>
+<body class="hide-discuss">
 
-<!-- ── Discussion toggle ── -->
-<button class="discuss-toggle active" id="discuss-toggle" onclick="toggleDiscuss()" title="顯示/隱藏內部討論">
+<!-- ── Discussion toggle (加 ?dev=1 於網址開啟) ── -->
+<button class="discuss-toggle" id="discuss-toggle" onclick="toggleDiscuss()" title="顯示/隱藏內部討論">
   討論筆記
 </button>
 
@@ -1439,6 +1442,12 @@ viewport.addEventListener('dblclick', (e) => {
 function toggleDiscuss() {
   document.body.classList.toggle('hide-discuss');
   document.getElementById('discuss-toggle').classList.toggle('active');
+}
+
+// ── Dev 模式：?dev=1 於網址自動開啟內部討論視圖 ──
+if (new URLSearchParams(location.search).has('dev')) {
+  document.body.classList.remove('hide-discuss');
+  document.getElementById('discuss-toggle').classList.add('active');
 }
 
 // ── Scroll + Highlight target card ──
