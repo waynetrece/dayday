@@ -659,10 +659,10 @@
   }
 </style>
 </head>
-<body class="hide-discuss">
+<body>
 
 <!-- ── Discussion toggle ── -->
-<button class="discuss-toggle" id="discuss-toggle" onclick="toggleDiscuss()" title="顯示/隱藏內部討論">
+<button class="discuss-toggle active" id="discuss-toggle" onclick="toggleDiscuss()" title="顯示/隱藏內部討論">
   討論筆記
 </button>
 
@@ -741,8 +741,8 @@
     </div>
     <div class="budget-item" style="background:#faf5ff;color:#7b2d8e;">
       <div class="label">待與設計師討論</div>
-      <div class="val">-4~5 頁？</div>
-      <div class="label">出貨明細 · 代幣確認 · 放棄確認 · 忘記密碼 · 積分FAQ</div>
+      <div class="val">-1~2 頁？</div>
+      <div class="label">剩：出貨明細 · 積分FAQ（已補：代幣確認×4 · 放棄確認 · 忘記密碼）</div>
     </div>
     <div class="budget-item budget-net">
       <div class="label">預估差額</div>
@@ -991,34 +991,46 @@
       </div>
 
       <!-- ══════════════════════════════════════
-           BRANCH 6: 購買代幣  (P3 green)
+           BRANCH 6: 購買代幣  (P3 green · 4 步驟)
       ══════════════════════════════════════ -->
       <div class="branch-col">
         <div class="branch-stub green"></div>
         <div class="branch-header bh-green">購買代幣</div>
         <div class="tree-line green"></div>
 
+        <!-- 步驟 1：選擇代幣數量 -->
         <div class="tree-card tc-p3"
-             onclick="openLightbox('images/購買代幣.jpg','購買代幣','buy-token')">
+             onclick="openLightbox('images/購買代幣_01.jpg','購買代幣 — 選擇數量','buy-token-01')">
           <span class="card-phase-badge">P3</span>
-          <img src="images/購買代幣.jpg" alt="購買代幣" loading="lazy">
-          <div class="card-label">購買代幣</div>
+          <img src="images/購買代幣_01.jpg" alt="購買代幣 選擇數量" loading="lazy">
+          <div class="card-label">① 選擇數量</div>
         </div>
         <div class="tree-line green"></div>
 
-        <div class="flow-action">
-          <span class="action-label">金額選擇 → 發票 → 付款</span>
+        <!-- 步驟 2：填寫發票資訊 -->
+        <div class="tree-card tc-p3"
+             onclick="openLightbox('images/購買代幣_02.jpg','購買代幣 — 填寫發票','buy-token-02')">
+          <span class="card-phase-badge">P3</span>
+          <img src="images/購買代幣_02.jpg" alt="購買代幣 填寫發票" loading="lazy">
+          <div class="card-label">② 填寫發票</div>
         </div>
         <div class="tree-line green"></div>
 
-        <!-- 購買確認頁：送出前確認 -->
-        <div class="tree-card missing">
-          <div class="missing-body">
-            <div class="missing-icon">❌</div>
-            <div class="missing-title">購買代幣確認</div>
-            <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">確認金額、發票資訊<br>送出後導向金流付款</div>
-          </div>
-          <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
+        <!-- 步驟 3：選擇付款方式 -->
+        <div class="tree-card tc-p3"
+             onclick="openLightbox('images/購買代幣_03.jpg','購買代幣 — 選擇付款','buy-token-03')">
+          <span class="card-phase-badge">P3</span>
+          <img src="images/購買代幣_03.jpg" alt="購買代幣 選擇付款" loading="lazy">
+          <div class="card-label">③ 選擇付款</div>
+        </div>
+        <div class="tree-line green"></div>
+
+        <!-- 步驟 4：確認付款 -->
+        <div class="tree-card tc-p3"
+             onclick="openLightbox('images/購買代幣_04.jpg','購買代幣 — 確認付款','buy-token-04')">
+          <span class="card-phase-badge">P3</span>
+          <img src="images/購買代幣_04.jpg" alt="購買代幣 確認付款" loading="lazy">
+          <div class="card-label">④ 確認付款</div>
         </div>
       </div>
 
@@ -1154,14 +1166,12 @@
         </div>
         <div class="tree-line purple"></div>
 
-        <!-- 忘記密碼：確認需要 -->
-        <div class="tree-card missing" style="width:186px;">
-          <div class="missing-body">
-            <div class="missing-icon">❌</div>
-            <div class="missing-title">忘記密碼</div>
-            <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">輸入 Email → 寄驗證信<br>→ 重設密碼</div>
-          </div>
-          <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
+        <!-- 忘記密碼：Modal on 登入頁 -->
+        <div class="tree-card tc-p1"
+             onclick="openLightbox('images/會員系統_忘記密碼.jpg','會員系統 — 忘記密碼','member-forgot')">
+          <span class="card-phase-badge">P1</span>
+          <img src="images/會員系統_忘記密碼.jpg" alt="會員系統 忘記密碼" loading="lazy">
+          <div class="card-label">忘記密碼<br><span class="saved-tag">登入頁 Modal</span></div>
         </div>
         <div class="tree-line purple"></div>
 
@@ -1227,14 +1237,12 @@
         </div>
         <div class="tree-line purple" style="height:10px;"></div>
 
-        <!-- Missing: 放棄獎品確認 -->
-        <div class="tree-card missing" style="width:186px;">
-          <div class="missing-body">
-            <div class="missing-icon">❌</div>
-            <div class="missing-title">放棄獎品確認</div>
-            <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">二次確認防誤觸<br>代幣返還規則說明</div>
-          </div>
-          <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
+        <!-- 放棄獎品確認：待出貨獎品頁 Modal -->
+        <div class="tree-card tc-purple"
+             onclick="openLightbox('images/待出貨獎品_放棄獎品.jpg','待出貨獎品 — 放棄確認','abandon-confirm')">
+          <span class="card-phase-badge">P3</span>
+          <img src="images/待出貨獎品_放棄獎品.jpg" alt="待出貨獎品 放棄獎品" loading="lazy">
+          <div class="card-label">放棄獎品確認<br><span class="saved-tag">待出貨獎品頁 Modal</span></div>
         </div>
       </div>
 
@@ -1259,7 +1267,10 @@ const allCards = [
   { id: 'lottery-03',      img: 'images/一番賞_抽獎頁面_03.jpg',                       title: '一番賞 — 抽獎結果' },
   { id: 'cart-confirm',    img: 'images/購物車_獎品確認.jpg',                          title: '購物車 — 獎品確認' },
   { id: 'cart-ship',       img: 'images/購物車_申請出貨.jpg',                          title: '購物車 — 申請出貨' },
-  { id: 'buy-token',       img: 'images/購買代幣.jpg',                                title: '購買代幣' },
+  { id: 'buy-token-01',    img: 'images/購買代幣_01.jpg',                             title: '購買代幣 — 選擇數量' },
+  { id: 'buy-token-02',    img: 'images/購買代幣_02.jpg',                             title: '購買代幣 — 填寫發票' },
+  { id: 'buy-token-03',    img: 'images/購買代幣_03.jpg',                             title: '購買代幣 — 選擇付款' },
+  { id: 'buy-token-04',    img: 'images/購買代幣_04.jpg',                             title: '購買代幣 — 確認付款' },
   { id: 'news-list',       img: 'images/phase2/日日欣_最新消息_列表.jpg',              title: '最新消息 — 列表' },
   { id: 'news-detail',     img: 'images/phase2/日日欣_最新消息_詳情.jpg',              title: '最新消息 — 詳情' },
   { id: 'faq',             img: 'images/客服中心.jpg',                                title: '客服中心' },
@@ -1269,12 +1280,14 @@ const allCards = [
   { id: 'privacy',         img: 'images/隱私權政策.jpg',                              title: '隱私權政策' },
   { id: 'member-register', img: 'images/phase1/日日欣_會員系統_會員註冊.jpg',          title: '會員系統 — 註冊' },
   { id: 'member-login',    img: 'images/phase1/日日欣_會員系統_會員登入.jpg',          title: '會員系統 — 登入/忘記密碼' },
+  { id: 'member-forgot',   img: 'images/會員系統_忘記密碼.jpg',                        title: '會員系統 — 忘記密碼' },
   { id: 'member-profile',  img: 'images/phase1/日日欣_會員系統_會員資料.jpg',          title: '會員系統 — 基本資料修改' },
   { id: 'member-points',   img: 'images/phase1/日日欣_會員系統_積分紀錄.jpg',          title: '會員系統 — 積分紀錄' },
   { id: 'member-tokens',   img: 'images/phase1/20251114-日日欣_會員系統_代幣紀錄.jpg', title: '會員系統 — 代幣紀錄' },
   { id: 'member-coupon',   img: 'images/phase1/日日欣_會員系統_優惠券.jpg',            title: '會員系統 — 優惠券' },
   { id: 'member-prizes',   img: 'images/會員系統_獎品紀錄.jpg',                        title: '會員系統 — 獎品紀錄' },
   { id: 'member-abandon',  img: 'images/會員系統_放棄獎品紀錄.jpg',                    title: '會員系統 — 放棄獎品紀錄' },
+  { id: 'abandon-confirm', img: 'images/待出貨獎品_放棄獎品.jpg',                      title: '待出貨獎品 — 放棄確認' },
 ];
 
 let currentIdx = 0;
