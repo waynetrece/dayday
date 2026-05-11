@@ -615,6 +615,76 @@
     </div>
   </section>
 
+  <!-- ══════════════════════════════════════
+       SPEC 07 · 內頁標題 · 日文字動態效果
+  ══════════════════════════════════════ -->
+  <section class="spec-section">
+    <div class="spec-header">
+      <span class="spec-num">07</span>
+      <h2>內頁標題 · 日文字動態效果</h2>
+      <span class="spec-tag">typography</span>
+      <span class="spec-tag" style="background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7;">✓ 可做</span>
+    </div>
+
+    <div class="spec-row">
+      <!-- 左：參考 -->
+      <div class="spec-col">
+        <div class="spec-col-label">參考來源</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/07-ref-ogaki-typography.png" alt="ogakidigital.com 字母拼貼排版">
+        </div>
+        <div class="spec-meta">
+          <a href="https://www.ogakidigital.com/" target="_blank" rel="noopener">ogakidigital.com →</a>
+          <br><span style="color:#999;font-size:12px;">注意：這是<u>靜態排版藝術</u>（每字單獨定位 + 旋轉），本身沒動畫</span>
+        </div>
+      </div>
+
+      <!-- 中：箭頭 -->
+      <div class="spec-arrow">→</div>
+
+      <!-- 右：我們的對應區塊 -->
+      <div class="spec-col">
+        <div class="spec-col-label">我們的對應區塊</div>
+        <div class="spec-img-wrap" onclick="openLB(this)" style="background:#1a1a1a;">
+          <img src="images/spec/07-current-ichibankuji.png" alt="日日欣 イチバンクジ 標題" style="object-fit:contain;">
+          <div class="target-box" data-label="標題範圍"
+               style="top:15%;left:5%;right:5%;bottom:15%;"></div>
+        </div>
+        <div class="spec-meta">日日欣內頁 · 標題「イチバンクジ」（白色明朝體 / 黑底）</div>
+      </div>
+    </div>
+
+    <!-- 技術評估 -->
+    <div class="spec-body">
+      <ul class="spec-list">
+        <li><b>技術難度</b>★★☆☆☆ 中等偏低 — CSS + 少量 JS 即可（或用 GSAP SplitText 更簡單）</li>
+        <li><b>關鍵釐清</b>ogaki 的衝擊感來自<u>字體很粗大 + 字母獨立排版</u>；我們的明朝體 + 細字，要達到同等衝擊感需要先放大字體</li>
+        <li><b>共同做法</b>把標題用 SplitText（或手動 <code>&lt;span&gt;</code> 拆字）拆成單字元，每個字單獨控制 transform</li>
+      </ul>
+    </div>
+
+    <!-- 主推方案 -->
+    <div class="spec-body" style="background:#f0fbf2;border-left-color:#2e7d32;margin-top:12px;">
+      <ul class="spec-list">
+        <li><b style="color:#2e7d32;">▸ 主推方案</b><b>逐字掉落 + 旋轉歸位</b>：6 個字（イ チ バ ン ク ジ）依序從上方掉下、各帶不同初始旋轉角，落地後歸 0；類似 ogaki 那種「每字獨立」感</li>
+        <li><b style="color:#2e7d32;">動畫長度</b>整段 1.2~1.5 秒，每字 stagger 0.08~0.1s</li>
+        <li><b style="color:#2e7d32;">緩動曲線</b><code>cubic-bezier(0.34, 1.56, 0.64, 1)</code>（彈跳感）或 GSAP <code>back.out(1.7)</code></li>
+        <li><b style="color:#2e7d32;">觸發</b>頁面進場時自動播放；也可設為「scroll 進入視窗才播放」</li>
+        <li><b style="color:#2e7d32;">技術</b>GSAP <code>SplitText</code> + <code>stagger</code>（最快）／純 CSS <code>@keyframes</code> + <code>nth-child</code></li>
+      </ul>
+    </div>
+
+    <!-- 替代方案 -->
+    <div class="spec-body" style="background:#fafafa;border-left-color:#888;margin-top:12px;">
+      <ul class="spec-list">
+        <li><b style="color:#666;">▸ 替代 A</b><b>遮罩 reveal</b>：用 <code>clip-path</code> 從中央向兩側展開揭幕（最容易、最優雅，適合明朝體標題）</li>
+        <li><b style="color:#666;">▸ 替代 B</b><b>逐字淡入 + 微浮動</b>：每字 opacity 0 → 1 + 微小 <code>translateY</code>，落定後上下浮動 1~2px（細緻、低調）</li>
+        <li><b style="color:#666;">▸ 替代 C</b><b>Magnetic hover</b>：滑鼠靠近某字時，該字會被「吸引」微位移（互動性強，但只在 hover 時觸發）</li>
+        <li><b style="color:#666;">推薦排序</b>主推 ≈ 替代 A &gt; 替代 B &gt; 替代 C（看設計風格走向決定）</li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ── 下一個特效 placeholder ── -->
   <section class="spec-placeholder">
     <b>+ 下一個特效</b>
