@@ -133,29 +133,6 @@
     border-color: #b8860b !important;
   }
 
-  /* ── Saved tag on cards ── */
-  .saved-tag {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 600;
-    color: #1a9e4e;
-    background: #edf7ed;
-    border: 1px solid #c3e6c3;
-    padding: 1px 6px;
-    border-radius: 4px;
-    margin-top: 3px;
-  }
-  .use-saved-tag {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 600;
-    color: #2176ad;
-    background: #edf5ff;
-    border: 1px solid #b3d4f7;
-    padding: 1px 6px;
-    border-radius: 4px;
-    margin-top: 3px;
-  }
 
   /* ── Homepage row (首頁 Banner 起始 / 最終) ── */
   .homepage-row {
@@ -305,80 +282,30 @@
     text-align: center;
     line-height: 1.4;
   }
-  .card-phase-badge {
-    position: absolute; top: 5px; left: 5px;
-    font-size: 12px; font-weight: 700;
-    padding: 3px 8px; border-radius: 4px;
-    border: 1px solid;
-  }
 
   /* Phase color variants */
   .tc-p1 { border-color: #9b59b6; }
   .tc-p1 .card-label { color: #7b2d8e; }
-  .tc-p1 .card-phase-badge { border-color: #9b59b6; color: #fff; background: #9b59b6; }
 
   .tc-p2 { border-color: #3498db; }
   .tc-p2 .card-label { color: #2176ad; }
-  .tc-p2 .card-phase-badge { border-color: #3498db; color: #fff; background: #3498db; }
 
   .tc-p3 { border-color: #2ecc71; }
   .tc-p3 .card-label { color: #1a9e4e; }
-  .tc-p3 .card-phase-badge { border-color: #2ecc71; color: #fff; background: #2ecc71; }
 
   .tc-red { border-color: #e74c3c; }
   .tc-red .card-label { color: #c0392b; }
-  .tc-red .card-phase-badge { border-color: #e74c3c; color: #fff; background: #e74c3c; }
 
   .tc-orange { border-color: #e67e22; }
   .tc-orange .card-label { color: #c56b15; }
-  .tc-orange .card-phase-badge { border-color: #e67e22; color: #fff; background: #e67e22; }
 
   .tc-purple { border-color: #9b59b6; }
   .tc-purple .card-label { color: #7b2d8e; }
-  .tc-purple .card-phase-badge { border-color: #9b59b6; color: #fff; background: #9b59b6; }
 
   .tc-gold { border-color: #b8860b; }
   .tc-gold .card-label { color: #8a6708; }
   .tc-gold:hover { border-color: #b8860b; box-shadow: 0 6px 20px rgba(184,134,11,0.22); }
 
-  /* ── Missing card ── */
-  .tree-card.missing {
-    border: 2px dashed #e74c3c;
-    cursor: default;
-    background: repeating-linear-gradient(
-      -45deg,
-      #fff5f5,
-      #fff5f5 5px,
-      #ffecec 5px,
-      #ffecec 10px
-    );
-    box-shadow: none;
-  }
-  .tree-card.missing:hover {
-    border-color: #e74c3c;
-    transform: none;
-    box-shadow: 0 4px 14px rgba(231,76,60,0.12);
-  }
-  .missing-body {
-    padding: 16px 10px 12px;
-    text-align: center;
-    min-height: 90px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-  .missing-icon  { font-size: 24px; }
-  .missing-title { font-size: 15px; font-weight: 700; color: #c0392b; line-height: 1.4; }
-  .missing-label {
-    padding: 7px 10px;
-    font-size: 13px;
-    font-weight: 600;
-    text-align: center;
-    color: #c0392b;
-    border-top: 1px dashed #f0c0c0;
-  }
 
   /* ── Paused card ── */
   .tree-card.paused {
@@ -423,56 +350,6 @@
   .at-purple { color: #7b2d8e; }
   .at-muted  { color: #aaa; }
 
-  /* ── Designer question card ── */
-  .tree-card.designer-q {
-    border: 2px dashed #8e44ad;
-    cursor: default;
-    background: repeating-linear-gradient(
-      -45deg,
-      #faf5ff,
-      #faf5ff 5px,
-      #f3e8ff 5px,
-      #f3e8ff 10px
-    );
-    box-shadow: none;
-  }
-  .tree-card.designer-q:hover {
-    border-color: #8e44ad;
-    transform: none;
-    box-shadow: 0 4px 14px rgba(142,68,173,0.12);
-  }
-  .designer-q-body {
-    padding: 14px 10px 10px;
-    text-align: center;
-    min-height: 86px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-  }
-  .designer-q-icon  { font-size: 22px; }
-  .designer-q-title { font-size: 15px; font-weight: 700; color: #7b2d8e; line-height: 1.4; }
-  .designer-q-desc  { font-size: 12px; color: #888; line-height: 1.5; margin-top: 3px; }
-  .designer-q-label {
-    padding: 8px 10px;
-    font-size: 14px;
-    font-weight: 700;
-    text-align: center;
-    color: #fff;
-    background: #8e44ad;
-    border-top: none;
-  }
-  .designer-q-tag {
-    display: inline-block;
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
-    background: #8e44ad;
-    border: none;
-    padding: 3px 10px;
-    border-radius: 4px;
-  }
 
   /* ── Wide column override (member system) ── */
   .branch-col.wide {
@@ -482,7 +359,6 @@
   .branch-col.wide .tree-card       { width: 206px; }
   .branch-col.wide .tree-card img   { height: 130px; }
   .branch-col.wide .flow-action     { width: 204px; }
-  .branch-col.wide .missing-body    { min-height: 90px; }
 
   /* ── Lightbox ── */
   .lightbox {
@@ -638,7 +514,6 @@
 
         <div class="tree-card tc-p2"
              onclick="openLightbox('images/phase2/日日欣_全館商城_總列表.jpg','全館商城 — 總列表','commerce-all')">
-          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_全館商城_總列表.jpg" alt="全館商城 總列表" loading="lazy">
           <div class="card-label">總列表</div>
         </div>
@@ -646,7 +521,6 @@
 
         <div class="tree-card tc-p2"
              onclick="openLightbox('images/phase2/日日欣_全館商城_列表.jpg','全館商城 — 列表','commerce-list')">
-          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_全館商城_列表.jpg" alt="全館商城 列表" loading="lazy">
           <div class="card-label">列表</div>
         </div>
@@ -654,7 +528,6 @@
 
         <div class="tree-card tc-p2" id="card-commerce-detail"
              onclick="openLightbox('images/phase2/日日欣_全館商城_詳情.jpg','全館商城 — 詳情','commerce-detail')">
-          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_全館商城_詳情.jpg" alt="全館商城 詳情" loading="lazy">
           <div class="card-label">詳情</div>
         </div>
@@ -676,7 +549,6 @@
 
         <div class="tree-card tc-p3"
              onclick="openLightbox('images/商城推薦_列表.jpg','商城推薦 — 列表','recommend-list')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/商城推薦_列表.jpg" alt="商城推薦 列表" loading="lazy">
           <div class="card-label">列表</div>
         </div>
@@ -684,7 +556,6 @@
 
         <div class="tree-card tc-p3" id="card-recommend-detail"
              onclick="openLightbox('images/商城推薦_詳情.jpg','商城推薦 — 詳情','recommend-detail')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/商城推薦_詳情.jpg" alt="商城推薦 詳情" loading="lazy">
           <div class="card-label">詳情</div>
         </div>
@@ -706,7 +577,6 @@
 
         <div class="tree-card tc-p3"
              onclick="openLightbox('images/低價出清_列表.jpg','低價出清 — 列表','clearance-list')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/低價出清_列表.jpg" alt="低價出清 列表" loading="lazy">
           <div class="card-label">列表</div>
         </div>
@@ -714,7 +584,6 @@
 
         <div class="tree-card tc-p3" id="card-clearance-detail"
              onclick="openLightbox('images/低價出清_詳情.jpg','低價出清 — 詳情','clearance-detail')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/低價出清_詳情.jpg" alt="低價出清 詳情" loading="lazy">
           <div class="card-label">詳情</div>
         </div>
@@ -736,7 +605,6 @@
 
         <div class="tree-card tc-red" id="card-lottery-01"
              onclick="openLightbox('images/一番賞_抽獎頁面_01.jpg','一番賞 — 選號碼','lottery-01')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/一番賞_抽獎頁面_01.jpg" alt="一番賞 01" loading="lazy">
           <div class="card-label">選號碼</div>
         </div>
@@ -744,7 +612,6 @@
 
         <div class="tree-card tc-red"
              onclick="openLightbox('images/一番賞_抽獎頁面_02.jpg','一番賞 — 確認抽取','lottery-02')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/一番賞_抽獎頁面_02.jpg" alt="一番賞 02" loading="lazy">
           <div class="card-label">確認抽取</div>
         </div>
@@ -754,7 +621,6 @@
         <!-- 優惠券（從會員系統搬來，抽取前選折扣碼） -->
         <div class="tree-card tc-p1" id="card-coupon"
              onclick="openLightbox('images/phase1/日日欣_會員系統_優惠券.jpg','優惠券 — 折扣碼選擇','member-coupon')">
-          <span class="card-phase-badge">P1</span>
           <img src="images/phase1/日日欣_會員系統_優惠券.jpg" alt="優惠券" loading="lazy">
           <div class="card-label">優惠券 / 折扣碼</div>
         </div>
@@ -763,7 +629,6 @@
 
         <div class="tree-card tc-red" id="card-lottery-03"
              onclick="openLightbox('images/一番賞_抽獎頁面_03.jpg','一番賞 — 抽獎結果','lottery-03')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/一番賞_抽獎頁面_03.jpg" alt="一番賞 03" loading="lazy">
           <div class="card-label">抽獎結果</div>
         </div>
@@ -786,23 +651,12 @@
       ══════════════════════════════════════ -->
       <div class="branch-col">
         <div class="branch-stub orange"></div>
-        <div class="branch-header bh-orange">購物車<br><span style="font-size:10px;font-weight:400;">報 8 頁 → 用 4 頁</span></div>
-
-        <!-- 討論：購物車命名 -->
-        <div class="tree-card designer-q" id="q-cart-naming" style="margin-top:8px;">
-          <div class="designer-q-body" style="min-height:auto;padding:10px;">
-            <div class="designer-q-title">命名討論</div>
-            <div class="designer-q-desc">此站無傳統購物車<br>功能偏向「獎品管理」<br>是否併入會員系統？<br>參考：OneOne 做法</div>
-          </div>
-          <div class="designer-q-label"><span class="designer-q-tag">待討論</span></div>
-        </div>
-
+        <div class="branch-header bh-orange">購物車</div>
         <div class="tree-line orange"></div>
 
         <!-- 獎品確認 -->
         <div class="tree-card tc-orange" id="card-cart-confirm"
              onclick="openLightbox('images/購物車_獎品確認.jpg','購物車 — 獎品確認','cart-confirm')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/購物車_獎品確認.jpg" alt="購物車 獎品確認" loading="lazy">
           <div class="card-label">獎品確認</div>
         </div>
@@ -816,20 +670,8 @@
         <!-- 申請出貨 -->
         <div class="tree-card tc-orange"
              onclick="openLightbox('images/購物車_申請出貨.jpg','購物車 — 申請出貨','cart-ship')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/購物車_申請出貨.jpg" alt="購物車 申請出貨" loading="lazy">
           <div class="card-label">申請出貨</div>
-        </div>
-        <div class="tree-line orange"></div>
-
-        <!-- 出貨明細頁：3頁合1頁 -->
-        <div class="tree-card missing">
-          <div class="missing-body">
-            <div class="missing-icon">❌</div>
-            <div class="missing-title">出貨明細</div>
-            <div style="font-size:10px;color:#999;line-height:1.4;margin-top:2px;">獎品清單、收貨地址、運費<br>確認後送出</div>
-          </div>
-          <div class="missing-label">缺 · <span class="use-saved-tag">用省下頁面補</span></div>
         </div>
         <div class="tree-line orange" style="height:10px;"></div>
 
@@ -850,7 +692,6 @@
 
         <div class="tree-card tc-p3"
              onclick="openLightbox('images/購買代幣_01.jpg','購買代幣 — Step 1 金額選擇','buy-token-01')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/購買代幣_01.jpg" alt="購買代幣 Step 1" loading="lazy">
           <div class="card-label">Step 1 · 金額選擇</div>
         </div>
@@ -858,7 +699,6 @@
 
         <div class="tree-card tc-p3"
              onclick="openLightbox('images/購買代幣_02.jpg','購買代幣 — Step 2 發票資訊','buy-token-02')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/購買代幣_02.jpg" alt="購買代幣 Step 2" loading="lazy">
           <div class="card-label">Step 2 · 發票資訊</div>
         </div>
@@ -866,7 +706,6 @@
 
         <div class="tree-card tc-p3"
              onclick="openLightbox('images/購買代幣_03.jpg','購買代幣 — Step 3 付款','buy-token-03')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/購買代幣_03.jpg" alt="購買代幣 Step 3" loading="lazy">
           <div class="card-label">Step 3 · 付款</div>
         </div>
@@ -874,7 +713,6 @@
 
         <div class="tree-card tc-p3"
              onclick="openLightbox('images/購買代幣_04.jpg','購買代幣 — Step 4 完成','buy-token-04')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/購買代幣_04.jpg" alt="購買代幣 Step 4" loading="lazy">
           <div class="card-label">Step 4 · 完成</div>
         </div>
@@ -890,7 +728,6 @@
 
         <div class="tree-card tc-p2"
              onclick="openLightbox('images/phase2/日日欣_最新消息_列表.jpg','最新消息 — 列表','news-list')">
-          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_最新消息_列表.jpg" alt="最新消息 列表" loading="lazy">
           <div class="card-label">列表</div>
         </div>
@@ -898,7 +735,6 @@
 
         <div class="tree-card tc-p2"
              onclick="openLightbox('images/phase2/日日欣_最新消息_詳情.jpg','最新消息 — 詳情','news-detail')">
-          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_最新消息_詳情.jpg" alt="最新消息 詳情" loading="lazy">
           <div class="card-label">詳情</div>
         </div>
@@ -914,9 +750,8 @@
 
         <div class="tree-card tc-p3"
              onclick="openLightbox('images/客服中心.jpg','客服中心','faq')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/客服中心.jpg" alt="客服中心" loading="lazy">
-          <div class="card-label">客服中心<br><span class="saved-tag">省 1 頁（詳情頁不需要）</span></div>
+          <div class="card-label">客服中心</div>
         </div>
       </div>
 
@@ -930,7 +765,6 @@
 
         <div class="tree-card tc-p3"
              onclick="openLightbox('images/聯絡我們.jpg','聯絡我們','contact')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/聯絡我們.jpg" alt="聯絡我們" loading="lazy">
           <div class="card-label">聯絡我們</div>
         </div>
@@ -948,7 +782,6 @@
 
         <div class="tree-card tc-p2"
              onclick="openLightbox('images/phase2/日日欣_公司簡介.jpg','公司簡介','about')">
-          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_公司簡介.jpg" alt="公司簡介" loading="lazy">
           <div class="card-label">公司簡介</div>
         </div>
@@ -964,7 +797,6 @@
 
         <div class="tree-card tc-p2"
              onclick="openLightbox('images/phase2/日日欣_會員條款.jpg','會員條款','terms')">
-          <span class="card-phase-badge">P2</span>
           <img src="images/phase2/日日欣_會員條款.jpg" alt="會員條款" loading="lazy">
           <div class="card-label">會員條款</div>
         </div>
@@ -980,7 +812,6 @@
 
         <div class="tree-card tc-p3"
              onclick="openLightbox('images/隱私權政策.jpg','隱私權政策','privacy')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/隱私權政策.jpg" alt="隱私權政策" loading="lazy">
           <div class="card-label">隱私權政策</div>
         </div>
@@ -997,7 +828,6 @@
         <!-- 註冊 -->
         <div class="tree-card tc-p1"
              onclick="openLightbox('images/phase1/日日欣_會員系統_會員註冊.jpg','會員系統 — 註冊','member-register')">
-          <span class="card-phase-badge">P1</span>
           <img src="images/phase1/日日欣_會員系統_會員註冊.jpg" alt="會員系統 註冊" loading="lazy">
           <div class="card-label">註冊</div>
         </div>
@@ -1006,7 +836,6 @@
         <!-- 登入/忘記密碼 -->
         <div class="tree-card tc-p1"
              onclick="openLightbox('images/phase1/日日欣_會員系統_會員登入.jpg','會員系統 — 登入','member-login')">
-          <span class="card-phase-badge">P1</span>
           <img src="images/phase1/日日欣_會員系統_會員登入.jpg" alt="會員系統 登入" loading="lazy">
           <div class="card-label">登入</div>
         </div>
@@ -1015,7 +844,6 @@
         <!-- 忘記密碼 -->
         <div class="tree-card tc-p1"
              onclick="openLightbox('images/會員系統_忘記密碼.jpg','會員系統 — 忘記密碼','member-forgot')">
-          <span class="card-phase-badge">P1</span>
           <img src="images/會員系統_忘記密碼.jpg" alt="會員系統 忘記密碼" loading="lazy">
           <div class="card-label">忘記密碼</div>
         </div>
@@ -1024,7 +852,6 @@
         <!-- 基本資料修改 -->
         <div class="tree-card tc-p1"
              onclick="openLightbox('images/phase1/日日欣_會員系統_會員資料.jpg','會員系統 — 基本資料修改','member-profile')">
-          <span class="card-phase-badge">P1</span>
           <img src="images/phase1/日日欣_會員系統_會員資料.jpg" alt="會員系統 資料" loading="lazy">
           <div class="card-label">基本資料修改</div>
         </div>
@@ -1033,27 +860,14 @@
         <!-- 積分紀錄 -->
         <div class="tree-card tc-p1"
              onclick="openLightbox('images/phase1/日日欣_會員系統_積分紀錄.jpg','會員系統 — 積分紀錄','member-points')">
-          <span class="card-phase-badge">P1</span>
           <img src="images/phase1/日日欣_會員系統_積分紀錄.jpg" alt="會員系統 積分" loading="lazy">
           <div class="card-label">積分紀錄</div>
-        </div>
-        <div class="tree-line purple"></div>
-
-        <!-- 積分 FAQ：在積分紀錄頁加說明連結 -->
-        <div class="tree-card designer-q" id="q-points-faq" style="width:206px;">
-          <div class="designer-q-body">
-            <div class="designer-q-icon">💬</div>
-            <div class="designer-q-title">積分說明 / 使用方式</div>
-            <div class="designer-q-desc">在積分紀錄頁加兩個標題連結<br>點擊另開視窗顯示：<br>① 積分 vs 代幣差異<br>② 使用方式（折抵 or 兌換）<br>用 FAQ 處理，不需獨立頁</div>
-          </div>
-          <div class="designer-q-label"><span class="designer-q-tag">待討論</span></div>
         </div>
         <div class="tree-line purple"></div>
 
         <!-- 代幣紀錄 -->
         <div class="tree-card tc-p1"
              onclick="openLightbox('images/phase1/日日欣_會員系統_代幣紀錄.jpg','會員系統 — 代幣紀錄','member-tokens')">
-          <span class="card-phase-badge">P1</span>
           <img src="images/phase1/日日欣_會員系統_代幣紀錄.jpg" alt="會員系統 代幣" loading="lazy">
           <div class="card-label">代幣紀錄</div>
         </div>
@@ -1062,16 +876,14 @@
         <!-- 獎品紀錄 (P3 with purple styling) -->
         <div class="tree-card tc-purple"
              onclick="openLightbox('images/會員系統_獎品紀錄.jpg','會員系統 — 獎品紀錄','member-prizes')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/會員系統_獎品紀錄.jpg" alt="會員系統 獎品紀錄" loading="lazy">
-          <div class="card-label">獎品紀錄<br><span class="saved-tag">2頁合併1頁 · 省1頁</span></div>
+          <div class="card-label">獎品紀錄</div>
         </div>
         <div class="tree-line purple"></div>
 
         <!-- 放棄獎品紀錄 (P3 with purple styling) -->
         <div class="tree-card tc-purple" id="card-member-abandon"
              onclick="openLightbox('images/會員系統_放棄獎品紀錄.jpg','會員系統 — 放棄獎品紀錄','member-abandon')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/會員系統_放棄獎品紀錄.jpg" alt="會員系統 放棄獎品紀錄" loading="lazy">
           <div class="card-label">放棄獎品紀錄</div>
         </div>
@@ -1086,7 +898,6 @@
         <!-- 待出貨獎品放棄（取代原本的「放棄獎品確認」） -->
         <div class="tree-card tc-purple"
              onclick="openLightbox('images/待出貨獎品_放棄獎品.jpg','待出貨獎品 — 放棄獎品','abandon-confirm')">
-          <span class="card-phase-badge">P3</span>
           <img src="images/待出貨獎品_放棄獎品.jpg" alt="待出貨獎品 放棄獎品" loading="lazy">
           <div class="card-label">待出貨獎品 · 放棄</div>
         </div>
