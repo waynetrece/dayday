@@ -223,6 +223,12 @@
     color: #aaa;
     font-style: italic;
   }
+  .spec-list a {
+    color: #b8860b;
+    text-decoration: none;
+    border-bottom: 1px dashed #d4b87a;
+  }
+  .spec-list a:hover { color: #8a6708; border-bottom-style: solid; }
 
   /* ── Placeholder for upcoming sections ── */
   .spec-placeholder {
@@ -657,7 +663,6 @@
     <!-- 技術評估 -->
     <div class="spec-body">
       <ul class="spec-list">
-        <li><b>技術難度</b>★★☆☆☆ 中等偏低 — CSS + 少量 JS 即可（或用 GSAP SplitText 更簡單）</li>
         <li><b>關鍵釐清</b>ogaki 的衝擊感來自<u>字體很粗大 + 字母獨立排版</u>；我們的明朝體 + 細字，要達到同等衝擊感需要先放大字體</li>
         <li><b>共同做法</b>把標題用 SplitText（或手動 <code>&lt;span&gt;</code> 拆字）拆成單字元，每個字單獨控制 transform</li>
       </ul>
@@ -671,15 +676,22 @@
         <li><b style="color:#2e7d32;">緩動曲線</b><code>cubic-bezier(0.34, 1.56, 0.64, 1)</code>（彈跳感）或 GSAP <code>back.out(1.7)</code></li>
         <li><b style="color:#2e7d32;">觸發</b>頁面進場時自動播放；也可設為「scroll 進入視窗才播放」</li>
         <li><b style="color:#2e7d32;">技術</b>GSAP <code>SplitText</code> + <code>stagger</code>（最快）／純 CSS <code>@keyframes</code> + <code>nth-child</code></li>
+        <li><b style="color:#2e7d32;">CodePen</b><a href="https://codepen.io/PointC/pen/jJyRXg" target="_blank" rel="noopener">SplitText with advanced staggers ↗</a> · <a href="https://codepen.io/stefanopeschiera/pen/ExVoKWj" target="_blank" rel="noopener">GSAP Split Text 基礎 ↗</a></li>
       </ul>
     </div>
 
     <!-- 替代方案 -->
     <div class="spec-body" style="background:#fafafa;border-left-color:#888;margin-top:12px;">
       <ul class="spec-list">
-        <li><b style="color:#666;">▸ 替代 A</b><b>遮罩 reveal</b>：用 <code>clip-path</code> 從中央向兩側展開揭幕（最容易、最優雅，適合明朝體標題）</li>
-        <li><b style="color:#666;">▸ 替代 B</b><b>逐字淡入 + 微浮動</b>：每字 opacity 0 → 1 + 微小 <code>translateY</code>，落定後上下浮動 1~2px（細緻、低調）</li>
-        <li><b style="color:#666;">▸ 替代 C</b><b>Magnetic hover</b>：滑鼠靠近某字時，該字會被「吸引」微位移（互動性強，但只在 hover 時觸發）</li>
+        <li><b style="color:#666;">▸ 替代 A</b><b>遮罩 reveal</b>：用 <code>clip-path</code> 從中央向兩側展開揭幕（最容易、最優雅，適合明朝體標題）<br>
+          <span style="margin-left:96px;">CodePen：<a href="https://codepen.io/digistate/pen/YxWONe" target="_blank" rel="noopener">Revealing Text using clip-path ↗</a> · <a href="https://codepen.io/MatiMenich/pen/wMQJMP" target="_blank" rel="noopener">clip-path reveal ↗</a></span>
+        </li>
+        <li><b style="color:#666;">▸ 替代 B</b><b>逐字淡入 + 微浮動</b>：每字 opacity 0 → 1 + 微小 <code>translateY</code>，落定後上下浮動 1~2px（細緻、低調）<br>
+          <span style="margin-left:96px;">CodePen：<a href="https://codepen.io/GreenSock/pen/DBGYXK" target="_blank" rel="noopener">SplitText 字元 stagger ↗</a> · <a href="https://codepen.io/shshaw/pen/XVjKrG" target="_blank" rel="noopener">Splitting.js CSS vars ↗</a></span>
+        </li>
+        <li><b style="color:#666;">▸ 替代 C</b><b>Magnetic hover</b>：滑鼠靠近某字時，該字會被「吸引」微位移（互動性強，但只在 hover 時觸發）<br>
+          <span style="margin-left:96px;">CodePen：<a href="https://codepen.io/Lissete-Barriga/pen/OJKpzVy" target="_blank" rel="noopener">GSAP magnetic hover ↗</a> · <a href="https://codepen.io/Juxtopposed/pen/mdQaNbG" target="_blank" rel="noopener">Text scroll + hover + clip ↗</a></span>
+        </li>
         <li><b style="color:#666;">推薦排序</b>主推 ≈ 替代 A &gt; 替代 B &gt; 替代 C（看設計風格走向決定）</li>
       </ul>
     </div>
