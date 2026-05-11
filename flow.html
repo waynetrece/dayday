@@ -65,99 +65,6 @@
     text-align: center;
   }
 
-  /* ── Discussion toggle (hidden by default) ── */
-  body.hide-discuss .budget-bar,
-  body.hide-discuss .discuss-panel,
-  body.hide-discuss .tree-card.designer-q { display: none; }
-
-  .discuss-toggle {
-    position: fixed;
-    bottom: 20px;
-    right: 240px;
-    z-index: 500;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 8px 14px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    color: #888;
-    transition: all 0.15s;
-  }
-  .discuss-toggle:hover { background: #f8f0ff; border-color: #8e44ad; color: #8e44ad; }
-  .discuss-toggle.active { background: #8e44ad; color: #fff; border-color: #8e44ad; }
-
-  /* ── Discussion panel ── */
-  .discuss-panel {
-    margin: 12px auto 0;
-    padding: 14px 20px;
-    background: #fff;
-    border: 2px solid #8e44ad;
-    border-radius: 12px;
-    max-width: 1100px;
-    box-shadow: 0 2px 8px rgba(142,68,173,0.1);
-  }
-  .discuss-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: #7b2d8e;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .discuss-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .discuss-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    border: 2px solid #d4a8e8;
-    border-radius: 8px;
-    background: #faf5ff;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-size: 14px;
-    font-weight: 600;
-    color: #7b2d8e;
-  }
-  .discuss-item:hover {
-    background: #8e44ad;
-    color: #fff;
-    border-color: #8e44ad;
-  }
-  .discuss-item .di-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: #8e44ad;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-  .discuss-item:hover .di-num {
-    background: #fff;
-    color: #8e44ad;
-  }
-  .discuss-item .di-branch {
-    font-size: 11px;
-    font-weight: 400;
-    opacity: 0.7;
-  }
-
   /* ── Header ── */
   .header {
     position: sticky;
@@ -177,17 +84,6 @@
   .header h1 { font-size: 22px; color: #b8860b; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; }
   .header .subtitle { font-size: 14px; color: #999; white-space: nowrap; }
   .header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-
-  /* Phase legend tags */
-  .phase-key { display: flex; gap: 8px; font-size: 14px; flex-wrap: nowrap; }
-  .phase-tag {
-    padding: 4px 12px; border-radius: 4px; font-size: 14px; font-weight: 600;
-    border: 1px solid; white-space: nowrap;
-  }
-  .p1   { border-color: #9b59b6; color: #7b2d8e; background: rgba(155,89,182,0.08); }
-  .p2   { border-color: #3498db; color: #2176ad; background: rgba(52,152,219,0.08); }
-  .p3   { border-color: #2ecc71; color: #1a9e4e; background: rgba(46,204,113,0.08); }
-  .pmiss{ border-color: #e74c3c; color: #c0392b; background: rgba(231,76,60,0.08); }
 
   /* ── View toggle ── */
   .view-toggle {
@@ -236,33 +132,6 @@
     animation: highlightPulse 1s ease-out 2;
     border-color: #b8860b !important;
   }
-
-  /* ── Page budget summary ── */
-  .budget-bar {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 16px auto 8px;
-    padding: 12px 20px;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    max-width: 900px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-  }
-  .budget-item {
-    font-size: 14px;
-    line-height: 1.5;
-    text-align: center;
-    padding: 6px 14px;
-    border-radius: 6px;
-  }
-  .budget-item .label { color: #888; }
-  .budget-item .val { font-weight: 700; font-size: 18px; }
-  .budget-save { background: #edf7ed; color: #1a9e4e; }
-  .budget-need { background: #fff5f5; color: #c0392b; }
-  .budget-net  { background: #f0f4ff; color: #2176ad; }
 
   /* ── Saved tag on cards ── */
   .saved-tag {
@@ -691,13 +560,6 @@
     <span class="subtitle">Site Architecture · User Flow</span>
   </div>
   <div class="header-right">
-    <div class="phase-key">
-      <span class="phase-tag p1">P1 會員系統</span>
-      <span class="phase-tag p2">P2 商城/內容</span>
-      <span class="phase-tag p3">P3 功能頁</span>
-      <span class="phase-tag pmiss">❌ 缺 待設計</span>
-      <span class="phase-tag" style="border-color:#8e44ad;color:#7b2d8e;background:rgba(142,68,173,0.08);">💬 設計師提問</span>
-    </div>
     <a href="index.html" class="view-toggle">區塊整理版 →</a>
   </div>
 </div>
@@ -1409,12 +1271,6 @@ viewport.addEventListener('dblclick', (e) => {
     scale = ns; updateTransform();
   } else { zoomFit(); }
 });
-
-// ── Toggle discussion notes ──
-function toggleDiscuss() {
-  document.body.classList.toggle('hide-discuss');
-  document.getElementById('discuss-toggle').classList.toggle('active');
-}
 
 // ── Scroll + Highlight target card ──
 function scrollHighlight(targetId) {
