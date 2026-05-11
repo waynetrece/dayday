@@ -444,6 +444,65 @@
     </div>
   </section>
 
+  <!-- ══════════════════════════════════════
+       SPEC 04 · 商城品牌列 · 自動移動 + Hover 高亮（待評估）
+  ══════════════════════════════════════ -->
+  <section class="spec-section">
+    <div class="spec-header">
+      <span class="spec-num">04</span>
+      <h2>商城品牌列 · 自動移動 + Hover 高亮</h2>
+      <span class="spec-tag">marquee + hover</span>
+      <span class="spec-tag" style="background:#fff5e6;color:#c5651a;border-color:#f3c98a;">⚠ 待評估</span>
+    </div>
+
+    <div class="spec-row">
+      <!-- 左：參考 -->
+      <div class="spec-col">
+        <div class="spec-col-label">參考來源</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/04-ref-avax-marquee.png" alt="avax.network 自動移動品牌列">
+        </div>
+        <div class="spec-meta">
+          <a href="https://www.avax.network/" target="_blank" rel="noopener">avax.network →</a>
+          <br><span style="color:#999;font-size:12px;">底部品牌列自動水平移動（marquee），滑鼠 hover 該卡片時整張變紅色高亮</span>
+        </div>
+      </div>
+
+      <!-- 中：箭頭 -->
+      <div class="spec-arrow">→</div>
+
+      <!-- 右：我們的對應區塊 -->
+      <div class="spec-col">
+        <div class="spec-col-label">我們的對應區塊</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/04-current-brand-row.png" alt="日日欣 ホールストアモール 商品列">
+          <div class="target-box" data-label="自動移動範圍"
+               style="top:6%;left:2%;right:2%;bottom:8%;"></div>
+        </div>
+        <div class="spec-meta">日日欣首頁 · ホールストアモール（桃太郎電鉄 / RIZIN / ONE PIECE / 假面騎士 …）</div>
+      </div>
+    </div>
+
+    <div class="spec-body">
+      <ul class="spec-list">
+        <li><b>想做的效果</b>商品列自動水平移動，滑鼠 hover 某張卡片時高亮（avax 是變紅色）</li>
+        <li><b>觸發方式</b>頁面載入即開始 marquee；hover 觸發顏色變化 + 暫停移動</li>
+        <li><b>移動速度</b>建議 30~50s 走完一輪，配 <code>linear</code> 緩動避免頓點</li>
+        <li><b>無縫迴圈</b>List 內容複製 2 份首尾相接，動畫到一半時 reset，視覺上無接縫</li>
+        <li><b>技術方案</b>純 CSS <code>@keyframes</code> + <code>transform: translateX()</code>（最輕量）／或 GSAP <code>InfiniteMarquee</code> 工具</li>
+      </ul>
+    </div>
+
+    <!-- 評估區塊 -->
+    <div class="spec-body" style="background:#fff8eb;border-left-color:#e67e22;margin-top:12px;">
+      <ul class="spec-list">
+        <li><b style="color:#c5651a;">⚠ 評估點 1</b>avax 是<u>單色 logo</u>（黑底白字），hover 整張轉紅高度突出；日日欣是<u>全彩 IP 商品照</u>，本身視覺資訊量已高，hover「整張變色」可能畫面過載</li>
+        <li><b style="color:#c5651a;">⚠ 評估點 2</b>自動移動 + 全彩商品照會「持續搶眼」，跟首頁其他區塊競爭注意力，不易讓使用者聚焦</li>
+        <li><b style="color:#c5651a;">建議替代</b>① 保留自動移動，hover 改為「暫停 + 放大 1.05x + 金色描邊」（不變色） ② 或改為靜態 grid + hover 才放大（不用 marquee）</li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ── 下一個特效 placeholder ── -->
   <section class="spec-placeholder">
     <b>+ 下一個特效</b>
