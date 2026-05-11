@@ -392,6 +392,58 @@
     </div>
   </section>
 
+  <!-- ══════════════════════════════════════
+       SPEC 03 · 獎品三卡 · 錯落補齊到同排
+  ══════════════════════════════════════ -->
+  <section class="spec-section">
+    <div class="spec-header">
+      <span class="spec-num">03</span>
+      <h2>獎品三卡 · 錯落補齊到同排</h2>
+      <span class="spec-tag">scroll-stagger</span>
+    </div>
+
+    <div class="spec-row">
+      <!-- 左：參考 -->
+      <div class="spec-col">
+        <div class="spec-col-label">參考來源</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/03-ref-avax-three-cards.png" alt="avax.network 三卡錯落補齊">
+        </div>
+        <div class="spec-meta">
+          <a href="https://www.avax.network/" target="_blank" rel="noopener">avax.network →</a>
+          <br><span style="color:#999;font-size:12px;">三張卡片初始高低錯落（左/中/右各有 Y 偏移），下捲時逐漸補齊到同一水平線</span>
+        </div>
+      </div>
+
+      <!-- 中：箭頭 -->
+      <div class="spec-arrow">→</div>
+
+      <!-- 右：我們的對應區塊 -->
+      <div class="spec-col">
+        <div class="spec-col-label">我們的對應區塊</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/03-current-prizes-three.png" alt="日日欣 G獎 / D獎 / E獎">
+          <div class="target-box" data-label="補齊範圍"
+               style="top:4%;left:3%;right:3%;bottom:5%;"></div>
+        </div>
+        <div class="spec-meta">日日欣首頁 · 獎品列表（G獎橡膠掛件 / D獎 U型氣墊 / E獎手巾）</div>
+      </div>
+    </div>
+
+    <div class="spec-body">
+      <ul class="spec-list">
+        <li><b>想做的效果</b>進入視窗時三張卡呈高低錯落（例：左 +120px / 中 0 / 右 +80px），下捲時三張同步歸位到同一水平線</li>
+        <li><b>觸發方式</b>scroll-driven，section 進入視窗 30% 時開始，捲到 80% 完成補齊</li>
+        <li><b>動畫長度</b>單一 section 內完成（約 50~70vh）</li>
+        <li><b>初始位移</b>三卡分別給不同 <code>translateY</code> 起始值，目標統一為 <code>0</code>；可搭配 opacity 0.7 → 1</li>
+        <li><b>緩動曲線</b><code>ease-out</code> 或 GSAP <code>power2.out</code>（落地感不要太硬）</li>
+        <li><b>進入順序</b>可同時補齊；若要更有層次可加 <code>stagger 0.1~0.15s</code></li>
+        <li><b>技術方案</b>CSS <code>animation-timeline: view()</code>（純 CSS、效能佳）／或 GSAP ScrollTrigger（控制更細）</li>
+        <li><b>Demo</b><span class="pending">/prizes-three-demo.html（待製作）</span></li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ── 下一個特效 placeholder ── -->
   <section class="spec-placeholder">
     <b>+ 下一個特效</b>
