@@ -340,6 +340,58 @@
     </div>
   </section>
 
+  <!-- ══════════════════════════════════════
+       SPEC 02 · 新製品列表 · 卡片向上堆疊
+  ══════════════════════════════════════ -->
+  <section class="spec-section">
+    <div class="spec-header">
+      <span class="spec-num">02</span>
+      <h2>新製品列表 · 卡片向上堆疊</h2>
+      <span class="spec-tag">scroll-stack</span>
+    </div>
+
+    <div class="spec-row">
+      <!-- 左：參考 -->
+      <div class="spec-col">
+        <div class="spec-col-label">參考來源</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/02-ref-avax-stacked-cards.png" alt="avax.network 卡片堆疊">
+        </div>
+        <div class="spec-meta">
+          <a href="https://www.avax.network/" target="_blank" rel="noopener">avax.network →</a>
+          <br><span style="color:#999;font-size:12px;">下捲時，編號 01 → 02 → 03 → 04 卡片一張一張由下往上堆疊覆蓋</span>
+        </div>
+      </div>
+
+      <!-- 中：箭頭 -->
+      <div class="spec-arrow">→</div>
+
+      <!-- 右：我們的對應區塊 -->
+      <div class="spec-col">
+        <div class="spec-col-label">我們的對應區塊</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/02-current-new-products.png" alt="日日欣 今週の新製品 列表">
+          <div class="target-box" data-label="堆疊範圍"
+               style="top:6%;left:5%;right:5%;bottom:5%;"></div>
+        </div>
+        <div class="spec-meta">日日欣首頁 · 「今週の新製品」列表（01 ~ 04 商品）</div>
+      </div>
+    </div>
+
+    <div class="spec-body">
+      <ul class="spec-list">
+        <li><b>想做的效果</b>下捲時 01 → 02 → 03 → 04 商品卡一張一張從下方滑入，堆疊在前一張之上（後進覆蓋前進）</li>
+        <li><b>觸發方式</b>scroll-driven，section 進入視窗時 pin 住，捲動進度推進卡片切換</li>
+        <li><b>動畫長度</b>每張卡約 60~80vh，整段 section 約 320~400vh（4 張）</li>
+        <li><b>進入方向</b>由下往上 <code>translateY(80% → 0)</code>，可加細微 scale (0.96 → 1) 與 opacity (0 → 1)</li>
+        <li><b>緩動曲線</b><code>ease-out</code> 或 GSAP <code>power3.out</code>（落定有重量感）</li>
+        <li><b>堆疊邏輯</b>切到下一張時，前一張保持原位（z-index 較低），新卡覆蓋上去，產生「疊牌」視覺</li>
+        <li><b>技術方案</b>GSAP ScrollTrigger + pin + timeline（建議，動畫掌控度高）／或 CSS sticky + <code>animation-timeline: view()</code></li>
+        <li><b>Demo</b><span class="pending">/new-products-demo.html（待製作）</span></li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ── 下一個特效 placeholder ── -->
   <section class="spec-placeholder">
     <b>+ 下一個特效</b>
