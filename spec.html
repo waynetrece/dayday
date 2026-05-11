@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日日欣 — 特效溝通板</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #f5f5f0;
+    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
+    line-height: 1.5;
+  }
+
+  /* ── Header ── */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .header-left { display: flex; align-items: baseline; gap: 14px; }
+  .header h1 { font-size: 22px; color: #b8860b; font-weight: 700; letter-spacing: 0.5px; }
+  .header .subtitle { font-size: 14px; color: #999; }
+  .view-toggle {
+    display: inline-block;
+    padding: 5px 14px;
+    border: 1px solid #b8860b;
+    color: #b8860b;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .view-toggle:hover { background: #b8860b; color: #fff; }
+
+  /* ── Canvas ── */
+  .canvas {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+  }
+
+  /* ── Section card ── */
+  .spec-section {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    padding: 22px 24px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .spec-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f0ede4;
+  }
+  .spec-num {
+    font-size: 14px;
+    font-weight: 700;
+    color: #b8860b;
+    background: rgba(184,134,11,0.1);
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+  }
+  .spec-header h2 {
+    font-size: 18px;
+    color: #333;
+    font-weight: 700;
+    flex: 1;
+  }
+  .spec-tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: #2176ad;
+    background: #edf5ff;
+    border: 1px solid #b3d4f7;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── Comparison row ── */
+  .spec-row {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    gap: 16px;
+    align-items: stretch;
+    margin-bottom: 16px;
+  }
+  .spec-col {
+    background: #faf9f6;
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+  }
+  .spec-col-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .spec-img-wrap {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    flex: 1;
+    min-height: 200px;
+  }
+  .spec-img-wrap img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }
+  .spec-img-wrap:hover img { transform: scale(1.02); }
+
+  /* 紅框標出實際特效區塊 */
+  .target-box {
+    position: absolute;
+    border: 3px dashed #e74c3c;
+    border-radius: 6px;
+    pointer-events: none;
+    box-shadow: 0 0 0 9999px rgba(0,0,0,0.05);
+    animation: targetPulse 1.8s ease-in-out infinite;
+  }
+  .target-box::after {
+    content: attr(data-label);
+    position: absolute;
+    top: -28px;
+    left: -3px;
+    background: #e74c3c;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+  @keyframes targetPulse {
+    0%, 100% { box-shadow: 0 0 0 9999px rgba(0,0,0,0.04), 0 0 0 0 rgba(231,76,60,0.5); }
+    50%      { box-shadow: 0 0 0 9999px rgba(0,0,0,0.04), 0 0 0 6px rgba(231,76,60,0); }
+  }
+
+  .spec-meta {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #666;
+  }
+  .spec-meta a {
+    color: #b8860b;
+    text-decoration: none;
+    border-bottom: 1px dashed #d4b87a;
+  }
+  .spec-meta a:hover { color: #8a6708; }
+
+  /* ── Arrow between ── */
+  .spec-arrow {
+    align-self: center;
+    font-size: 36px;
+    color: #b8860b;
+    font-weight: 700;
+    text-align: center;
+    animation: arrowPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes arrowPulse {
+    0%, 100% { transform: translateX(0); opacity: 0.6; }
+    50%      { transform: translateX(6px); opacity: 1; }
+  }
+
+  /* ── Spec body (description bullets) ── */
+  .spec-body {
+    background: #faf9f6;
+    border-radius: 10px;
+    padding: 16px 20px;
+    border-left: 3px solid #b8860b;
+  }
+  .spec-list { list-style: none; }
+  .spec-list li {
+    padding: 5px 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+  }
+  .spec-list li b {
+    color: #b8860b;
+    margin-right: 6px;
+    display: inline-block;
+    min-width: 90px;
+  }
+  .spec-list code {
+    background: #efebd9;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: #5b4416;
+  }
+  .spec-list .pending {
+    color: #aaa;
+    font-style: italic;
+  }
+
+  /* ── Placeholder for upcoming sections ── */
+  .spec-placeholder {
+    background: #fafafa;
+    border: 2px dashed #ddd;
+    border-radius: 14px;
+    padding: 36px 24px;
+    text-align: center;
+    color: #aaa;
+    font-size: 14px;
+  }
+  .spec-placeholder b { color: #888; font-weight: 600; }
+  .spec-placeholder .hint { font-size: 12px; margin-top: 6px; color: #bbb; }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    color: #aaa;
+    font-size: 12px;
+  }
+
+  /* ── Lightbox (簡易) ── */
+  .lightbox {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 1000;
+    align-items: center; justify-content: center;
+    cursor: zoom-out;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox img { max-width: 95vw; max-height: 95vh; object-fit: contain; }
+  .lightbox-close {
+    position: fixed; top: 18px; right: 22px;
+    width: 42px; height: 42px;
+    background: rgba(255,255,255,0.12);
+    color: #fff; font-size: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 880px) {
+    .spec-row { grid-template-columns: 1fr; }
+    .spec-arrow { transform: rotate(90deg); padding: 4px 0; }
+    .header { padding: 14px 18px; flex-wrap: wrap; }
+    .canvas { padding: 20px 14px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="header">
+  <div class="header-left">
+    <h1>日日欣 — 特效溝通板</h1>
+    <span class="subtitle">Visual Effects Spec Board</span>
+  </div>
+  <a href="flow.html" class="view-toggle">← 流程圖</a>
+</div>
+
+<!-- ── Canvas ── -->
+<main class="canvas">
+
+  <!-- ══════════════════════════════════════
+       SPEC 01 · Hero Banner · 捲動集中
+  ══════════════════════════════════════ -->
+  <section class="spec-section">
+    <div class="spec-header">
+      <span class="spec-num">01</span>
+      <h2>Hero Banner · 捲動集中</h2>
+      <span class="spec-tag">scroll-driven</span>
+    </div>
+
+    <div class="spec-row">
+      <!-- 左：參考 -->
+      <div class="spec-col">
+        <div class="spec-col-label">參考來源</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/hero-ref-dropbox-mosaic.png" alt="brand.dropbox.com hero mosaic">
+        </div>
+        <div class="spec-meta">
+          <a href="https://brand.dropbox.com/" target="_blank" rel="noopener">brand.dropbox.com →</a>
+          <br><span style="color:#999;font-size:12px;">滑鼠下捲時，邊緣的色塊從四面八方往中央 Logo 集中</span>
+        </div>
+      </div>
+
+      <!-- 中：箭頭 -->
+      <div class="spec-arrow">→</div>
+
+      <!-- 右：我們的對應區塊 -->
+      <div class="spec-col">
+        <div class="spec-col-label">我們的對應區塊</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/hero-current-banner.png" alt="日日欣首頁 Banner 區塊">
+          <div class="target-box" data-label="動畫範圍"
+               style="top:3%;left:3%;right:3%;bottom:3%;"></div>
+        </div>
+        <div class="spec-meta">日日欣首頁 · Hero Banner 區塊（一番賞商品牆）</div>
+      </div>
+    </div>
+
+    <div class="spec-body">
+      <ul class="spec-list">
+        <li><b>想做的效果</b>滑鼠下捲 → 左右兩側的一番賞商品圖從邊緣往中央 Logo 集中收斂</li>
+        <li><b>觸發方式</b>scroll-driven，scrub 跟著捲軸進度走（非自動播放）</li>
+        <li><b>動畫長度</b>約 100vh 內完成集中，集中後維持滿版商品牆狀態</li>
+        <li><b>進入方向</b>左半邊商品由左側滑入、右半邊商品由右側滑入，可加微量 opacity 和 scale 漸變</li>
+        <li><b>緩動曲線</b><code>ease-out</code> 或 GSAP <code>power2.out</code>（前段快、後段緩）</li>
+        <li><b>技術方案</b>CSS <code>animation-timeline: view()</code>（純 CSS）或 GSAP ScrollTrigger</li>
+        <li><b>Demo</b><span class="pending">/hero-demo.html（待製作 — 用實際商品圖跑一次給設計看）</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── 下一個特效 placeholder ── -->
+  <section class="spec-placeholder">
+    <b>+ 下一個特效</b>
+    <div class="hint">範例：Hover 動畫 · 區塊過場 · Loading · Cursor 效果 · 商品翻牌 …</div>
+  </section>
+
+</main>
+
+<!-- ── Lightbox ── -->
+<div class="lightbox" id="lb" onclick="closeLB()">
+  <div class="lightbox-close">&times;</div>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<div class="footer">日日欣 · 特效溝通板 · 持續更新中</div>
+
+<script>
+  function openLB(el) {
+    const img = el.querySelector('img');
+    document.getElementById('lb-img').src = img.src;
+    document.getElementById('lb').classList.add('active');
+  }
+  function closeLB() {
+    document.getElementById('lb').classList.remove('active');
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+</script>
+
+</body>
+</html>
