@@ -503,6 +503,118 @@
     </div>
   </section>
 
+  <!-- ══════════════════════════════════════
+       SPEC 05 · 最新消息 · Carousel 左右滑動
+  ══════════════════════════════════════ -->
+  <section class="spec-section">
+    <div class="spec-header">
+      <span class="spec-num">05</span>
+      <h2>最新消息 · Carousel 左右滑動</h2>
+      <span class="spec-tag">carousel</span>
+    </div>
+
+    <div class="spec-row">
+      <!-- 左：參考 -->
+      <div class="spec-col">
+        <div class="spec-col-label">參考來源</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/05-ref-avax-featured-news.png" alt="avax.network FEATURED / NEWS">
+        </div>
+        <div class="spec-meta">
+          <a href="https://www.avax.network/" target="_blank" rel="noopener">avax.network →</a>
+          <br><span style="color:#999;font-size:12px;">FEATURED + NEWS 多卡橫向 carousel，右上箭頭切換時卡片從右往左滑入</span>
+        </div>
+      </div>
+
+      <!-- 中：箭頭 -->
+      <div class="spec-arrow">→</div>
+
+      <!-- 右：我們的對應區塊 -->
+      <div class="spec-col">
+        <div class="spec-col-label">我們的對應區塊</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/05-current-news.png" alt="日日欣 速報ニュース / 最新消息">
+          <div class="target-box" data-label="Carousel 範圍"
+               style="top:18%;left:3%;right:3%;bottom:3%;"></div>
+        </div>
+        <div class="spec-meta">日日欣首頁 · 速報ニュース / 最新消息（4 張新聞卡 + 右上左右箭頭）</div>
+      </div>
+    </div>
+
+    <div class="spec-body">
+      <ul class="spec-list">
+        <li><b>結構匹配度</b>★★★★★ 結構幾乎完全一致（橫向多卡 + 右上左右箭頭），可直接套用</li>
+        <li><b>想做的效果</b>點箭頭時下一張從右側滑入、舊卡從左側滑出（反向亦然）</li>
+        <li><b>觸發方式</b>使用者點擊 prev / next 箭頭；可選：每 5~7 秒自動播放</li>
+        <li><b>動畫長度</b>單次切換 400~600ms，<code>ease-in-out</code></li>
+        <li><b>位移幅度</b>整列 <code>translateX(±100%)</code>，搭配 opacity 0 → 1 漸入</li>
+        <li><b>進場動畫</b>區塊進入視窗時，4 張卡可額外做 stagger 滑入（從右邊依序進場）</li>
+        <li><b>技術方案</b>純 CSS transition + JS 控制 index（最輕量）／或 Swiper.js / Embla Carousel（功能完整）</li>
+        <li><b>Demo</b><span class="pending">/news-carousel-demo.html（待製作）</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SPEC 06 · 商品推薦 · 進場錯落淡入
+  ══════════════════════════════════════ -->
+  <section class="spec-section">
+    <div class="spec-header">
+      <span class="spec-num">06</span>
+      <h2>商品推薦 · 進場錯落淡入</h2>
+      <span class="spec-tag">scroll-stagger</span>
+      <span class="spec-tag" style="background:#fff5e6;color:#c5651a;border-color:#f3c98a;">⚠ 結構不同</span>
+    </div>
+
+    <div class="spec-row">
+      <!-- 左：參考（同 SPEC 05 的 avax）-->
+      <div class="spec-col">
+        <div class="spec-col-label">參考來源</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/05-ref-avax-featured-news.png" alt="avax.network FEATURED / NEWS">
+        </div>
+        <div class="spec-meta">
+          <a href="https://www.avax.network/" target="_blank" rel="noopener">avax.network →</a>
+          <br><span style="color:#999;font-size:12px;">參考其「卡片從右滑入」的概念，但結構需調整</span>
+        </div>
+      </div>
+
+      <!-- 中：箭頭 -->
+      <div class="spec-arrow">→</div>
+
+      <!-- 右：我們的對應區塊 -->
+      <div class="spec-col">
+        <div class="spec-col-label">我們的對應區塊</div>
+        <div class="spec-img-wrap" onclick="openLB(this)">
+          <img src="images/spec/06-current-shop-grid.png" alt="日日欣 ショッピングモールのおすすめ / 商城推薦">
+          <div class="target-box" data-label="進場範圍"
+               style="top:14%;left:26%;right:3%;bottom:3%;"></div>
+        </div>
+        <div class="spec-meta">日日欣首頁 · 商城推薦（2 × 3 grid 共 6 個商品，無箭頭）</div>
+      </div>
+    </div>
+
+    <div class="spec-body">
+      <ul class="spec-list">
+        <li><b>結構匹配度</b>★★☆☆☆ avax 是 carousel（可切換），日日欣是 grid（不可切換），不能直接套</li>
+        <li><b>想做的效果</b>進入視窗時，6 張商品卡從左往右逐張錯落滑入（保留「從左滑入」感）</li>
+        <li><b>觸發方式</b>scroll-driven，section 進入視窗 30% 時開始</li>
+        <li><b>進入方向</b>每卡從 <code>translateX(-60px → 0)</code> + opacity <code>0 → 1</code></li>
+        <li><b>Stagger 順序</b>依 row-by-row 從左到右，間隔 <code>0.08~0.12s</code></li>
+        <li><b>緩動曲線</b><code>ease-out</code> 或 GSAP <code>power2.out</code></li>
+        <li><b>技術方案</b>CSS <code>animation-timeline: view()</code> + <code>nth-child</code> delay／或 GSAP ScrollTrigger + <code>stagger</code></li>
+      </ul>
+    </div>
+
+    <!-- 評估區塊 -->
+    <div class="spec-body" style="background:#fff8eb;border-left-color:#e67e22;margin-top:12px;">
+      <ul class="spec-list">
+        <li><b style="color:#c5651a;">⚠ 不建議</b>把 grid 改成 carousel（會降低資訊密度，使用者需多次點擊才能看完 6 個商品）</li>
+        <li><b style="color:#c5651a;">建議方向</b>保留 grid 佈局，動畫只用於進場（一次性），不要做切換型互動</li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ── 下一個特效 placeholder ── -->
   <section class="spec-placeholder">
     <b>+ 下一個特效</b>
