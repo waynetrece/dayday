@@ -288,101 +288,12 @@
     margin-top: 3px;
   }
 
-  /* ── Home hero preview (Banner 動畫 起始 → 最終) ── */
-  .home-hero-preview {
-    max-width: 1100px;
-    margin: 0 auto 22px;
-    padding: 18px 22px 20px;
-    background: #fff;
-    border: 2px solid #b8860b;
-    border-radius: 14px;
-    box-shadow: 0 2px 14px rgba(184,134,11,0.14);
-  }
-  .home-hero-preview .hero-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: #b8860b;
-    margin-bottom: 4px;
+  /* ── Homepage row (首頁 Banner 起始 / 最終) ── */
+  .homepage-row {
     display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .home-hero-preview .hero-title .hero-pill {
-    padding: 2px 8px;
-    background: #b8860b;
-    color: #fff;
-    font-size: 11px;
-    border-radius: 4px;
-    letter-spacing: 0.3px;
-  }
-  .home-hero-preview .hero-sub {
-    font-size: 12px;
-    color: #888;
-    margin-bottom: 14px;
-  }
-  .home-hero-preview .hero-sub a {
-    color: #b8860b;
-    text-decoration: none;
-    border-bottom: 1px dashed #d4b87a;
-  }
-  .home-hero-preview .hero-sub a:hover { color: #8a6708; }
-  .hero-cards {
-    display: flex;
-    align-items: stretch;
-    gap: 14px;
-  }
-  .hero-card {
-    flex: 1;
-    position: relative;
-    border: 2px solid #e3c97a;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    background: #faf4e6;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    display: flex;
-    flex-direction: column;
-  }
-  .hero-card:hover {
-    transform: translateY(-2px);
-    border-color: #b8860b;
-    box-shadow: 0 6px 22px rgba(184,134,11,0.22);
-  }
-  .hero-card img {
-    width: 100%;
-    height: 240px;
-    object-fit: cover;
-    object-position: top;
-    display: block;
-    background: #f9f9f9;
-  }
-  .hero-card .hero-badge {
-    position: absolute; top: 8px; left: 8px;
-    padding: 4px 10px;
-    background: #b8860b; color: #fff;
-    font-size: 12px; font-weight: 700;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.18);
-  }
-  .hero-card .hero-label {
-    padding: 8px 12px;
-    font-size: 14px; font-weight: 600;
-    color: #b8860b;
-    text-align: center;
-    background: #fff;
-    border-top: 1px solid #f0e3b8;
-  }
-  .hero-arrow {
-    align-self: center;
-    font-size: 28px;
-    color: #b8860b;
-    font-weight: 700;
-    flex-shrink: 0;
-    animation: heroArrowPulse 1.6s ease-in-out infinite;
-  }
-  @keyframes heroArrowPulse {
-    0%, 100% { transform: translateX(0); opacity: 0.55; }
-    50%      { transform: translateX(6px); opacity: 1; }
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 0;
   }
 
   /* ── Root node ── */
@@ -556,6 +467,10 @@
   .tc-purple { border-color: #9b59b6; }
   .tc-purple .card-label { color: #7b2d8e; }
   .tc-purple .card-phase-badge { border-color: #9b59b6; color: #fff; background: #9b59b6; }
+
+  .tc-gold { border-color: #b8860b; }
+  .tc-gold .card-label { color: #8a6708; }
+  .tc-gold:hover { border-color: #b8860b; box-shadow: 0 6px 20px rgba(184,134,11,0.22); }
 
   /* ── Missing card ── */
   .tree-card.missing {
@@ -821,39 +736,28 @@
   <!-- SVG overlay for cross-branch arrows -->
   <svg id="cross-arrows" aria-hidden="true"></svg>
 
-  <!-- Home hero preview (Banner 動畫 起始 → 最終) -->
-  <div class="home-hero-preview">
-    <div class="hero-title">
-      <span class="hero-pill">首頁</span>
-      Banner 動畫式 Hero
-    </div>
-    <div class="hero-sub">
-      頁面載入時由 Logo 動畫展開為一番賞商品牆（參考
-      <a href="https://brand.dropbox.com/" target="_blank" rel="noopener">brand.dropbox.com</a>
-      動態 Hero 概念）
-    </div>
-    <div class="hero-cards">
-      <div class="hero-card"
-           onclick="openLightbox('images/日日欣_首頁_Banner_動畫起始.jpg','首頁 Banner — 動畫起始畫面','home-banner-start')">
-        <span class="hero-badge">起始</span>
-        <img src="images/日日欣_首頁_Banner_動畫起始.jpg" alt="首頁 Banner 動畫起始畫面" loading="lazy">
-        <div class="hero-label">動畫起始畫面</div>
-      </div>
-      <div class="hero-arrow">→</div>
-      <div class="hero-card"
-           onclick="openLightbox('images/日日欣_首頁_Banner_動畫最終.jpg','首頁 Banner — 動畫最終畫面','home-banner-end')">
-        <span class="hero-badge">最終</span>
-        <img src="images/日日欣_首頁_Banner_動畫最終.jpg" alt="首頁 Banner 動畫最終畫面" loading="lazy">
-        <div class="hero-label">動畫最終畫面</div>
-      </div>
-    </div>
-  </div>
-
   <!-- Root node -->
   <div class="root-node">
     <div class="root-box">
       <div class="root-title">首頁 / 導覽列</div>
       <div class="root-sub">Navigation Root · 13 Branches</div>
+    </div>
+  </div>
+
+  <!-- Vertical stub from root down to homepage cards -->
+  <div class="root-stub"></div>
+
+  <!-- Homepage Banner cards (起始 / 最終) -->
+  <div class="homepage-row">
+    <div class="tree-card tc-gold"
+         onclick="openLightbox('images/日日欣_首頁_Banner_動畫起始.jpg','首頁 Banner — 動畫起始畫面','home-banner-start')">
+      <img src="images/日日欣_首頁_Banner_動畫起始.jpg" alt="首頁 Banner 動畫起始畫面" loading="lazy">
+      <div class="card-label">首頁 Banner 起始</div>
+    </div>
+    <div class="tree-card tc-gold"
+         onclick="openLightbox('images/日日欣_首頁_Banner_動畫最終.jpg','首頁 Banner — 動畫最終畫面','home-banner-end')">
+      <img src="images/日日欣_首頁_Banner_動畫最終.jpg" alt="首頁 Banner 動畫最終畫面" loading="lazy">
+      <div class="card-label">首頁 Banner 最終</div>
     </div>
   </div>
 
